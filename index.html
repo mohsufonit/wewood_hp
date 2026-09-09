@@ -277,6 +277,137 @@
   .emi-left .bn{ font-size:14.5px; font-weight:700; }
   .emi-left .be{ font-size:12.5px; color:var(--text-2); }
 
+  /* ===== Mobile menu ===== */
+  .menu-btn{ display:none; }
+  .mobile-menu{ display:none; background:var(--white); border-radius:var(--radius); margin-top:8px; padding:14px 18px 18px; box-shadow:0 12px 32px rgba(0,0,0,.12); }
+  .mobile-menu.open{ display:block; }
+  .mobile-menu > a{ display:block; padding:13px 4px; font-size:16px; border-bottom:1px solid var(--bg); }
+  .mobile-menu > a:last-of-type{ border-bottom:none; }
+  .mm-search{ display:flex; align-items:center; gap:10px; background:var(--bg-secondary); border-radius:var(--pill); height:44px; padding:0 14px 0 16px; margin-bottom:8px; }
+  .mm-search input{ flex:1; border:none; outline:none; background:transparent; font-family:var(--font-body); font-size:15px; min-width:0; }
+  .mm-search svg{ color:var(--text-2); flex:none; }
+  .mm-foot{ display:flex; flex-direction:column; gap:10px; margin-top:14px; padding-top:14px; border-top:1px solid var(--bg); font-size:14.5px; text-align:center; }
+  .mm-foot .wa{ justify-content:center; }
+  @media (max-width:1250px){ .menu-btn{ display:flex; } }
+
+  /* ===== Mobile: the fold, density and scroll rows ===== */
+  @media (max-width:640px){
+    body{ font-size:16px; }
+    .header-wrap{ top:10px; margin-top:10px; }
+    .header{ height:60px; padding:0 18px; gap:14px; }
+    .logo img{ height:24px; }
+    .header-right{ gap:14px; }
+
+    .hero{ height:500px; margin-top:12px; }
+    .hero-slide::after{ background:linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,.15) 55%, rgba(0,0,0,.05)); }
+    .hero-text{ left:18px; right:18px; bottom:60px; }
+    .hero-text .eyebrow{ font-size:11.5px; margin-bottom:10px; }
+    .hero-text h1{ font-size:30px; margin-bottom:16px; }
+    .hero-text p{ display:none; }
+    .hero-paths{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .hero-paths .btn{ padding:12px 10px; font-size:14px; justify-content:center; }
+    .hero-paths .btn.primary{ grid-column:1 / 3; }
+    .hero-dots{ right:18px; bottom:22px; }
+    .hero-dot{ width:28px; }
+    .hero-dot::before{ content:""; position:absolute; left:0; right:0; top:-16px; bottom:-16px; }
+
+    .section-heading{ font-size:26px; padding:40px 0 6px !important; }
+    .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
+    .eyebrow{ font-size:11.5px; margin-bottom:10px; }
+
+    .rooms{ gap:12px; }
+    .room.large{ aspect-ratio:16/10; }
+    .room-text{ left:14px; top:12px; right:14px; gap:6px 8px; }
+    .room-text h3{ font-size:17px; gap:8px; }
+    .room.large .room-text h3{ font-size:24px; }
+    .room-count{ font-size:11px; padding:2px 8px; }
+    .room-from{ font-size:12.5px; }
+
+    .cat-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 6px; scrollbar-width:none; }
+    .cat-grid::-webkit-scrollbar{ display:none; }
+    .cat-tile{ flex:0 0 156px; scroll-snap-align:start; }
+    .cat-label b{ font-size:15px; }
+    .cat-label span{ font-size:12px; }
+
+    .credibility-ticker{ margin-top:32px; padding:12px 0; }
+    .credibility-track .mark{ font-size:14px; }
+
+    .products{ gap:14px 12px; }
+    .product .pimg{ margin-bottom:10px; }
+    .product h3{ font-size:13.5px; min-height:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:6px; }
+    .badge{ font-size:10.5px; top:10px; left:10px; }
+    .price-row{ flex-wrap:wrap; gap:6px 8px; margin-bottom:10px; }
+    .price{ font-size:15px; }
+    .compare{ font-size:12.5px; }
+    .save{ font-size:11px; }
+    .product .btn{ width:100%; padding:10px 12px; font-size:13.5px; }
+    .see-all{ margin-top:22px; }
+    .see-all .btn{ width:100%; }
+
+    .emi-bar{ margin-top:44px; padding:16px var(--gutter); }
+    .emi-bar .methods{ font-size:13.5px; gap:6px 16px; }
+    .emi-bar .offers{ font-size:12.5px; }
+    .emi-bar .btn{ width:100%; }
+
+    .spotlight{ margin-top:52px; gap:14px; }
+    .spot-copy{ padding:6px 0 0; }
+    .spot-copy h2{ font-size:24px; margin-bottom:12px; }
+    .spot-copy .lead{ font-size:15px; margin-bottom:16px; }
+    .specs{ gap:10px; margin-bottom:18px; }
+    .spec b{ font-size:18px; }
+    .spot-price .price{ font-size:24px; }
+    .spot-actions .btn{ flex:1; justify-content:center; }
+
+    .story{ margin-top:52px; }
+    .story .copy{ padding:0; }
+    .story h2{ font-size:26px; margin-bottom:14px; }
+    .story p{ font-size:15px; margin-bottom:14px; }
+    .story .img{ display:none; }
+    .story-facts{ gap:18px; margin:18px 0 22px; }
+    .story-facts div b{ font-size:22px; }
+
+    .stl{ height:460px; margin-top:52px; }
+    .stl-caption{ left:18px; top:22px; }
+    .stl-caption h2{ font-size:26px; }
+    .stl-caption p{ font-size:14px; }
+    .hotspot-card{ left:14px; right:14px; width:auto; top:auto; bottom:16px; }
+
+    .reviews-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 6px; scrollbar-width:none; }
+    .reviews-grid::-webkit-scrollbar{ display:none; }
+    .review{ flex:0 0 82%; scroll-snap-align:start; padding:22px 22px 20px; }
+    .review q{ font-size:15px; }
+
+    .cred{ margin-top:52px; padding:40px 22px; }
+    .cred h2{ font-size:26px; }
+    .cred .lead{ font-size:14.5px; margin-bottom:26px; }
+    .pillars{ gap:14px; }
+    .pillar{ padding-top:14px; }
+    .pillar h3{ font-size:16px; margin-bottom:6px; }
+    .pillar p{ font-size:13.5px; }
+
+    .assure{ padding:18px 20px; gap:16px; }
+    .assure div b{ font-size:16px; }
+    .assure div span{ font-size:13.5px; }
+    .wa{ width:100%; justify-content:center; }
+
+    .faq-item summary{ padding:16px 18px; font-size:16.5px; }
+    .faq-item p{ padding:0 18px 16px; font-size:14.5px; }
+
+    .footer{ margin-top:44px; padding:36px 20px 0; }
+    .footer-cols{ grid-template-columns:1fr 1fr; gap:18px 16px; }
+    .footer-brand{ grid-column:1 / 3; }
+    .footer-brand p{ font-size:14px; margin:12px 0 14px; }
+    .footer-help{ grid-column:1 / 3; }
+    .footer-cols h4{ font-size:15px; margin-bottom:8px; }
+    .footer-cols a{ font-size:14px; padding:4px 0; }
+    .newsletter{ margin-top:28px; padding:20px 0; }
+    .newsletter p{ font-size:14px; }
+    .newsletter-pill{ height:48px; }
+    .footer-bottom{ padding:16px 0; font-size:12px; }
+
+    .wa-fab{ width:50px; height:50px; right:16px; bottom:16px; }
+  }
+
   @media (prefers-reduced-motion:reduce){
     .credibility-track{ animation:none; }
     .hero-slide{ transition:none; }
@@ -305,10 +436,29 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.5-4.5"/></svg>
         <input type="search" placeholder="Search nesting tables, clocks, trays" aria-label="Search products">
       </form>
+      <button type="button" class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <a href="https://wewood.co.in/account" class="icon-btn" aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M5.5 18.5c1.6-2.4 3.9-3.5 6.5-3.5s4.9 1.1 6.5 3.5"/></svg></a>
       <a href="https://wewood.co.in/cart" class="icon-btn" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-count" id="cartCount">0</span></a>
     </div>
   </header>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
+    <form class="mm-search" role="search" onsubmit="return false;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7.5"/><path d="M21 21l-4.5-4.5"/></svg>
+      <input type="search" placeholder="Search nesting tables, clocks, trays" aria-label="Search products">
+    </form>
+    <a href="https://wewood.co.in/collections/new-arrivals">New Arrivals</a>
+    <a href="#bestsellers">Bestseller</a>
+    <a href="https://wewood.co.in/collections/nesting-table">Nesting Table</a>
+    <a href="https://wewood.co.in/collections/furniture">Furniture</a>
+    <a href="https://wewood.co.in/collections/table-accents">Table Accents</a>
+    <a href="https://wewood.co.in/collections/wall-decor">Wall D&eacute;cor</a>
+    <a href="https://wewood.co.in/collections/serveware">Tableware</a>
+    <a href="https://wewood.co.in/pages/contact">Contact</a>
+    <div class="mm-foot">
+      <a href="https://wa.me/919711630068" class="wa">Ask on WhatsApp</a>
+      <a href="tel:+919711630068">Call +91 97116 30068</a>
+    </div>
+  </nav>
 </div>
 
 <div class="page">
@@ -666,6 +816,19 @@
   var hero = document.getElementById('heroSlideshow');
   if (hero) { hero.addEventListener('mouseenter', stop); hero.addEventListener('mouseleave', start); }
   if (slides.length) start();
+
+  /* Mobile menu */
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', function(){
+      var open = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mobileMenu.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); });
+    });
+  }
 
   /* Spotlight thumbnails */
   var spotMain = document.getElementById('spotMain');
