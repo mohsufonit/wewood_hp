@@ -1,0 +1,14 @@
+# Internal project documentation - must never be published.
+# This repo is PUBLIC and serves its contents on GitHub Pages, so anything
+# committed here is world-readable. PROJECT-CONTEXT.md and CLAUDE.md contain
+# internal business figures (AOV, per-SKU revenue share, competitor list).
+CLAUDE.md
+PROJECT-CONTEXT.md
+*-CONTEXT.md
+Form - CRO.pdf
+*.pdf
+
+# Build inputs and working files live in the project dir, not here.
+build/
+catalog/
+tools/
