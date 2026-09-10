@@ -167,38 +167,37 @@
   .mark-tile{ width:46px; height:30px; flex:none; border-radius:5px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .mark-tile svg{ width:100%; height:100%; display:block; }
 
-  /* ===== The edit: staggered multi-product mosaic. Two streams, the right one
-         dropped, so no two cells share a baseline. Pairs keep image and copy
-         side by side at every width, which is what makes it read editorial. ===== */
-  .edit{ display:grid; grid-template-columns:1.08fr .92fr; gap:0 40px; align-items:start; }
-  .edit-stream{ display:flex; flex-direction:column; gap:56px; }
-  .edit-stream.is-dropped{ padding-top:72px; }
-  .epair{ display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; }
-  /* Flipping the pair has to flip the track widths too, or the image lands in
-     the narrow column and the stagger reads as a mistake rather than a choice. */
-  .epair.is-flipped{ grid-template-columns:.8fr 1.2fr; }
-  .epair.is-flipped .efig{ order:2; }
-  .efig{ position:relative; border-radius:var(--radius); overflow:hidden; background:var(--white); aspect-ratio:4/5; }
-  .epair.is-lead .efig{ aspect-ratio:3/4; }
+  /* ===== The edit: three products as alternating image/copy rows that interlock
+         rather than stack. Each image bleeds to the outer page edge and keeps the
+         radius on its inner corners only. Copy is deliberately three lines:
+         title, one supporting line, one link. No price, no paragraph. ===== */
+  .edit{ display:flex; flex-direction:column; }
+  .erow{ display:grid; grid-template-columns:1.35fr 1fr; gap:44px; align-items:center; }
+  .erow.is-flipped{ grid-template-columns:1fr 1.35fr; }
+  .erow.is-flipped .efig{ order:2; }
+  /* Negative top margin is what makes consecutive rows interlock. Safe because
+     the copy sits on the opposite side each time, so nothing can collide. */
+  .erow + .erow{ margin-top:-84px; }
+  /* Landscape on desktop, portrait on mobile. At 16/11 three desktop rows ran
+     1,632px tall, which is not a composition, just three big pictures. */
+  .efig{ position:relative; overflow:hidden; background:var(--white); aspect-ratio:16/9; }
+  .erow:not(.is-flipped) .efig{ margin-left:calc(-1 * var(--gutter)); border-radius:0 var(--radius) var(--radius) 0; }
+  .erow.is-flipped .efig{ margin-right:calc(-1 * var(--gutter)); border-radius:var(--radius) 0 0 var(--radius); }
   .efig img{ transition:transform .5s ease-out; }
-  @media (hover:hover) and (pointer:fine){ .epair:hover .efig img{ transform:scale(1.04); } }
-  .efig .badge{ top:14px; left:14px; }
-  .ecopy h3{ font-size:23px; line-height:1.25; margin-bottom:10px; }
-  .epair.is-lead .ecopy h3{ font-size:31px; }
-  .ecopy .ewhy{ font-size:14.5px; color:var(--text-2); line-height:1.55; margin-bottom:15px; max-width:34ch; }
-  .epair.is-lead .ecopy .ewhy{ font-size:16px; }
-  .eprice{ display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-bottom:14px; }
-  .eprice .price{ font-family:var(--font-heading); font-weight:400; font-size:21px; }
-  .epair.is-lead .eprice .price{ font-size:26px; }
-  .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14px; color:var(--text); border-bottom:1px solid var(--text); padding-bottom:3px; transition:opacity .16s ease-out; }
+  @media (hover:hover) and (pointer:fine){ .erow:hover .efig img{ transform:scale(1.04); } }
+  .ecopy h3{ font-size:30px; line-height:1.18; margin-bottom:12px; max-width:18ch; }
+  .ecopy h3 a:hover{ text-decoration:underline; text-underline-offset:4px; }
+  .ecopy .eline{ display:block; font-size:16px; color:var(--sale); margin-bottom:18px; }
+  .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:var(--text); transition:opacity .16s ease-out; }
   .elink:hover{ opacity:.6; }
   .elink svg{ flex:none; }
+  .edit-more{ text-align:center; margin-top:48px; }
   @media (max-width:1000px){
-    .edit{ gap:0 24px; }
-    .edit-stream{ gap:40px; }
-    .edit-stream.is-dropped{ padding-top:60px; }
-    .ecopy h3{ font-size:20px; }
-    .epair.is-lead .ecopy h3{ font-size:25px; }
+    .erow{ gap:26px; }
+    .erow + .erow{ margin-top:-48px; }
+    .efig{ aspect-ratio:16/11; }
+    .ecopy h3{ font-size:23px; }
+    .ecopy .eline{ font-size:15px; margin-bottom:14px; }
   }
 
   /* ===== Story: curated, grounded ===== */
@@ -356,11 +355,14 @@
     .room-count{ font-size:11px; padding:2px 8px; }
     .room-from{ font-size:12.5px; }
 
-    .cat-grid{ grid-template-columns:repeat(2,1fr); gap:12px; }
-    .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.18) 42%, transparent 68%); }
-    .cat-label{ left:12px; right:12px; bottom:12px; }
-    .cat-label b{ font-size:14.5px; line-height:1.25; }
-    .cat-label span{ font-size:11.5px; }
+    /* 3 x 2, per the client's reference. At ~110px a tile cannot carry the
+       count and starting price, so mobile shows the name only, uppercase like
+       the reference; the real counts stay from 641px up where they fit. */
+    .cat-grid{ grid-template-columns:repeat(3,1fr); gap:10px; }
+    .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.2) 44%, transparent 70%); }
+    .cat-label{ left:8px; right:8px; bottom:9px; }
+    .cat-label b{ font-family:var(--font-body); font-weight:700; font-size:9.5px; line-height:1.25; text-transform:uppercase; letter-spacing:.06em; }
+    .cat-label span{ display:none; }
 
     .credibility-ticker{ margin-top:32px; padding:12px 0; }
     .credibility-track .mark{ font-size:14px; }
@@ -386,20 +388,15 @@
     .emi-bar .offers{ font-size:12.5px; }
     .emi-bar .btn{ width:100%; }
 
-    .edit{ grid-template-columns:1fr; gap:0; }
-    .edit-stream{ gap:26px; }
-    .edit-stream.is-dropped{ padding-top:26px; }
-    .epair{ grid-template-columns:1.02fr .98fr; gap:14px; align-items:center; }
-    .epair.is-flipped{ grid-template-columns:.98fr 1.02fr; }
-    .epair.is-lead .efig{ aspect-ratio:4/5; }
-    .ecopy h3{ font-size:17px; margin-bottom:7px; }
-    .epair.is-lead .ecopy h3{ font-size:19px; }
-    .ecopy .ewhy{ font-size:13px; line-height:1.5; margin-bottom:10px; }
-    .epair.is-lead .ecopy .ewhy{ font-size:13.5px; }
-    .eprice{ gap:7px; margin-bottom:10px; }
-    .eprice .price{ font-size:17px; }
-    .epair.is-lead .eprice .price{ font-size:19px; }
-    .elink{ font-size:13px; }
+    .erow{ grid-template-columns:1.62fr 1fr; gap:14px; }
+    .erow.is-flipped{ grid-template-columns:1fr 1.62fr; }
+    .erow + .erow{ margin-top:-20px; }
+    .efig{ aspect-ratio:4/5; }
+    .ecopy h3{ font-size:17px; line-height:1.22; margin-bottom:7px; max-width:none; }
+    .ecopy .eline{ font-size:13px; margin-bottom:9px; }
+    .elink{ font-size:12.5px; }
+    .edit-more{ margin-top:26px; }
+    .edit-more .btn{ width:100%; }
 
     .story{ margin-top:52px; }
     .story .copy{ padding:0; }
@@ -659,64 +656,45 @@
 
   <!-- THE EDIT: four real products, each with the reason it is here. Answers the
        CRO audit's "say why these were chosen" finding. Prices verified live. -->
-  <h2 class="section-heading" style="padding-top:72px;">Four pieces, and why we picked them</h2>
-  <p class="section-sub">Not a bestseller list. A short edit, with the reason for each one.</p>
+  <h2 class="section-heading" style="padding-top:72px;">Three pieces we keep coming back to</h2>
+  <p class="section-sub">Not a bestseller list. A short edit from the furniture range.</p>
   <section class="edit">
 
-    <div class="edit-stream">
-      <div class="epair is-lead">
-        <a class="efig" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
-          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
-        </a>
-        <div class="ecopy">
-          <h3>Round Coffee Table, Teak with Special Blue Resin</h3>
-          <p class="ewhy">A 35mm teak top with a river of blue resin set into the grain. 29.5 inches across, so it anchors a living room on its own.</p>
-          <div class="eprice"><span class="price">&#8377;14,800</span><span class="compare">&#8377;18,500</span><span class="save">Save 20%</span></div>
-          <a class="elink" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
-        </div>
-      </div>
-
-      <div class="epair">
-        <a class="efig" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
-          <span class="badge">Save 47%</span>
-          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
-        </a>
-        <div class="ecopy">
-          <h3>Nesting Table Set of 3, Teak with Transparent Resin</h3>
-          <p class="ewhy">Three tables that tuck into the footprint of one. The transparent resin leaves the grain visible right through.</p>
-          <div class="eprice"><span class="price">&#8377;13,890</span><span class="compare">&#8377;25,980</span><span class="save">Save 47%</span></div>
-          <a class="elink" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">See the set <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
-        </div>
+    <div class="erow">
+      <a class="efig" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
+      </a>
+      <div class="ecopy">
+        <h3><a href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">Round Coffee Table, Blue Resin</a></h3>
+        <span class="eline">A 35mm solid teak top</span>
+        <a class="elink" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
       </div>
     </div>
 
-    <div class="edit-stream is-dropped">
-      <div class="epair is-flipped">
-        <a class="efig" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
-          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" alt="Modern live-edge wood table with blue epoxy resin">
-        </a>
-        <div class="ecopy">
-          <h3>Modern Live-Edge Wood and Blue Epoxy Table</h3>
-          <p class="ewhy">The edge is left as the tree grew it, so no two tops are the same shape. One of the largest pieces we make.</p>
-          <div class="eprice"><span class="price">&#8377;39,499</span><span class="compare">&#8377;65,000</span><span class="save">Save 39%</span></div>
-          <a class="elink" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
-        </div>
+    <div class="erow is-flipped">
+      <a class="efig" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
+      </a>
+      <div class="ecopy">
+        <h3><a href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">Nesting Table Set of 3, Teak</a></h3>
+        <span class="eline">Three tables, one footprint</span>
+        <a class="elink" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">See the set <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
       </div>
+    </div>
 
-      <div class="epair is-flipped">
-        <a class="efig" href="https://wewood.co.in/products/elegant-wooden-tray-aqua-resin-design-12-x-9">
-          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Wooden serving tray with aqua resin design">
-        </a>
-        <div class="ecopy">
-          <h3>Wooden Tray, Aqua Resin</h3>
-          <p class="ewhy">The least expensive way into the resin work, and the one people buy as a gift. 12 by 9 inches.</p>
-          <div class="eprice"><span class="price">&#8377;2,399</span><span class="compare">&#8377;3,850</span><span class="save">Save 38%</span></div>
-          <a class="elink" href="https://wewood.co.in/products/elegant-wooden-tray-aqua-resin-design-12-x-9">View this tray <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
-        </div>
+    <div class="erow">
+      <a class="efig" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" alt="Modern live-edge wood table with blue epoxy resin">
+      </a>
+      <div class="ecopy">
+        <h3><a href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">Live-Edge Wood and Blue Epoxy Table</a></h3>
+        <span class="eline">No two tops alike</span>
+        <a class="elink" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
       </div>
     </div>
 
   </section>
+  <div class="edit-more"><a href="https://wewood.co.in/collections/furniture" class="btn">View more furniture</a></div>
 
   <!-- STORY: the one editorial section, grounded in the real About page -->
   <section class="story">
