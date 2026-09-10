@@ -107,7 +107,7 @@
   .cat-tile{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); }
   .cat-tile img{ transition:transform .5s ease-out; }
   @media (hover:hover) and (pointer:fine){ .cat-tile:hover img{ transform:scale(1.04); } }
-  .cat-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.5), transparent 45%); }
+  .cat-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.16) 40%, transparent 62%); }
   .cat-label{ position:absolute; left:14px; right:14px; bottom:14px; z-index:1; color:#fff; }
   .cat-label b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:17px; }
   .cat-label span{ font-size:12.5px; color:rgba(255,255,255,.85); }
@@ -115,16 +115,28 @@
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
-  .credibility-track{ display:flex; align-items:center; gap:36px; width:max-content; white-space:nowrap; animation:ticker 34s linear infinite; }
-  .credibility-track span{ display:flex; align-items:center; gap:36px; }
-  .credibility-track .mark{ font-family:var(--font-heading); font-size:15.5px; color:var(--text); letter-spacing:.02em; }
+  .credibility-track{ display:flex; align-items:center; gap:34px; width:max-content; white-space:nowrap; animation:ticker 46s linear infinite; }
+  .credibility-track span{ display:flex; align-items:center; gap:34px; }
+  .credibility-track .mark{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15.5px; color:var(--text); letter-spacing:.02em; }
+  .credibility-track .mark svg{ flex:none; color:var(--text); }
   .credibility-track .dot{ width:4px; height:4px; border-radius:50%; background:var(--text-3); flex:none; }
   @keyframes ticker{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
-  /* ===== Bestsellers: real products, real prices, real badge ===== */
-  .products{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--gap); }
-  @media (max-width:1000px){ .products{ grid-template-columns:repeat(2,1fr); } }
-  .product{ display:flex; flex-direction:column; }
+  /* ===== Bestsellers: one scroll-snapping row, all 8, real prices ===== */
+  .carousel{ position:relative; }
+  /* scroll-padding-left matters: without it the snapport starts at the padding
+     edge, so card 1 snaps to scrollLeft:18 and rests clipped behind the gutter. */
+  .products{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 4px; }
+  .products::-webkit-scrollbar{ display:none; }
+  .product{ flex:0 0 calc((100% - 3 * var(--gap)) / 4); scroll-snap-align:start; display:flex; flex-direction:column; }
+  @media (max-width:1000px){ .product{ flex-basis:calc((100% - 2 * var(--gap)) / 3); } }
+  @media (max-width:760px){ .product{ flex-basis:calc((100% - var(--gap)) / 2.35); } }
+  .car-ctl{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:26px; }
+  .car-btn{ width:44px; height:44px; flex:none; border-radius:50%; border:1px solid var(--border); background:transparent; color:var(--text); display:flex; align-items:center; justify-content:center; transition:background .16s ease-out, color .16s ease-out, border-color .16s ease-out, opacity .16s ease-out; }
+  .car-btn:hover:not(:disabled){ background:var(--black); border-color:var(--black); color:#fff; }
+  .car-btn:disabled{ opacity:.28; cursor:default; }
+  .car-prog{ position:relative; width:190px; height:2px; background:var(--border); border-radius:2px; overflow:hidden; }
+  .car-prog span{ position:absolute; top:0; bottom:0; left:0; width:50%; background:var(--text); border-radius:2px; transition:left .2s ease-out, width .2s ease-out; }
   .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; }
   .product .pimg img{ object-fit:contain; padding:8%; transition:transform .4s ease-out; }
   @media (hover:hover) and (pointer:fine){ .product:hover .pimg img{ transform:scale(1.05); } }
@@ -137,38 +149,57 @@
   .product .btn{ margin-top:auto; }
   .see-all{ text-align:center; margin-top:34px; }
 
-  /* ===== EMI breaker: slim, full-bleed, dark ===== */
-  .emi-bar{ margin:64px calc(-1 * var(--gutter)) 0; background:var(--dark); color:#fff; padding:22px var(--gutter); }
-  .emi-bar .inner{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+  /* ===== EMI breaker: full-bleed, on the theme's own accent so it does not read
+         as a second copy of the dark credibility panel further down ===== */
+  .emi-bar{ margin:64px calc(-1 * var(--gutter)) 0; background:var(--yellow); color:var(--dark); padding:22px var(--gutter); }
+  .emi-bar .inner{ display:flex; align-items:center; justify-content:space-between; gap:20px 24px; flex-wrap:wrap; }
   .emi-bar .methods{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 22px; font-size:15px; }
-  .emi-bar .methods span{ position:relative; padding-left:14px; color:rgba(255,255,255,.9); }
-  .emi-bar .methods span::before{ content:""; position:absolute; left:0; top:9px; width:5px; height:5px; border-radius:50%; background:#7fce8d; }
-  .emi-bar .methods span b{ font-weight:700; color:#fff; }
-  .emi-bar .offers{ font-size:13.5px; color:rgba(255,255,255,.6); width:100%; }
-  .emi-bar .btn{ border-color:rgba(255,255,255,.55); color:#fff; padding:11px 22px; font-size:14.5px; flex:none; }
-  .emi-bar .btn:hover{ background:#fff; color:var(--dark); }
+  .emi-bar .methods span{ position:relative; padding-left:14px; color:rgba(22,30,19,.82); }
+  .emi-bar .methods span::before{ content:""; position:absolute; left:0; top:9px; width:5px; height:5px; border-radius:50%; background:var(--dark); }
+  .emi-bar .methods span b{ font-weight:700; color:var(--dark); }
+  .emi-bar .offers{ font-size:13.5px; color:rgba(22,30,19,.66); width:100%; padding-left:0; }
+  .emi-bar .offers::before{ display:none; }
+  .emi-bar .btn{ border-color:rgba(22,30,19,.45); color:var(--dark); padding:11px 22px; font-size:14.5px; flex:none; }
+  .emi-bar .btn:hover{ background:var(--dark); color:var(--yellow); border-color:var(--dark); }
+  /* Payment marks. Brand-coloured wordmarks drawn as inline SVG, not licensed
+     logo files. Phase 4 should swap in the Shopify theme's real payment icons. */
+  .pay-marks{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+  .mark-tile{ width:46px; height:30px; flex:none; border-radius:5px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .mark-tile svg{ width:100%; height:100%; display:block; }
 
-  /* ===== Spotlight: one product, real specs ===== */
-  .spotlight{ display:grid; grid-template-columns:1.15fr .85fr; gap:var(--gap); align-items:center; margin-top:80px; }
-  @media (max-width:900px){ .spotlight{ grid-template-columns:1fr; } }
-  .spot-media .main{ border-radius:var(--radius); overflow:hidden; background:var(--white); aspect-ratio:4/3; }
-  .spot-media .main img{ object-fit:contain; padding:4%; opacity:1; transition:opacity .18s ease-out; }
-  .spot-media .main img.is-switching{ opacity:0; }
-  .spot-thumbs{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:12px; }
-  .spot-thumbs .t{ aspect-ratio:1; border-radius:12px; overflow:hidden; background:var(--white); border:2px solid transparent; cursor:pointer; transition:border-color .16s ease-out; }
-  .spot-thumbs .t.active{ border-color:var(--black); }
-  .spot-thumbs .t img{ object-fit:contain; padding:8%; }
-  .spot-copy{ padding:24px var(--inner); }
-  .spot-copy h2{ font-size:34px; margin-bottom:18px; }
-  .spot-copy .lead{ font-size:16.5px; color:var(--text-2); margin-bottom:22px; max-width:46ch; }
-  .specs{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
-  .spec{ border-top:1px solid var(--border); padding-top:12px; }
-  .spec b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:20px; color:var(--text); }
-  .spec span{ font-size:12.5px; color:var(--text-3); }
-  .spot-price{ display:flex; align-items:baseline; gap:12px; margin-bottom:22px; }
-  .spot-price .price{ font-family:var(--font-heading); font-size:28px; font-weight:400; }
-  .spot-actions{ display:flex; gap:12px; flex-wrap:wrap; }
-  @media (max-width:900px){ .spot-copy{ padding:8px 4px; } }
+  /* ===== The edit: staggered multi-product mosaic. Two streams, the right one
+         dropped, so no two cells share a baseline. Pairs keep image and copy
+         side by side at every width, which is what makes it read editorial. ===== */
+  .edit{ display:grid; grid-template-columns:1.08fr .92fr; gap:0 40px; align-items:start; }
+  .edit-stream{ display:flex; flex-direction:column; gap:56px; }
+  .edit-stream.is-dropped{ padding-top:72px; }
+  .epair{ display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; }
+  /* Flipping the pair has to flip the track widths too, or the image lands in
+     the narrow column and the stagger reads as a mistake rather than a choice. */
+  .epair.is-flipped{ grid-template-columns:.8fr 1.2fr; }
+  .epair.is-flipped .efig{ order:2; }
+  .efig{ position:relative; border-radius:var(--radius); overflow:hidden; background:var(--white); aspect-ratio:4/5; }
+  .epair.is-lead .efig{ aspect-ratio:3/4; }
+  .efig img{ transition:transform .5s ease-out; }
+  @media (hover:hover) and (pointer:fine){ .epair:hover .efig img{ transform:scale(1.04); } }
+  .efig .badge{ top:14px; left:14px; }
+  .ecopy h3{ font-size:23px; line-height:1.25; margin-bottom:10px; }
+  .epair.is-lead .ecopy h3{ font-size:31px; }
+  .ecopy .ewhy{ font-size:14.5px; color:var(--text-2); line-height:1.55; margin-bottom:15px; max-width:34ch; }
+  .epair.is-lead .ecopy .ewhy{ font-size:16px; }
+  .eprice{ display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-bottom:14px; }
+  .eprice .price{ font-family:var(--font-heading); font-weight:400; font-size:21px; }
+  .epair.is-lead .eprice .price{ font-size:26px; }
+  .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14px; color:var(--text); border-bottom:1px solid var(--text); padding-bottom:3px; transition:opacity .16s ease-out; }
+  .elink:hover{ opacity:.6; }
+  .elink svg{ flex:none; }
+  @media (max-width:1000px){
+    .edit{ gap:0 24px; }
+    .edit-stream{ gap:40px; }
+    .edit-stream.is-dropped{ padding-top:60px; }
+    .ecopy h3{ font-size:20px; }
+    .epair.is-lead .ecopy h3{ font-size:25px; }
+  }
 
   /* ===== Story: curated, grounded ===== */
   .story{ display:grid; grid-template-columns:.9fr 1.1fr; gap:var(--gap); align-items:center; margin-top:80px; }
@@ -272,8 +303,10 @@
   .emi-note{ font-size:12.5px; color:var(--text-3); margin-bottom:18px; line-height:1.5; }
   .emi-row{ display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--bg); gap:12px; }
   .emi-row:last-child{ border-bottom:none; }
+  .emi-row.is-offer .be{ color:var(--green); font-weight:700; }
   .emi-left{ display:flex; align-items:center; gap:12px; }
-  .emi-ic{ width:34px; height:34px; border-radius:50%; background:var(--bg-secondary); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+  .emi-ic{ width:46px; height:30px; flex:none; border-radius:5px; background:#fff; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .emi-ic svg{ width:100%; height:100%; display:block; }
   .emi-left .bn{ font-size:14.5px; font-weight:700; }
   .emi-left .be{ font-size:12.5px; color:var(--text-2); }
 
@@ -323,17 +356,21 @@
     .room-count{ font-size:11px; padding:2px 8px; }
     .room-from{ font-size:12.5px; }
 
-    .cat-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 6px; scrollbar-width:none; }
-    .cat-grid::-webkit-scrollbar{ display:none; }
-    .cat-tile{ flex:0 0 156px; scroll-snap-align:start; }
-    .cat-label b{ font-size:15px; }
-    .cat-label span{ font-size:12px; }
+    .cat-grid{ grid-template-columns:repeat(2,1fr); gap:12px; }
+    .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.18) 42%, transparent 68%); }
+    .cat-label{ left:12px; right:12px; bottom:12px; }
+    .cat-label b{ font-size:14.5px; line-height:1.25; }
+    .cat-label span{ font-size:11.5px; }
 
     .credibility-ticker{ margin-top:32px; padding:12px 0; }
     .credibility-track .mark{ font-size:14px; }
 
-    .products{ gap:14px 12px; }
+    .products{ gap:12px; }
+    .product{ flex-basis:calc((100% - 12px) / 2.15); }
     .product .pimg{ margin-bottom:10px; }
+    .car-ctl{ gap:0; margin-top:18px; }
+    .car-btn{ display:none; }
+    .car-prog{ width:100%; }
     .product h3{ font-size:13.5px; min-height:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:6px; }
     .badge{ font-size:10.5px; top:10px; left:10px; }
     .price-row{ flex-wrap:wrap; gap:6px 8px; margin-bottom:10px; }
@@ -349,14 +386,20 @@
     .emi-bar .offers{ font-size:12.5px; }
     .emi-bar .btn{ width:100%; }
 
-    .spotlight{ margin-top:52px; gap:14px; }
-    .spot-copy{ padding:6px 0 0; }
-    .spot-copy h2{ font-size:24px; margin-bottom:12px; }
-    .spot-copy .lead{ font-size:15px; margin-bottom:16px; }
-    .specs{ gap:10px; margin-bottom:18px; }
-    .spec b{ font-size:18px; }
-    .spot-price .price{ font-size:24px; }
-    .spot-actions .btn{ flex:1; justify-content:center; }
+    .edit{ grid-template-columns:1fr; gap:0; }
+    .edit-stream{ gap:26px; }
+    .edit-stream.is-dropped{ padding-top:26px; }
+    .epair{ grid-template-columns:1.02fr .98fr; gap:14px; align-items:center; }
+    .epair.is-flipped{ grid-template-columns:.98fr 1.02fr; }
+    .epair.is-lead .efig{ aspect-ratio:4/5; }
+    .ecopy h3{ font-size:17px; margin-bottom:7px; }
+    .epair.is-lead .ecopy h3{ font-size:19px; }
+    .ecopy .ewhy{ font-size:13px; line-height:1.5; margin-bottom:10px; }
+    .epair.is-lead .ecopy .ewhy{ font-size:13.5px; }
+    .eprice{ gap:7px; margin-bottom:10px; }
+    .eprice .price{ font-size:17px; }
+    .epair.is-lead .eprice .price{ font-size:19px; }
+    .elink{ font-size:13px; }
 
     .story{ margin-top:52px; }
     .story .copy{ padding:0; }
@@ -409,6 +452,10 @@
   }
 
   @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .products{ scroll-behavior:auto; }
+    .efig img, .cat-tile img, .room img, .product .pimg img{ transition:none; }
+    .car-prog span{ transition:none; }
     .credibility-track{ animation:none; }
     .hero-slide{ transition:none; }
     .hero-dot.is-active::after{ animation:none; transform:scaleX(1); }
@@ -485,8 +532,20 @@
     </div>
   </section>
 
+  <!-- CATEGORIES: the six live collections, real counts. Second fold, ahead of rooms. -->
+  <h2 class="section-heading" style="padding-top:56px;">Handcrafted pieces for every room</h2>
+  <p class="section-sub">Nesting tables, coffee tables, wall clocks and more - each one finished by hand</p>
+  <section class="cat-grid">
+    <a href="https://wewood.co.in/collections/nesting-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables"><div class="cat-label"><b>Nesting Table</b><span>22 pieces &middot; from &#8377;11,920</span></div></a>
+    <a href="https://wewood.co.in/collections/dining-entertainment" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment"><div class="cat-label"><b>Dining &amp; Entertainment</b><span>12 pieces &middot; from &#8377;1,999</span></div></a>
+    <a href="https://wewood.co.in/collections/coffee-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt="Coffee tables"><div class="cat-label"><b>Coffee Table</b><span>10 pieces &middot; from &#8377;6,800</span></div></a>
+    <a href="https://wewood.co.in/collections/cheese-boards" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt="Cheese boards"><div class="cat-label"><b>Cheese Boards</b><span>9 pieces &middot; from &#8377;1,999</span></div></a>
+    <a href="https://wewood.co.in/collections/clock" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks"><div class="cat-label"><b>Clock</b><span>11 pieces &middot; from &#8377;3,499</span></div></a>
+    <a href="https://wewood.co.in/collections/ashtray" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
+  </section>
+
   <!-- SHOP BY ROOM: real collections, counts and starting prices computed from the live catalog -->
-  <h2 class="section-heading" id="rooms" style="padding-top:56px;">Start with the room</h2>
+  <h2 class="section-heading" id="rooms" style="padding-top:64px;">Start with the room</h2>
   <p class="section-sub">Every piece here is grouped by where it lives, so you can furnish a space rather than hunt through a list.</p>
   <section class="rooms">
     <a href="https://wewood.co.in/collections/furniture" class="room large">
@@ -511,30 +570,19 @@
     </a>
   </section>
 
-  <!-- CATEGORIES: the six live collections, real counts -->
-  <h2 class="section-heading" style="padding-top:64px;">Handcrafted pieces for every room</h2>
-  <p class="section-sub">Nesting tables, coffee tables, wall clocks and more - each one finished by hand</p>
-  <section class="cat-grid">
-    <a href="https://wewood.co.in/collections/nesting-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables"><div class="cat-label"><b>Nesting Table</b><span>22 pieces &middot; from &#8377;11,920</span></div></a>
-    <a href="https://wewood.co.in/collections/dining-entertainment" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment"><div class="cat-label"><b>Dining &amp; Entertainment</b><span>12 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/coffee-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt="Coffee tables"><div class="cat-label"><b>Coffee Table</b><span>10 pieces &middot; from &#8377;6,800</span></div></a>
-    <a href="https://wewood.co.in/collections/cheese-boards" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt="Cheese boards"><div class="cat-label"><b>Cheese Boards</b><span>9 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/clock" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks"><div class="cat-label"><b>Clock</b><span>11 pieces &middot; from &#8377;3,499</span></div></a>
-    <a href="https://wewood.co.in/collections/ashtray" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
-  </section>
-
   <!-- CREDIBILITY TICKER: real, self-reported signals from WeWood's CRO brief -->
   <div class="credibility-ticker">
     <div class="credibility-track">
-      <span><span class="mark">Handcrafted by WeWood India</span><span class="dot"></span></span><span><span class="mark">Patented designs</span><span class="dot"></span></span><span><span class="mark">Rated 4&#9733;+ by customers</span><span class="dot"></span></span><span><span class="mark">Exhibited at domestic and international design fairs</span><span class="dot"></span></span><span><span class="mark">Twenty years in timber</span><span class="dot"></span></span>
-      <span><span class="mark">Handcrafted by WeWood India</span><span class="dot"></span></span><span><span class="mark">Patented designs</span><span class="dot"></span></span><span><span class="mark">Rated 4&#9733;+ by customers</span><span class="dot"></span></span><span><span class="mark">Exhibited at domestic and international design fairs</span><span class="dot"></span></span><span><span class="mark">Twenty years in timber</span><span class="dot"></span></span>
+      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
+      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
     </div>
   </div>
 
   <!-- BESTSELLERS: the live Best Seller collection, prices as listed today -->
   <h2 class="section-heading" id="bestsellers" style="padding-top:64px;">What people are buying this week</h2>
   <p class="section-sub">The eight pieces in our Best Seller collection right now</p>
-  <section class="products">
+  <div class="carousel">
+  <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><span class="badge">Bestseller</span><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13_52d797df-5f4d-4f3d-b30b-b5b40c3a9e34.png?v=1740653261" alt=""></a>
       <h3>Nesting Table Set of 3, Teak Wood with Tinted Grey Resin Finish</h3>
@@ -584,45 +632,90 @@
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
   </section>
+    <div class="car-ctl">
+      <button type="button" class="car-btn" id="bestPrev" aria-label="Previous product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="car-prog" role="presentation"><span id="bestBar"></span></div>
+      <button type="button" class="car-btn" id="bestNext" aria-label="Next product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/best-seller" class="btn">See the full Best Seller collection</a></div>
 
   <!-- EMI BREAKER: slim, where price is on screen. Real checkout data. -->
   <div class="emi-bar">
     <div class="inner">
       <div class="methods">
-        <span><b>No-cost EMI</b> from 15+ banks</span><span>UPI</span><span>Wallets</span><span>Cash on Delivery</span><span>100% secured payment</span>
-        <span class="offers" style="padding-left:0;">HDFC cards: up to &#8377;4,000 instant discount on EMI &middot; SBI Card: 10% instant discount up to &#8377;3,500 &middot; terms confirmed at checkout</span>
+        <span><b>No-cost EMI</b> from 15+ banks</span><span>Wallets</span><span>Cash on Delivery</span><span>100% secured payment</span>
+        <span class="offers">HDFC cards: up to &#8377;4,000 instant discount on EMI &middot; SBI Card: 10% instant discount up to &#8377;3,500 &middot; terms confirmed at checkout</span>
+      </div>
+      <div class="pay-marks" role="list" aria-label="Payment methods accepted">
+        <span class="mark-tile" role="listitem" title="UPI"><svg viewBox="0 0 46 30" aria-label="UPI"><path d="M14.5 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#F26522"/><path d="M19.9 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#0F9D58"/><text x="34" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#2B2B2B">UPI</text></svg></span>
+        <span class="mark-tile" role="listitem" title="Mastercard"><svg viewBox="0 0 46 30" aria-label="Mastercard"><circle cx="19" cy="15" r="8.4" fill="#EB001B"/><circle cx="27" cy="15" r="8.4" fill="#F79E1B"/><path d="M23 8.1a8.4 8.4 0 0 0 0 13.8 8.4 8.4 0 0 0 0-13.8z" fill="#FF5F00"/></svg></span>
+        <span class="mark-tile" role="listitem" title="Visa"><svg viewBox="0 0 46 30" aria-label="Visa"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" font-style="italic" fill="#1A1F71" letter-spacing=".4">VISA</text></svg></span>
+        <span class="mark-tile" role="listitem" title="RuPay"><svg viewBox="0 0 46 30" aria-label="RuPay"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700"><tspan fill="#097DC6">Ru</tspan><tspan fill="#F58220">Pay</tspan></text></svg></span>
       </div>
       <button type="button" id="emiOpenBtn" class="btn">View EMI options</button>
     </div>
   </div>
 
-  <!-- SPOTLIGHT: one product, its real specs and price -->
-  <section class="spotlight">
-    <div class="spot-media">
-      <div class="main"><img id="spotMain" src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, Teak Wood with Special Blue Resin Finish"></div>
-      <div class="spot-thumbs" id="spotThumbs">
-        <div class="t active" role="button" tabindex="0"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="View 1"></div>
-        <div class="t" role="button" tabindex="0"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ct2.png?v=1738323531" alt="View 2"></div>
-        <div class="t" role="button" tabindex="0"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW301.jpg?v=1738323531" alt="View 3"></div>
-        <div class="t" role="button" tabindex="0"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW309.jpg?v=1738323531" alt="View 4"></div>
+  <!-- THE EDIT: four real products, each with the reason it is here. Answers the
+       CRO audit's "say why these were chosen" finding. Prices verified live. -->
+  <h2 class="section-heading" style="padding-top:72px;">Four pieces, and why we picked them</h2>
+  <p class="section-sub">Not a bestseller list. A short edit, with the reason for each one.</p>
+  <section class="edit">
+
+    <div class="edit-stream">
+      <div class="epair is-lead">
+        <a class="efig" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
+          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
+        </a>
+        <div class="ecopy">
+          <h3>Round Coffee Table, Teak with Special Blue Resin</h3>
+          <p class="ewhy">A 35mm teak top with a river of blue resin set into the grain. 29.5 inches across, so it anchors a living room on its own.</p>
+          <div class="eprice"><span class="price">&#8377;14,800</span><span class="compare">&#8377;18,500</span><span class="save">Save 20%</span></div>
+          <a class="elink" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        </div>
+      </div>
+
+      <div class="epair">
+        <a class="efig" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
+          <span class="badge">Save 47%</span>
+          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
+        </a>
+        <div class="ecopy">
+          <h3>Nesting Table Set of 3, Teak with Transparent Resin</h3>
+          <p class="ewhy">Three tables that tuck into the footprint of one. The transparent resin leaves the grain visible right through.</p>
+          <div class="eprice"><span class="price">&#8377;13,890</span><span class="compare">&#8377;25,980</span><span class="save">Save 47%</span></div>
+          <a class="elink" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">See the set <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        </div>
       </div>
     </div>
-    <div class="spot-copy">
-      <span class="eyebrow">Spotlight</span>
-      <h2>Round Coffee Table, Teak Wood with Special Blue Resin Finish</h2>
-      <p class="lead">A 35mm teak top with a river of blue resin set into the grain. Big enough to anchor a living room, finished so no two are quite alike.</p>
-      <div class="specs">
-        <div class="spec"><b>29.5"</b><span>Diameter</span></div>
-        <div class="spec"><b>17.5"</b><span>Height</span></div>
-        <div class="spec"><b>35mm</b><span>Solid teak top</span></div>
+
+    <div class="edit-stream is-dropped">
+      <div class="epair is-flipped">
+        <a class="efig" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
+          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" alt="Modern live-edge wood table with blue epoxy resin">
+        </a>
+        <div class="ecopy">
+          <h3>Modern Live-Edge Wood and Blue Epoxy Table</h3>
+          <p class="ewhy">The edge is left as the tree grew it, so no two tops are the same shape. One of the largest pieces we make.</p>
+          <div class="eprice"><span class="price">&#8377;39,499</span><span class="compare">&#8377;65,000</span><span class="save">Save 39%</span></div>
+          <a class="elink" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        </div>
       </div>
-      <div class="spot-price"><span class="price">&#8377;14,800</span><span class="compare">&#8377;18,500</span><span class="save">Save 20%</span></div>
-      <div class="spot-actions">
-        <a href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish" class="btn btn-solid">View this table</a>
-        <a href="https://wewood.co.in/collections/coffee-table" class="btn">All coffee tables</a>
+
+      <div class="epair is-flipped">
+        <a class="efig" href="https://wewood.co.in/products/elegant-wooden-tray-aqua-resin-design-12-x-9">
+          <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Wooden serving tray with aqua resin design">
+        </a>
+        <div class="ecopy">
+          <h3>Wooden Tray, Aqua Resin</h3>
+          <p class="ewhy">The least expensive way into the resin work, and the one people buy as a gift. 12 by 9 inches.</p>
+          <div class="eprice"><span class="price">&#8377;2,399</span><span class="compare">&#8377;3,850</span><span class="save">Save 38%</span></div>
+          <a class="elink" href="https://wewood.co.in/products/elegant-wooden-tray-aqua-resin-design-12-x-9">View this tray <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        </div>
       </div>
     </div>
+
   </section>
 
   <!-- STORY: the one editorial section, grounded in the real About page -->
@@ -779,21 +872,24 @@
   <div class="emi-modal" role="dialog" aria-modal="true" aria-labelledby="emiTitle">
     <div class="emi-modal-head"><h3 id="emiTitle">Choose EMI options</h3><button type="button" class="emi-modal-close" id="emiCloseBtn" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="emi-note">Starting EMI amounts as shown at wewood.co.in checkout. They vary with order value, bank and tenure; your exact EMI is calculated at checkout.</p>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">AX</span><div><div class="bn">Axis Bank</div><div class="be">EMI from &#8377;939/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">IC</span><div><div class="bn">ICICI Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">ID</span><div><div class="bn">IDBI Bank</div><div class="be">EMI from &#8377;1,697/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">YB</span><div><div class="bn">Yes Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">IF</span><div><div class="bn">IDFC First Bank</div><div class="be">EMI from &#8377;668/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">KM</span><div><div class="bn">Kotak Mahindra Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">RB</span><div><div class="bn">RBL Bank</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">HS</span><div><div class="bn">HSBC</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">CB</span><div><div class="bn">Canara Bank</div><div class="be">EMI from &#8377;912/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">SC</span><div><div class="bn">Standard Chartered Bank</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">DB</span><div><div class="bn">DBS Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">BB</span><div><div class="bn">Bank of Baroda</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">OC</span><div><div class="bn">One Card</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">FB</span><div><div class="bn">Federal Bank</div><div class="be">EMI from &#8377;1,194/m</div></div></div></div>
-    <div class="emi-row"><div class="emi-left"><span class="emi-ic">AU</span><div><div class="bn">AU Small Finance Bank</div><div class="be">EMI from &#8377;912/m</div></div></div></div>
+    <div class="emi-row is-offer"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#004C8F" letter-spacing=".2">HDFC</text></svg></span><div><div class="bn">HDFC Bank cards</div><div class="be">Up to &#8377;4,000 instant discount on EMI</div></div></div></div>
+    <div class="emi-row is-offer"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#22409A" letter-spacing=".2">SBI</text></svg></span><div><div class="bn">SBI Card</div><div class="be">10% instant discount, up to &#8377;3,500</div></div></div></div>
+    <p class="emi-note" style="margin:16px 0 6px;">No-cost EMI, by bank</p>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" font-weight="700" fill="#97144D" letter-spacing=".2">AXIS</text></svg></span><div><div class="bn">Axis Bank</div><div class="be">EMI from &#8377;939/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="700" fill="#F37E20" letter-spacing=".2">ICICI</text></svg></span><div><div class="bn">ICICI Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" font-weight="700" fill="#006B3F" letter-spacing=".2">IDBI</text></svg></span><div><div class="bn">IDBI Bank</div><div class="be">EMI from &#8377;1,697/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="17" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" font-weight="700" fill="#00518F" letter-spacing=".2">YES</text><rect x="14" y="20" width="18" height="2" fill="#D0112B"/></svg></span><div><div class="bn">Yes Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" font-weight="700" fill="#9E1B32" letter-spacing=".2">IDFC</text></svg></span><div><div class="bn">IDFC First Bank</div><div class="be">EMI from &#8377;668/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9" font-weight="700"><tspan fill="#ED232A">KOTAK</tspan></text></svg></span><div><div class="bn">Kotak Mahindra Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" font-weight="700" fill="#C8102E" letter-spacing=".2">RBL</text></svg></span><div><div class="bn">RBL Bank</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#DB0011" letter-spacing=".2">HSBC</text></svg></span><div><div class="bn">HSBC</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#00539F" letter-spacing=".2">CANARA</text></svg></span><div><div class="bn">Canara Bank</div><div class="be">EMI from &#8377;912/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="13.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="7" font-weight="700" fill="#0473EA" letter-spacing=".2">STANDARD</text><text x="23" y="22" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="7" font-weight="700" fill="#38A600" letter-spacing=".2">CHARTERED</text></svg></span><div><div class="bn">Standard Chartered Bank</div><div class="be">EMI from &#8377;921/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#E4002B" letter-spacing=".2">DBS</text></svg></span><div><div class="bn">DBS Bank</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#F15A22" letter-spacing=".2">BARODA</text></svg></span><div><div class="bn">Bank of Baroda</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8" font-weight="700" fill="#1A1A1A" letter-spacing=".2">ONECARD</text></svg></span><div><div class="bn">One Card</div><div class="be">EMI from &#8377;930/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#003C71" letter-spacing=".2">FEDERAL</text></svg></span><div><div class="bn">Federal Bank</div><div class="be">EMI from &#8377;1,194/m</div></div></div></div>
+    <div class="emi-row"><div class="emi-left"><span class="emi-ic"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="11.5" font-weight="700" fill="#5D2E8E" letter-spacing=".2">AU</text></svg></span><div><div class="bn">AU Small Finance Bank</div><div class="be">EMI from &#8377;912/m</div></div></div></div>
   </div>
 </div>
 
@@ -830,20 +926,35 @@
     });
   }
 
-  /* Spotlight thumbnails */
-  var spotMain = document.getElementById('spotMain');
-  var spotThumbs = document.getElementById('spotThumbs');
-  if (spotMain && spotThumbs) {
-    spotThumbs.addEventListener('click', function(e){
-      var t = e.target.closest('.t'); if (!t) return;
-      var img = t.querySelector('img'); if (!img) return;
-      spotThumbs.querySelectorAll('.t').forEach(function(x){ x.classList.remove('active'); });
-      t.classList.add('active');
-      if (reduceMotion) { spotMain.src = img.src; return; }
-      spotMain.classList.add('is-switching');
-      setTimeout(function(){ spotMain.src = img.src; spotMain.classList.remove('is-switching'); }, 140);
-    });
-    spotThumbs.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { var t = e.target.closest('.t'); if (t) { e.preventDefault(); t.click(); } } });
+  /* Bestsellers carousel: one row, advances one card at a time */
+  var track = document.getElementById('bestTrack');
+  if (track) {
+    var cPrev = document.getElementById('bestPrev');
+    var cNext = document.getElementById('bestNext');
+    var cBar = document.getElementById('bestBar');
+    function cardStep(){
+      var card = track.querySelector('.product');
+      var gap = parseFloat(window.getComputedStyle(track).columnGap) || 20;
+      return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+    }
+    function syncCarousel(){
+      var max = track.scrollWidth - track.clientWidth;
+      if (cBar) {
+        var w = Math.min(100, (track.clientWidth / track.scrollWidth) * 100);
+        cBar.style.width = w + '%';
+        cBar.style.left = (max > 1 ? (track.scrollLeft / max) * (100 - w) : 0) + '%';
+      }
+      if (cPrev) cPrev.disabled = track.scrollLeft < 4;
+      if (cNext) cNext.disabled = track.scrollLeft >= max - 4;
+    }
+    function nudge(dir){
+      track.scrollBy({ left: dir * cardStep(), behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+    if (cPrev) cPrev.addEventListener('click', function(){ nudge(-1); });
+    if (cNext) cNext.addEventListener('click', function(){ nudge(1); });
+    track.addEventListener('scroll', syncCarousel, { passive: true });
+    window.addEventListener('resize', syncCarousel);
+    syncCarousel();
   }
 
   /* Add to cart feedback */
