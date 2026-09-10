@@ -29,6 +29,8 @@
   h1,h2,h3,h4{ font-family:var(--font-heading); font-weight:400; color:var(--text); margin:0; line-height:1.2; text-wrap:balance; }
   ul{ margin:0; padding:0; list-style:none; }
   button{ font-family:inherit; cursor:pointer; }
+  /* Keyboard focus ring, page-wide. Mouse and touch never see it. */
+  a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--black); outline-offset:3px; }
   .page{ padding:0 var(--gutter); }
   .img{ border-radius:var(--radius); overflow:hidden; background:#dedede; }
 
@@ -178,17 +180,21 @@
   /* Negative top margin is what makes consecutive rows interlock. Safe because
      the copy sits on the opposite side each time, so nothing can collide. */
   .erow + .erow{ margin-top:-84px; }
-  /* Landscape on desktop, portrait on mobile. At 16/11 three desktop rows ran
-     1,632px tall, which is not a composition, just three big pictures. */
-  .efig{ position:relative; overflow:hidden; background:var(--white); aspect-ratio:16/9; }
-  .erow:not(.is-flipped) .efig{ margin-left:calc(-1 * var(--gutter)); border-radius:0 var(--radius) var(--radius) 0; }
-  .erow.is-flipped .efig{ margin-right:calc(-1 * var(--gutter)); border-radius:var(--radius) 0 0 var(--radius); }
+  /* Images sit inside the gutter with the full radius. The page-coloured spread
+     shadow is the "cut": where a later image overlaps an earlier one it shows as
+     a gap, everywhere else it is invisible against the same-coloured page.
+     position + z-index makes each figure an atomic paint layer, otherwise the
+     earlier row's <img> paints over the later row's shadow and the cut is lost. */
+  .efig{ position:relative; z-index:1; overflow:hidden; background:var(--white); aspect-ratio:16/9; border-radius:var(--radius); box-shadow:0 0 0 8px var(--bg); }
   .efig img{ transition:transform .5s ease-out; }
   @media (hover:hover) and (pointer:fine){ .erow:hover .efig img{ transform:scale(1.04); } }
   .ecopy h3{ font-size:30px; line-height:1.18; margin-bottom:12px; max-width:18ch; }
   .ecopy h3 a:hover{ text-decoration:underline; text-underline-offset:4px; }
-  .ecopy .eline{ display:block; font-size:16px; color:var(--sale); margin-bottom:18px; }
-  .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:var(--text); transition:opacity .16s ease-out; }
+  /* One accent per page, and this page's is the yellow. The supporting line
+     stays in the secondary text colour and lets the title carry the weight. */
+  .ecopy .eline{ display:block; font-size:16px; color:var(--text-2); margin-bottom:18px; }
+  /* padding + matching negative margin: a 24px-plus tap target with no layout shift */
+  .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14.5px; color:var(--text); padding:6px 0; margin:-6px 0; transition:opacity .16s ease-out; }
   .elink:hover{ opacity:.6; }
   .elink svg{ flex:none; }
   .edit-more{ text-align:center; margin-top:48px; }
@@ -388,14 +394,17 @@
     .emi-bar .offers{ font-size:12.5px; }
     .emi-bar .btn{ width:100%; }
 
+    /* All three rows must sit inside one 390x844 fold together with the heading:
+       square images at ~210px, rows overlapping by 40px, heading kept to two
+       lines. Budget: 108 heading + (3 x 210) - 80 = 658px. */
     .erow{ grid-template-columns:1.62fr 1fr; gap:14px; }
     .erow.is-flipped{ grid-template-columns:1fr 1.62fr; }
-    .erow + .erow{ margin-top:-20px; }
-    .efig{ aspect-ratio:4/5; }
-    .ecopy h3{ font-size:17px; line-height:1.22; margin-bottom:7px; max-width:none; }
-    .ecopy .eline{ font-size:13px; margin-bottom:9px; }
+    .erow + .erow{ margin-top:-40px; }
+    .efig{ aspect-ratio:1; box-shadow:0 0 0 6px var(--bg); }
+    .ecopy h3{ font-size:16.5px; line-height:1.22; margin-bottom:6px; max-width:none; }
+    .ecopy .eline{ font-size:12.5px; margin-bottom:8px; }
     .elink{ font-size:12.5px; }
-    .edit-more{ margin-top:26px; }
+    .edit-more{ margin-top:22px; }
     .edit-more .btn{ width:100%; }
 
     .story{ margin-top:52px; }
@@ -661,7 +670,7 @@
   <section class="edit">
 
     <div class="erow">
-      <a class="efig" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
+      <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
         <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
       </a>
       <div class="ecopy">
@@ -672,7 +681,7 @@
     </div>
 
     <div class="erow is-flipped">
-      <a class="efig" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
+      <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
         <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
       </a>
       <div class="ecopy">
@@ -683,7 +692,7 @@
     </div>
 
     <div class="erow">
-      <a class="efig" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
+      <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
         <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" alt="Modern live-edge wood table with blue epoxy resin">
       </a>
       <div class="ecopy">
