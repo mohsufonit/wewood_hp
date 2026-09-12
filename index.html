@@ -18,7 +18,7 @@
     --white:#fff; --black:#000;
     --text:#333333; --text-2:#525252; --text-3:#9d9d9d; --gray:#757575; --border:#cdcdcd;
     --dark:#161e13; --yellow:#f9d35c; --green:#198754; --sale:#cc0000;
-    --gutter:18px; --gap:20px; --inner:54px;
+    --gutter:18px; --page-gutter:40px; --gap:20px; --inner:54px;
   }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
@@ -31,7 +31,7 @@
   button{ font-family:inherit; cursor:pointer; }
   /* Keyboard focus ring, page-wide. Mouse and touch never see it. */
   a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--black); outline-offset:3px; }
-  .page{ padding:0 var(--gutter); }
+  .page{ padding:0 var(--page-gutter); }
   .img{ border-radius:var(--radius); overflow:hidden; background:#dedede; }
 
   /* Button hierarchy. Secondary: outline whose border actually reads (the old
@@ -74,7 +74,10 @@
   @media (max-width:640px){ .search{ display:none; } }
 
   /* ===== Hero: rotating imagery, three self-select paths ===== */
-  .hero{ margin-top:var(--gutter); position:relative; height:560px; border-radius:var(--radius); overflow:hidden; }
+  /* Hero keeps the original 18px inset (--gutter) even though .page's own
+     side padding is now the larger --page-gutter - pulled back out by the
+     difference so it never re-inherits the wider page margin. */
+  .hero{ margin:var(--gutter) calc(var(--gutter) - var(--page-gutter)) 0; position:relative; height:560px; border-radius:var(--radius); overflow:hidden; }
   .hero-slide{ position:absolute; inset:0; opacity:0; transition:opacity .7s ease-out; }
   .hero-slide.is-active{ opacity:1; }
   .hero-slide::after{ content:""; position:absolute; inset:0; background:linear-gradient(to right, rgba(0,0,0,.42), rgba(0,0,0,.08) 60%); }
@@ -121,7 +124,7 @@
   .cat-picker-label{ font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; }
   .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
   @media (max-width:900px){
-    .cat-picker{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; margin:18px calc(-1 * var(--gutter)) 0; padding:0 var(--gutter) 2px; }
+    .cat-picker{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; margin:18px calc(-1 * var(--page-gutter)) 0; padding:0 var(--page-gutter) 2px; }
     .cat-picker::-webkit-scrollbar{ display:none; }
     .cat-picker-item{ flex:none; }
     .cat-picker-avatar{ width:62px; height:62px; }
@@ -137,7 +140,7 @@
   @media (hover:hover) and (pointer:fine){ #catRailTrack .product:hover .pimg{ border-color:var(--border); } }
 
   /* ===== Credibility ticker (section breaker) ===== */
-  .credibility-ticker{ margin:44px calc(-1 * var(--gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
+  .credibility-ticker{ margin:44px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
   .credibility-track{ display:flex; align-items:center; gap:34px; width:max-content; white-space:nowrap; animation:ticker 46s linear infinite; }
   .credibility-track span{ display:flex; align-items:center; gap:34px; }
   .credibility-track .mark{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15.5px; color:var(--text); letter-spacing:.02em; }
@@ -149,7 +152,7 @@
   .carousel{ position:relative; }
   /* scroll-padding-left matters: without it the snapport starts at the padding
      edge, so card 1 snaps to scrollLeft:18 and rests clipped behind the gutter. */
-  .products{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 4px; }
+  .products{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--page-gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; }
   .products::-webkit-scrollbar{ display:none; }
   /* Fractional card counts on purpose: the part-visible next card is the
      affordance that says "this scrolls". 3.4 up, 1.35 on phones - the 2.15
@@ -187,7 +190,7 @@
   .promo-text b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:19px; margin-bottom:4px; }
   .promo-text span{ display:inline-flex; align-items:center; gap:6px; font-size:13px; color:rgba(255,255,255,.9); }
   @media (max-width:900px){
-    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--gutter); gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 4px; scrollbar-width:none; }
+    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
     .promo-strip::-webkit-scrollbar{ display:none; }
     .promo-tile{ flex:0 0 82%; scroll-snap-align:start; aspect-ratio:8/3; }
   }
@@ -195,7 +198,7 @@
   /* ===== EMI breaker: full-bleed, on the theme's own accent, now a section
          breaker directly under Categories. One bold line + real bank marks
          inline, so the offer reads without opening the modal. ===== */
-  .emi-bar{ margin:56px calc(-1 * var(--gutter)) 0; background:var(--yellow); color:var(--dark); padding:20px var(--gutter); }
+  .emi-bar{ margin:56px calc(-1 * var(--page-gutter)) 0; background:var(--yellow); color:var(--dark); padding:20px var(--page-gutter); }
   .emi-bar .inner{ display:flex; align-items:center; justify-content:center; gap:14px 28px; flex-wrap:wrap; }
   .emi-headline{ font-size:16px; font-weight:500; color:var(--dark); text-align:center; }
   .emi-headline b{ font-weight:700; }
@@ -369,6 +372,9 @@
 
   /* ===== Mobile: the fold, density and scroll rows ===== */
   @media (max-width:640px){
+    /* The wider 40px page margin is a desktop/tablet choice - phone screens
+       keep the original 18px so cards and text don't get squeezed. */
+    :root{ --page-gutter:18px; }
     body{ font-size:16px; }
     .header-wrap{ top:10px; margin-top:10px; }
     .header{ height:60px; padding:0 18px; gap:14px; }
@@ -426,7 +432,7 @@
     .see-all{ margin-top:22px; }
     .see-all .btn{ width:100%; }
 
-    .emi-bar{ margin-top:36px; padding:16px var(--gutter); }
+    .emi-bar{ margin-top:36px; padding:16px var(--page-gutter); }
     .emi-headline{ font-size:13.5px; }
     .emi-bar .btn{ width:100%; }
     .mark-tile{ width:38px; height:25px; }
@@ -460,7 +466,7 @@
     .stl-caption p{ font-size:14px; }
     .hotspot-card{ left:14px; right:14px; width:auto; top:auto; bottom:16px; }
 
-    .reviews-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--gutter); gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 6px; scrollbar-width:none; }
+    .reviews-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 6px; scrollbar-width:none; }
     .reviews-grid::-webkit-scrollbar{ display:none; }
     .review{ flex:0 0 82%; scroll-snap-align:start; padding:22px 22px 20px; }
     .review q{ font-size:15px; }
