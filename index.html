@@ -109,16 +109,23 @@
   .room-from b{ font-weight:700; border-bottom:1px solid rgba(255,255,255,.7); }
   @media (max-width:900px){ .rooms{ grid-template-columns:repeat(2,1fr); grid-template-rows:auto; } .room{ aspect-ratio:1; } .room.large{ grid-column:1 / 3; grid-row:auto; aspect-ratio:16/9; } }
 
-  /* ===== Categories: six real collections ===== */
-  .cat-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:var(--gap); }
-  .cat-tile{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); }
-  .cat-tile img{ transition:transform .3s ease-out; }
-  @media (hover:hover) and (pointer:fine){ .cat-tile:hover img{ transform:scale(1.04); } }
-  .cat-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.16) 40%, transparent 62%); }
+  /* ===== Categories: one large hero tile + five small - the same big/small
+         bento already proven in Shop by Room, not a new pattern ===== */
+  .cat-grid{ display:flex; flex-direction:column; gap:var(--gap); }
+  .cat-hero, .cat-tile{ position:relative; overflow:hidden; border-radius:var(--radius); background:var(--white); }
+  .cat-hero{ aspect-ratio:21/9; }
+  .cat-tile{ aspect-ratio:1; }
+  .cat-hero img, .cat-tile img{ transition:transform .3s ease-out; }
+  @media (hover:hover) and (pointer:fine){ .cat-hero:hover img, .cat-tile:hover img{ transform:scale(1.04); } }
+  .cat-hero::after, .cat-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.16) 40%, transparent 62%); }
+  .cat-small{ display:grid; grid-template-columns:repeat(5,1fr); gap:var(--gap); }
   .cat-label{ position:absolute; left:14px; right:14px; bottom:14px; z-index:1; color:#fff; }
   .cat-label b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:17px; }
   .cat-label span{ font-size:12.5px; color:rgba(255,255,255,.85); }
-  @media (max-width:1000px){ .cat-grid{ grid-template-columns:repeat(3,1fr); } }
+  .cat-hero .cat-label{ left:24px; right:24px; bottom:22px; }
+  .cat-hero .cat-label b{ font-size:26px; }
+  .cat-hero .cat-label span{ font-size:14px; }
+  @media (max-width:1000px){ .cat-small{ grid-template-columns:repeat(3,1fr); } }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
@@ -371,14 +378,20 @@
     .room-count{ font-size:11px; padding:2px 8px; }
     .room-from{ font-size:12.5px; }
 
-    /* 3 x 2, per the client's reference. At ~110px a tile cannot carry the
-       count and starting price, so mobile shows the name only, uppercase like
-       the reference; the real counts stay from 641px up where they fit. */
-    .cat-grid{ grid-template-columns:repeat(3,1fr); gap:10px; }
-    .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.2) 44%, transparent 70%); }
+    /* One large hero tile, then the remaining five in a 3-wide grid. At
+       ~110px a small tile cannot carry the count and starting price, so
+       mobile shows the name only, uppercase; the hero tile keeps its full
+       label since it has the width for it. */
+    .cat-grid{ gap:10px; }
+    .cat-hero{ aspect-ratio:16/9; }
+    .cat-small{ grid-template-columns:repeat(3,1fr); gap:10px; }
+    .cat-hero::after, .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.2) 44%, transparent 70%); }
     .cat-label{ left:8px; right:8px; bottom:9px; }
     .cat-label b{ font-family:var(--font-body); font-weight:700; font-size:9.5px; line-height:1.25; text-transform:uppercase; letter-spacing:.06em; }
     .cat-label span{ display:none; }
+    .cat-hero .cat-label{ left:16px; right:16px; bottom:14px; }
+    .cat-hero .cat-label b{ font-size:16px; letter-spacing:normal; }
+    .cat-hero .cat-label span{ display:block; font-size:12px; }
 
     .credibility-ticker{ margin-top:32px; padding:12px 0; }
     .credibility-track .mark{ font-size:14px; }
@@ -552,16 +565,27 @@
     </div>
   </section>
 
+  <!-- CREDIBILITY TICKER: moved directly under the hero, ahead of categories/rooms,
+       so the trust claim resolves before any product decision starts. -->
+  <div class="credibility-ticker">
+    <div class="credibility-track">
+      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
+      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
+    </div>
+  </div>
+
   <!-- CATEGORIES: the six live collections, real counts. Second fold, ahead of rooms. -->
   <h2 class="section-heading" style="padding-top:56px;">Handcrafted pieces for every room</h2>
   <p class="section-sub sub-desk">Nesting tables, coffee tables, wall clocks and more - each one finished by hand</p>
   <section class="cat-grid">
-    <a href="https://wewood.co.in/collections/nesting-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables"><div class="cat-label"><b>Nesting Table</b><span>22 pieces &middot; from &#8377;11,920</span></div></a>
-    <a href="https://wewood.co.in/collections/dining-entertainment" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment"><div class="cat-label"><b>Dining &amp; Entertainment</b><span>12 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/coffee-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt="Coffee tables"><div class="cat-label"><b>Coffee Table</b><span>10 pieces &middot; from &#8377;6,800</span></div></a>
-    <a href="https://wewood.co.in/collections/cheese-boards" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt="Cheese boards"><div class="cat-label"><b>Cheese Boards</b><span>9 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/clock" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks"><div class="cat-label"><b>Clock</b><span>11 pieces &middot; from &#8377;3,499</span></div></a>
-    <a href="https://wewood.co.in/collections/ashtray" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
+    <a href="https://wewood.co.in/collections/nesting-table" class="cat-hero"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables"><div class="cat-label"><b>Nesting Table</b><span>22 pieces &middot; from &#8377;11,920</span></div></a>
+    <div class="cat-small">
+      <a href="https://wewood.co.in/collections/dining-entertainment" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment"><div class="cat-label"><b>Dining &amp; Entertainment</b><span>12 pieces &middot; from &#8377;1,999</span></div></a>
+      <a href="https://wewood.co.in/collections/coffee-table" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt="Coffee tables"><div class="cat-label"><b>Coffee Table</b><span>10 pieces &middot; from &#8377;6,800</span></div></a>
+      <a href="https://wewood.co.in/collections/cheese-boards" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt="Cheese boards"><div class="cat-label"><b>Cheese Boards</b><span>9 pieces &middot; from &#8377;1,999</span></div></a>
+      <a href="https://wewood.co.in/collections/clock" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks"><div class="cat-label"><b>Clock</b><span>11 pieces &middot; from &#8377;3,499</span></div></a>
+      <a href="https://wewood.co.in/collections/ashtray" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
+    </div>
   </section>
 
   <!-- SHOP BY ROOM: real collections, counts and starting prices computed from the live catalog -->
@@ -589,14 +613,6 @@
       <div class="room-text"><h3>Trays &amp; Platters <span class="room-count">19 pieces</span></h3><span class="room-from">from <b>&#8377;2,199</b></span></div>
     </a>
   </section>
-
-  <!-- CREDIBILITY TICKER: real, self-reported signals from WeWood's CRO brief -->
-  <div class="credibility-ticker">
-    <div class="credibility-track">
-      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
-      <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
-    </div>
-  </div>
 
   <!-- BESTSELLERS: the live Best Seller collection, prices as listed today -->
   <h2 class="section-heading" id="bestsellers" style="padding-top:64px;">What people keep buying</h2>
