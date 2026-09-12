@@ -159,6 +159,24 @@
   .product .btn{ margin-top:auto; }
   .see-all{ text-align:center; margin-top:34px; }
 
+  /* ===== Promo strip: three real collections, real live discounts. The "Save"
+         colour reuses --green, the same token already used for "Save 45%" on
+         every product card, rather than inventing a new pink/red badge tone. ===== */
+  .promo-strip{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
+  .promo-tile{ position:relative; aspect-ratio:16/9; border-radius:var(--radius); overflow:hidden; background:var(--white); }
+  .promo-tile img{ transition:transform .3s ease-out; }
+  @media (hover:hover) and (pointer:fine){ .promo-tile:hover img{ transform:scale(1.04); } }
+  .promo-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.15) 45%, transparent 68%); }
+  .promo-tag{ position:absolute; top:12px; left:12px; z-index:1; background:var(--green); color:#fff; font-size:12px; font-weight:700; padding:5px 12px; border-radius:var(--pill); }
+  .promo-text{ position:absolute; left:16px; right:16px; bottom:14px; z-index:1; color:#fff; }
+  .promo-text b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:19px; margin-bottom:4px; }
+  .promo-text span{ display:inline-flex; align-items:center; gap:6px; font-size:13px; color:rgba(255,255,255,.9); }
+  @media (max-width:900px){
+    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--gutter); gap:12px; margin:0 calc(-1 * var(--gutter)); padding:0 var(--gutter) 4px; scrollbar-width:none; }
+    .promo-strip::-webkit-scrollbar{ display:none; }
+    .promo-tile{ flex:0 0 82%; scroll-snap-align:start; aspect-ratio:4/3; }
+  }
+
   /* ===== EMI breaker: full-bleed, on the theme's own accent, now a section
          breaker directly under Categories. One bold line + real bank marks
          inline, so the offer reads without opening the modal. ===== */
@@ -379,6 +397,10 @@
     .cat-label span{ display:none; }
 
     .credibility-ticker{ margin-top:32px; padding:12px 0; }
+    .promo-strip{ margin-top:16px !important; }
+    .promo-tag{ font-size:11px; padding:4px 10px; }
+    .promo-text b{ font-size:16px; }
+    .promo-text span{ font-size:12px; }
     .credibility-track .mark{ font-size:14px; }
 
     .products{ gap:12px; }
@@ -558,6 +580,26 @@
       <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Every piece made by hand, not a factory run</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>Twenty years working timber in Kirti Nagar</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented designs, exhibited at Indian and international fairs</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.5l-5 2.7.9-5.6-4-3.9 5.6-.8z" fill="currentColor" stroke="none"/></svg>Rated 4 stars and above by the homes that own it</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>Damaged on arrival? Free exchange within 7 days</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free shipping above &#8377;2,499, and cash on delivery</span><span class="dot"></span></span>
     </div>
   </div>
+
+  <!-- PROMO STRIP: three real collections, each with its actual maximum live
+       discount computed from products.json, not an invented percentage. -->
+  <section class="promo-strip" style="margin-top:28px;">
+    <a href="https://wewood.co.in/collections/nesting-table" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables">
+      <span class="promo-tag">Up to 47% off</span>
+      <div class="promo-text"><b>Nesting Tables</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+    <a href="https://wewood.co.in/collections/dining-entertainment" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment">
+      <span class="promo-tag">Up to 38% off</span>
+      <div class="promo-text"><b>Dining &amp; Entertainment</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+    <a href="https://wewood.co.in/collections/clock" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks">
+      <span class="promo-tag">Up to 24% off</span>
+      <div class="promo-text"><b>Wall Clocks</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+  </section>
 
   <!-- CATEGORIES: the six live collections, real counts. Second fold, ahead of rooms. -->
   <h2 class="section-heading" style="padding-top:56px;">Handcrafted pieces for every room</h2>
