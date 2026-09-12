@@ -127,6 +127,14 @@
     .cat-picker-avatar{ width:62px; height:62px; }
     .cat-picker-label{ font-size:10.5px; }
   }
+  /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
+     the frame edge to edge (no white inset), border appears on hover only. */
+  #catRailTrack.products .product{ flex-basis:calc((100% - 3 * var(--gap)) / 4.9); }
+  @media (max-width:1000px){ #catRailTrack.products .product{ flex-basis:calc((100% - 2 * var(--gap)) / 3.4); } }
+  @media (max-width:760px){ #catRailTrack.products .product{ flex-basis:calc((100% - var(--gap)) / 2.6); } }
+  #catRailTrack .pimg{ border:1px solid transparent; transition:border-color .15s ease; }
+  #catRailTrack .pimg img{ object-fit:cover; padding:0; }
+  @media (hover:hover) and (pointer:fine){ #catRailTrack .product:hover .pimg{ border-color:var(--border); } }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
