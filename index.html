@@ -159,16 +159,13 @@
   .product .btn{ margin-top:auto; }
   .see-all{ text-align:center; margin-top:34px; }
 
-  /* ===== EMI breaker: full-bleed, on the theme's own accent so it does not read
-         as a second copy of the dark credibility panel further down ===== */
-  .emi-bar{ margin:64px calc(-1 * var(--gutter)) 0; background:var(--yellow); color:var(--dark); padding:22px var(--gutter); }
-  .emi-bar .inner{ display:flex; align-items:center; justify-content:space-between; gap:20px 24px; flex-wrap:wrap; }
-  .emi-bar .methods{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 22px; font-size:15px; }
-  .emi-bar .methods span{ position:relative; padding-left:14px; color:rgba(22,30,19,.82); }
-  .emi-bar .methods span::before{ content:""; position:absolute; left:0; top:9px; width:5px; height:5px; border-radius:50%; background:var(--dark); }
-  .emi-bar .methods span b{ font-weight:700; color:var(--dark); }
-  .emi-bar .offers{ font-size:13.5px; color:rgba(22,30,19,.66); width:100%; padding-left:0; }
-  .emi-bar .offers::before{ display:none; }
+  /* ===== EMI breaker: full-bleed, on the theme's own accent, now a section
+         breaker directly under Categories. One bold line + real bank marks
+         inline, so the offer reads without opening the modal. ===== */
+  .emi-bar{ margin:56px calc(-1 * var(--gutter)) 0; background:var(--yellow); color:var(--dark); padding:20px var(--gutter); }
+  .emi-bar .inner{ display:flex; align-items:center; justify-content:center; gap:14px 28px; flex-wrap:wrap; }
+  .emi-headline{ font-size:16px; font-weight:500; color:var(--dark); text-align:center; }
+  .emi-headline b{ font-weight:700; }
   .emi-bar .btn{ background:var(--dark); border-color:var(--dark); color:#fff; padding:11px 22px; font-size:14.5px; flex:none; }
   .emi-bar .btn:hover{ background:#fff; color:var(--dark); border-color:#fff; }
   /* Payment marks. Brand-coloured wordmarks drawn as inline SVG, not licensed
@@ -401,10 +398,10 @@
     .see-all{ margin-top:22px; }
     .see-all .btn{ width:100%; }
 
-    .emi-bar{ margin-top:44px; padding:16px var(--gutter); }
-    .emi-bar .methods{ font-size:13.5px; gap:6px 16px; }
-    .emi-bar .offers{ font-size:12.5px; }
+    .emi-bar{ margin-top:36px; padding:16px var(--gutter); }
+    .emi-headline{ font-size:13.5px; }
     .emi-bar .btn{ width:100%; }
+    .mark-tile{ width:38px; height:25px; }
 
     /* All three rows must sit inside one 390x844 fold together with the heading:
        square images at ~210px, rows overlapping by 40px, heading kept to two
@@ -574,6 +571,24 @@
     <a href="https://wewood.co.in/collections/ashtray" class="cat-tile"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
   </section>
 
+  <!-- EMI BREAKER: moved here as a section breaker right after categories, per
+       client request. Bold section breaker, real bank offers, real bank marks
+       visible on the bar itself rather than hidden behind the modal only. -->
+  <div class="emi-bar">
+    <div class="inner">
+      <p class="emi-headline">Pay in EMIs from 15+ banks &middot; <b>up to &#8377;4,000 off</b> with HDFC &middot; <b>up to &#8377;3,500 off</b> with SBI Card</p>
+      <div class="pay-marks" role="list" aria-label="Banks and payment methods accepted">
+        <span class="mark-tile" role="listitem" title="HDFC Bank"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#004C8F" letter-spacing=".2">HDFC</text></svg></span>
+        <span class="mark-tile" role="listitem" title="SBI Card"><svg viewBox="0 0 46 30" aria-hidden="true"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#22409A" letter-spacing=".2">SBI</text></svg></span>
+        <span class="mark-tile" role="listitem" title="UPI"><svg viewBox="0 0 46 30" aria-label="UPI"><path d="M14.5 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#F26522"/><path d="M19.9 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#0F9D58"/><text x="34" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#2B2B2B">UPI</text></svg></span>
+        <span class="mark-tile" role="listitem" title="Mastercard"><svg viewBox="0 0 46 30" aria-label="Mastercard"><circle cx="19" cy="15" r="8.4" fill="#EB001B"/><circle cx="27" cy="15" r="8.4" fill="#F79E1B"/><path d="M23 8.1a8.4 8.4 0 0 0 0 13.8 8.4 8.4 0 0 0 0-13.8z" fill="#FF5F00"/></svg></span>
+        <span class="mark-tile" role="listitem" title="Visa"><svg viewBox="0 0 46 30" aria-label="Visa"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" font-style="italic" fill="#1A1F71" letter-spacing=".4">VISA</text></svg></span>
+        <span class="mark-tile" role="listitem" title="RuPay"><svg viewBox="0 0 46 30" aria-label="RuPay"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700"><tspan fill="#097DC6">Ru</tspan><tspan fill="#F58220">Pay</tspan></text></svg></span>
+      </div>
+      <button type="button" id="emiOpenBtn" class="btn">View EMI options</button>
+    </div>
+  </div>
+
   <!-- SHOP BY ROOM: real collections, counts and starting prices computed from the live catalog -->
   <h2 class="section-heading" id="rooms" style="padding-top:64px;">Start with the room</h2>
   <p class="section-sub">Pieces grouped by the room they live in.</p>
@@ -661,23 +676,6 @@
     </div>
   </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/best-seller" class="btn">See the full Best Seller collection</a></div>
-
-  <!-- EMI BREAKER: slim, where price is on screen. Real checkout data. -->
-  <div class="emi-bar">
-    <div class="inner">
-      <div class="methods">
-        <span><b>EMI</b> from 15+ banks</span><span>Wallets</span><span>Cash on Delivery</span><span>100% secured payment</span>
-        <span class="offers">HDFC cards: up to &#8377;4,000 instant discount on EMI &middot; SBI Card: 10% instant discount up to &#8377;3,500 &middot; terms confirmed at checkout</span>
-      </div>
-      <div class="pay-marks" role="list" aria-label="Payment methods accepted">
-        <span class="mark-tile" role="listitem" title="UPI"><svg viewBox="0 0 46 30" aria-label="UPI"><path d="M14.5 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#F26522"/><path d="M19.9 7l4.4 8-4.4 8h3.9l4.4-8-4.4-8z" fill="#0F9D58"/><text x="34" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#2B2B2B">UPI</text></svg></span>
-        <span class="mark-tile" role="listitem" title="Mastercard"><svg viewBox="0 0 46 30" aria-label="Mastercard"><circle cx="19" cy="15" r="8.4" fill="#EB001B"/><circle cx="27" cy="15" r="8.4" fill="#F79E1B"/><path d="M23 8.1a8.4 8.4 0 0 0 0 13.8 8.4 8.4 0 0 0 0-13.8z" fill="#FF5F00"/></svg></span>
-        <span class="mark-tile" role="listitem" title="Visa"><svg viewBox="0 0 46 30" aria-label="Visa"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" font-style="italic" fill="#1A1F71" letter-spacing=".4">VISA</text></svg></span>
-        <span class="mark-tile" role="listitem" title="RuPay"><svg viewBox="0 0 46 30" aria-label="RuPay"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700"><tspan fill="#097DC6">Ru</tspan><tspan fill="#F58220">Pay</tspan></text></svg></span>
-      </div>
-      <button type="button" id="emiOpenBtn" class="btn">View EMI options</button>
-    </div>
-  </div>
 
   <!-- THE EDIT: four real products, each with the reason it is here. Answers the
        CRO audit's "say why these were chosen" finding. Prices verified live. -->
