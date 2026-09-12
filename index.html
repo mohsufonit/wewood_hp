@@ -109,16 +109,24 @@
   .room-from b{ font-weight:700; border-bottom:1px solid rgba(255,255,255,.7); }
   @media (max-width:900px){ .rooms{ grid-template-columns:repeat(2,1fr); grid-template-rows:auto; } .room{ aspect-ratio:1; } .room.large{ grid-column:1 / 3; grid-row:auto; aspect-ratio:16/9; } }
 
-  /* ===== Categories: six real collections ===== */
-  .cat-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:var(--gap); }
-  .cat-tile{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); }
-  .cat-tile img{ transition:transform .3s ease-out; }
-  @media (hover:hover) and (pointer:fine){ .cat-tile:hover img{ transform:scale(1.04); } }
-  .cat-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.16) 40%, transparent 62%); }
-  .cat-label{ position:absolute; left:14px; right:14px; bottom:14px; z-index:1; color:#fff; }
-  .cat-label b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:17px; }
-  .cat-label span{ font-size:12.5px; color:rgba(255,255,255,.85); }
-  @media (max-width:1000px){ .cat-grid{ grid-template-columns:repeat(3,1fr); } }
+  /* ===== Categories: circular picker (real collection photo + label) drives
+         one product rail below it, reusing the .products/.product rail
+         styling defined further down rather than a new card style. ===== */
+  .cat-picker{ display:flex; flex-wrap:wrap; justify-content:center; gap:26px 22px; margin:26px 0 0; }
+  .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:9px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
+  .cat-picker-avatar{ width:74px; height:74px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
+  .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
+  .cat-picker-item:hover .cat-picker-avatar{ border-color:var(--border); }
+  .cat-picker-item.is-active .cat-picker-avatar{ border-color:var(--dark); }
+  .cat-picker-label{ font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; }
+  .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
+  @media (max-width:900px){
+    .cat-picker{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; margin:18px calc(-1 * var(--gutter)) 0; padding:0 var(--gutter) 2px; }
+    .cat-picker::-webkit-scrollbar{ display:none; }
+    .cat-picker-item{ flex:none; }
+    .cat-picker-avatar{ width:62px; height:62px; }
+    .cat-picker-label{ font-size:10.5px; }
+  }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
@@ -158,17 +166,6 @@
   .save{ font-size:12px; color:var(--green); font-weight:700; }
   .product .btn{ margin-top:auto; }
   .see-all{ text-align:center; margin-top:34px; }
-  .cat-filter{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:22px 0 0; }
-  .filter-pill{ font-family:var(--font-body); font-size:14px; font-weight:600; color:var(--text-2); background:var(--white); border:1px solid var(--border); border-radius:var(--pill); padding:9px 18px; cursor:pointer; transition:background .15s ease, color .15s ease, border-color .15s ease; }
-  .filter-pill:hover{ border-color:var(--dark); color:var(--dark); }
-  .filter-pill.is-active{ background:var(--dark); border-color:var(--dark); color:#fff; }
-  .cat-tile.is-hidden{ display:none; }
-  @media (max-width:900px){
-    .cat-filter{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; margin:16px calc(-1 * var(--gutter)) 0; padding:0 var(--gutter); }
-    .cat-filter::-webkit-scrollbar{ display:none; }
-    .filter-pill{ flex:none; font-size:13px; padding:8px 15px; }
-  }
-
   /* ===== Promo strip: three real collections, real live discounts. The "Save"
          colour reuses --green, the same token already used for "Save 45%" on
          every product card, rather than inventing a new pink/red badge tone. ===== */
@@ -396,15 +393,6 @@
     .room-count{ font-size:11px; padding:2px 8px; }
     .room-from{ font-size:12.5px; }
 
-    /* One large hero tile, then the remaining five in a 3-wide grid. At
-       ~110px a small tile cannot carry the count and starting price, so
-       mobile shows the name only, uppercase; the hero tile keeps its full
-       label since it has the width for it. */
-    .cat-grid{ grid-template-columns:repeat(3,1fr); gap:10px; }
-    .cat-tile::after{ background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.2) 44%, transparent 70%); }
-    .cat-label{ left:8px; right:8px; bottom:9px; }
-    .cat-label b{ font-family:var(--font-body); font-weight:700; font-size:9.5px; line-height:1.25; text-transform:uppercase; letter-spacing:.06em; }
-    .cat-label span{ display:none; }
 
     .credibility-ticker{ margin-top:32px; padding:12px 0; }
     .promo-strip{ margin-top:16px !important; }
@@ -504,7 +492,7 @@
   @media (prefers-reduced-motion:reduce){
     html{ scroll-behavior:auto; }
     .products{ scroll-behavior:auto; }
-    .efig img, .cat-tile img, .room img, .product .pimg img{ transition:none; }
+    .efig img, .room img, .product .pimg img{ transition:none; }
     .car-prog span{ transition:none; }
     .credibility-track{ animation:none; }
     .hero-slide{ transition:none; }
@@ -611,30 +599,48 @@
     </a>
   </section>
 
-  <!-- CATEGORIES: the six live collections, real counts. Second fold, ahead of rooms.
-       A pill nav sits above the grid so shoppers can jump straight to one collection -
-       chips are the same six real, tagged collections already in the grid below
-       (never a fabricated room taxonomy), so "All" plus one active chip is always
-       a true, verifiable filter rather than an invented cut of the catalog. -->
+  <!-- CATEGORIES: circular category picker (real collection photo + label,
+       not an invented room taxonomy) drives a single product rail beneath it,
+       swapped by JS from real per-collection catalog data embedded below.
+       Replaces the old always-visible 6-tile grid with a picker so the fold
+       shows one collection's actual products, not just cover photos. -->
   <h2 class="section-heading" style="padding-top:56px;">Handcrafted pieces for every room</h2>
-  <p class="section-sub sub-desk">Nesting tables, coffee tables, wall clocks and more - each one finished by hand</p>
-  <div class="cat-filter" role="group" aria-label="Filter categories">
-    <button type="button" class="filter-pill is-active" aria-pressed="true" data-filter="all">All</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="nesting-table">Nesting Table</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="dining-entertainment">Dining &amp; Entertainment</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="coffee-table">Coffee Table</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="cheese-boards">Cheese Boards</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="clock">Clock</button>
-    <button type="button" class="filter-pill" aria-pressed="false" data-filter="ashtray">Ashtray</button>
+  <p class="section-sub sub-desk">Pick a category, browse what's in it</p>
+  <div class="cat-picker" role="group" aria-label="Browse by category">
+    <button type="button" class="cat-picker-item is-active" aria-pressed="true" data-cat="nesting-table">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt=""></span>
+      <span class="cat-picker-label">Nesting Table</span>
+    </button>
+    <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="dining-entertainment">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt=""></span>
+      <span class="cat-picker-label">Dining &amp; Entertainment</span>
+    </button>
+    <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="coffee-table">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt=""></span>
+      <span class="cat-picker-label">Coffee Table</span>
+    </button>
+    <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="cheese-boards">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt=""></span>
+      <span class="cat-picker-label">Cheese Boards</span>
+    </button>
+    <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="clock">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt=""></span>
+      <span class="cat-picker-label">Clock</span>
+    </button>
+    <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="ashtray">
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt=""></span>
+      <span class="cat-picker-label">Ashtray</span>
+    </button>
   </div>
-  <section class="cat-grid" id="catGrid">
-    <a href="https://wewood.co.in/collections/nesting-table" class="cat-tile" data-cat="nesting-table"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables"><div class="cat-label"><b>Nesting Table</b><span>22 pieces &middot; from &#8377;11,920</span></div></a>
-    <a href="https://wewood.co.in/collections/dining-entertainment" class="cat-tile" data-cat="dining-entertainment"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment"><div class="cat-label"><b>Dining &amp; Entertainment</b><span>12 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/coffee-table" class="cat-tile" data-cat="coffee-table"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt="Coffee tables"><div class="cat-label"><b>Coffee Table</b><span>10 pieces &middot; from &#8377;6,800</span></div></a>
-    <a href="https://wewood.co.in/collections/cheese-boards" class="cat-tile" data-cat="cheese-boards"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt="Cheese boards"><div class="cat-label"><b>Cheese Boards</b><span>9 pieces &middot; from &#8377;1,999</span></div></a>
-    <a href="https://wewood.co.in/collections/clock" class="cat-tile" data-cat="clock"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks"><div class="cat-label"><b>Clock</b><span>11 pieces &middot; from &#8377;3,499</span></div></a>
-    <a href="https://wewood.co.in/collections/ashtray" class="cat-tile" data-cat="ashtray"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt="Ashtrays"><div class="cat-label"><b>Ashtray</b><span>3 pieces &middot; from &#8377;1,700</span></div></a>
-  </section>
+  <div class="carousel" style="margin-top:32px;">
+    <section class="products" id="catRailTrack" tabindex="0" role="region" aria-label="Category products, scrollable"></section>
+    <div class="car-ctl">
+      <button type="button" class="car-btn" id="catRailPrev" aria-label="Previous product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="car-prog" role="presentation"><span id="catRailBar"></span></div>
+      <button type="button" class="car-btn" id="catRailNext" aria-label="Next product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+  <div class="see-all"><a href="https://wewood.co.in/collections/nesting-table" class="btn" id="catRailSeeAll">See the full collection</a></div>
 
   <!-- EMI BREAKER: moved here as a section breaker right after categories, per
        client request. Bold section breaker, real bank offers, real bank marks
@@ -1037,19 +1043,129 @@
     });
   });
 
-  /* Category filter pills */
-  var filterPills = document.querySelectorAll('.filter-pill');
-  var catTiles = document.querySelectorAll('#catGrid .cat-tile');
-  filterPills.forEach(function(pill){
-    pill.addEventListener('click', function(){
-      filterPills.forEach(function(p){ p.classList.remove('is-active'); p.setAttribute('aria-pressed', 'false'); });
-      pill.classList.add('is-active'); pill.setAttribute('aria-pressed', 'true');
-      var target = pill.getAttribute('data-filter');
-      catTiles.forEach(function(tile){
-        tile.classList.toggle('is-hidden', target !== 'all' && tile.getAttribute('data-cat') !== target);
+  /* Category picker + product rail. Four real products per collection,
+     prices and discounts as listed live today - the same figures used
+     elsewhere on the page, not re-derived or rounded for this rail. */
+  var CAT_PRODUCTS = {
+    'nesting-table': [
+      { title: 'Nesting Table Set of 3', handle: 'nesting-table-set-of-3-teak-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386', price: 13890, compare: 25980, pct: 47 },
+      { title: 'Nesting Table Set of 2, Pearl Green Resin', handle: 'nesting-table-set-of-2-teak-wood-with-pearl-green-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Pearl_Green_Resin_Finish.png?v=1738232430', price: 12000, compare: 15000, pct: 20 },
+      { title: 'Nesting Table Set of 2, Acacia Wood', handle: 'nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528', price: 20000, compare: 25000, pct: 20 },
+      { title: 'Acacia Wood Nesting Table Set of 2', handle: 'acacia-wood-nesting-table-set-of-2-grey', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_24.png?v=1751020696', price: 15349, compare: 19850, pct: 23 }
+    ],
+    'dining-entertainment': [
+      { title: 'Aqua Epoxy & Natural Wood Designer Platters', handle: 'aqua-epoxy-natural-wood-designer-platters-set-of-2', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_icrnvgicrnvgicrn.png?v=1771930060', price: 6900, compare: null, pct: null },
+      { title: 'Cheese Board Cum Platter with Handle', handle: 'cheese-board-cum-platter-with-handle-acacia-wood-with-translucent-grey-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Wall_Clock_2.png?v=1739185402', price: 1999, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Aqua Blue Resin', handle: 'cheese-board-platter-acacia-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/DSC_3364.jpg?v=1733911593', price: 2999, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null }
+    ],
+    'coffee-table': [
+      { title: 'Acacia Wood Coffee Table Set, Tinted Grey', handle: 'acacia-wood-coffee-table-set-tinted-grey-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715', price: 28999, compare: null, pct: null },
+      { title: 'Acacia Wood Nesting Tables, Translucent Black', handle: 'acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_25.png?v=1771591358', price: 15399, compare: 21950, pct: 30 },
+      { title: 'Coffee Table, Black Resin Finish', handle: 'coffee-table-acacia-wood-with-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wall_1.png?v=1738239909', price: 16499, compare: null, pct: null },
+      { title: 'Coffee Table, Aqua Blue Resin Finish', handle: 'coffee-table-teak-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429', price: 9600, compare: 12000, pct: 20 }
+    ],
+    'cheese-boards': [
+      { title: 'Aqua Epoxy & Natural Wood Designer Platters', handle: 'aqua-epoxy-natural-wood-designer-platters-set-of-2', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_icrnvgicrnvgicrn.png?v=1771930060', price: 6900, compare: null, pct: null },
+      { title: 'Cheese Board Cum Platter with Handle', handle: 'cheese-board-cum-platter-with-handle-acacia-wood-with-translucent-grey-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Wall_Clock_2.png?v=1739185402', price: 1999, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Aqua Blue Resin', handle: 'cheese-board-platter-acacia-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/DSC_3364.jpg?v=1733911593', price: 2999, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null }
+    ],
+    'clock': [
+      { title: 'Elegant Resin Wall Clock, Sheesham Wood', handle: 'elegant-resin-wall-clock-perfect-blend-of-sheesham-wood-transparent-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283', price: 5900, compare: 6625, pct: 11 },
+      { title: 'Pearl Green Resin Wall Clock, Oak', handle: 'pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/7_e06c94d1-e958-4644-9517-74c3797a89a0.png?v=1771919665', price: 3600, compare: 4500, pct: 20 },
+      { title: 'Elegant Wooden Wall Clock, Acacia Wood', handle: 'elegant-wooden-wall-clock-natural-acacia-wood-with-transparent-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/10_38b9c489-e4ab-4806-9cf6-e79fc9241c56.png?v=1771929301', price: 3499, compare: 4125, pct: 15 },
+      { title: 'Stylish Resin Wall Clock, Teak Wood', handle: 'stylish-resin-wall-clock-teak-wood-transparent-resin-elegance', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699', price: 4900, compare: 5500, pct: 11 }
+    ],
+    'ashtray': [
+      { title: 'Elegant Black Ashtray', handle: 'elegant-black-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967', price: 1700, compare: null, pct: null },
+      { title: 'Elegant Blue Ashtray', handle: 'elegant-blue-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/42.png?v=1751450839', price: 1700, compare: null, pct: null },
+      { title: 'Elegant White Ashtray', handle: 'elegant-white-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/37_df9e62a0-1c73-464f-aa8b-52adf0b93f8e.png?v=1751451065', price: 1700, compare: null, pct: null }
+    ]
+  };
+  var catPicker = document.querySelectorAll('.cat-picker-item');
+  var catRailTrack = document.getElementById('catRailTrack');
+  var catRailSeeAll = document.getElementById('catRailSeeAll');
+  if (catPicker.length && catRailTrack) {
+    function inr(n){ return '₹' + n.toLocaleString('en-IN'); }
+    function renderCat(key){
+      catRailTrack.innerHTML = '';
+      (CAT_PRODUCTS[key] || []).forEach(function(p){
+        var card = document.createElement('div'); card.className = 'product';
+        var a = document.createElement('a'); a.className = 'pimg'; a.href = 'https://wewood.co.in/products/' + p.handle;
+        var img = document.createElement('img'); img.src = p.img; img.alt = '';
+        a.appendChild(img); card.appendChild(a);
+        var h3 = document.createElement('h3'); h3.textContent = p.title; card.appendChild(h3);
+        var row = document.createElement('div'); row.className = 'price-row';
+        var priceSpan = document.createElement('span'); priceSpan.className = 'price'; priceSpan.textContent = inr(p.price);
+        row.appendChild(priceSpan);
+        if (p.pct) {
+          var cmp = document.createElement('span'); cmp.className = 'compare'; cmp.textContent = inr(p.compare);
+          var save = document.createElement('span'); save.className = 'save'; save.textContent = 'Save ' + p.pct + '%';
+          row.appendChild(cmp); row.appendChild(save);
+        }
+        card.appendChild(row);
+        var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-dark btn-sm js-atc'; btn.textContent = 'Add to cart';
+        card.appendChild(btn);
+        catRailTrack.appendChild(card);
+      });
+      catRailTrack.scrollLeft = 0;
+      if (catRailSeeAll) {
+        catRailSeeAll.href = 'https://wewood.co.in/collections/' + key;
+        var label = document.querySelector('.cat-picker-item[data-cat="' + key + '"] .cat-picker-label');
+        catRailSeeAll.textContent = 'See the full ' + (label ? label.textContent : 'collection') + ' collection';
+      }
+      if (typeof syncCatRail === 'function') syncCatRail();
+    }
+    catPicker.forEach(function(item){
+      item.addEventListener('click', function(){
+        catPicker.forEach(function(p){ p.classList.remove('is-active'); p.setAttribute('aria-pressed', 'false'); });
+        item.classList.add('is-active'); item.setAttribute('aria-pressed', 'true');
+        renderCat(item.getAttribute('data-cat'));
       });
     });
-  });
+    renderCat('nesting-table');
+
+    /* Add-to-cart feedback delegated to the rail, since its cards are
+       rendered after the page-wide .js-atc listeners are already bound */
+    catRailTrack.addEventListener('click', function(e){
+      var btn = e.target.closest('.js-atc');
+      if (!btn) return;
+      var cartCountEl = document.getElementById('cartCount');
+      if (cartCountEl) {
+        cartCountEl.textContent = String((parseInt(cartCountEl.textContent, 10) || 0) + 1);
+      }
+      var original = btn.textContent; btn.textContent = 'Added';
+      setTimeout(function(){ btn.textContent = original; }, 1100);
+    });
+  }
+
+  /* Category rail carousel controls (same pattern as Bestsellers) */
+  var catRailPrev = document.getElementById('catRailPrev');
+  var catRailNext = document.getElementById('catRailNext');
+  var catRailBar = document.getElementById('catRailBar');
+  function syncCatRail(){
+    if (!catRailTrack) return;
+    var max = catRailTrack.scrollWidth - catRailTrack.clientWidth;
+    if (catRailBar) {
+      var w = Math.min(100, (catRailTrack.clientWidth / catRailTrack.scrollWidth) * 100);
+      catRailBar.style.width = w + '%';
+      catRailBar.style.left = (max > 1 ? (catRailTrack.scrollLeft / max) * (100 - w) : 0) + '%';
+    }
+    if (catRailPrev) catRailPrev.disabled = catRailTrack.scrollLeft < 4;
+    if (catRailNext) catRailNext.disabled = catRailTrack.scrollLeft >= max - 4;
+  }
+  if (catRailTrack) {
+    function catRailStep(){
+      var card = catRailTrack.querySelector('.product');
+      var gap = parseFloat(window.getComputedStyle(catRailTrack).columnGap) || 20;
+      return card ? card.getBoundingClientRect().width + gap : catRailTrack.clientWidth;
+    }
+    if (catRailPrev) catRailPrev.addEventListener('click', function(){ catRailTrack.scrollBy({ left: -catRailStep(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    if (catRailNext) catRailNext.addEventListener('click', function(){ catRailTrack.scrollBy({ left: catRailStep(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    catRailTrack.addEventListener('scroll', syncCatRail, { passive: true });
+    window.addEventListener('resize', syncCatRail);
+  }
 
   /* EMI modal */
   var overlay = document.getElementById('emiOverlay');
