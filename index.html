@@ -54,7 +54,8 @@
   .eyebrow{ display:block; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
 
   /* ===== Header: thin, persistent search, real categories ===== */
-  .header-wrap{ position:sticky; top:var(--gutter); z-index:50; padding:0 var(--gutter); margin-top:var(--gutter); }
+  .header-wrap{ position:sticky; top:var(--gutter); z-index:50; padding:0 var(--gutter); margin-top:var(--gutter); transition:transform .25s ease-out; }
+  .header-wrap.is-hidden{ transform:translateY(calc(-100% - var(--gutter) - 12px)); }
   .header{ background:var(--header); border-radius:var(--radius); height:77px; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:28px; padding:0 28px; }
   .logo img{ height:31px; width:auto; display:block; }
   .nav{ display:flex; justify-content:center; gap:19px; font-size:13.5px; color:var(--black); white-space:nowrap; }
@@ -511,6 +512,7 @@
     .credibility-track{ animation:none; }
     .hero-slide{ transition:none; }
     .hero-dot.is-active::after{ animation:none; transform:scaleX(1); }
+    .header-wrap{ transition:none; }
   }
 </style>
 </head>
@@ -1011,6 +1013,28 @@
     mobileMenu.querySelectorAll('a[href^="#"]').forEach(function(a){
       a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); });
     });
+  }
+
+  /* Header: hide on scroll down, reveal on scroll up. Stays visible near
+     the top and while the mobile menu is open. */
+  var headerWrap = document.querySelector('.header-wrap');
+  if (headerWrap) {
+    var lastScrollY = window.scrollY;
+    var scrollTicking = false;
+    function syncHeaderVisibility(){
+      var y = window.scrollY;
+      var menuOpen = mobileMenu && mobileMenu.classList.contains('open');
+      if (!menuOpen) {
+        if (y < 80) headerWrap.classList.remove('is-hidden');
+        else if (y > lastScrollY + 4) headerWrap.classList.add('is-hidden');
+        else if (y < lastScrollY - 4) headerWrap.classList.remove('is-hidden');
+      }
+      lastScrollY = y;
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if (!scrollTicking) { window.requestAnimationFrame(syncHeaderVisibility); scrollTicking = true; }
+    }, { passive: true });
   }
 
   /* Bestsellers carousel: one row, advances one card at a time */
