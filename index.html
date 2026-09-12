@@ -139,6 +139,17 @@
   #catRailTrack .pimg{ border:1px solid transparent; transition:border-color .15s ease; }
   #catRailTrack .pimg img{ object-fit:cover; padding:0; }
   @media (hover:hover) and (pointer:fine){ #catRailTrack .product:hover .pimg{ border-color:var(--border); } }
+  /* Arrows sit beside the rail, vertically centered on the card row itself
+     (not stacked underneath) - the progress bar keeps its own line below. */
+  .cat-rail-carousel .rail-wrap{ position:relative; }
+  .cat-rail-carousel .car-side{ position:absolute; top:50%; transform:translateY(-50%); background:var(--white); box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  .cat-rail-carousel .car-side-prev{ left:-20px; }
+  .cat-rail-carousel .car-side-next{ right:-20px; }
+  .cat-rail-carousel .car-ctl{ margin-top:18px; }
+  @media (max-width:1250px){
+    .cat-rail-carousel .car-side-prev{ left:-16px; }
+    .cat-rail-carousel .car-side-next{ right:-16px; }
+  }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
@@ -178,6 +189,14 @@
   .save{ font-size:12px; color:var(--green); font-weight:700; }
   .product .btn{ margin-top:auto; }
   .see-all{ text-align:center; margin-top:34px; }
+  /* "See all N pieces" card: the rail's last card, same shell as a real
+     product card (same image frame, heading and button slots) so it sits
+     at the same height and rhythm rather than looking like a stray tile. */
+  a.product.cta-card{ text-decoration:none; }
+  .cta-card .pimg.cta-frame{ display:flex; align-items:center; justify-content:center; background:var(--dark); color:#fff; transition:background .15s ease; }
+  .cta-card:hover .pimg.cta-frame{ background:#232b1e; }
+  .cta-meta{ font-size:13px; color:var(--text-2); margin:0 0 14px; }
+  .cta-card .btn{ pointer-events:none; }
   /* ===== Promo strip: three real collections, real live discounts. The "Save"
          colour reuses --green, the same token already used for "Save 45%" on
          every product card, rather than inventing a new pink/red badge tone. ===== */
@@ -647,12 +666,14 @@
       <span class="cat-picker-label">Ashtray</span>
     </button>
   </div>
-  <div class="carousel" style="margin-top:32px;">
-    <section class="products" id="catRailTrack" tabindex="0" role="region" aria-label="Category products, scrollable"></section>
+  <div class="carousel cat-rail-carousel" style="margin-top:32px;">
+    <div class="rail-wrap">
+      <section class="products" id="catRailTrack" tabindex="0" role="region" aria-label="Category products, scrollable"></section>
+      <button type="button" class="car-btn car-side car-side-prev" id="catRailPrev" aria-label="Previous product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="car-btn car-side car-side-next" id="catRailNext" aria-label="Next product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
     <div class="car-ctl">
-      <button type="button" class="car-btn" id="catRailPrev" aria-label="Previous product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
       <div class="car-prog" role="presentation"><span id="catRailBar"></span></div>
-      <button type="button" class="car-btn" id="catRailNext" aria-label="Next product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
   </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/nesting-table" class="btn" id="catRailSeeAll">See the full collection</a></div>
@@ -1088,37 +1109,74 @@
       { title: 'Nesting Table Set of 3', handle: 'nesting-table-set-of-3-teak-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386', price: 13890, compare: 25980, pct: 47 },
       { title: 'Nesting Table Set of 2, Pearl Green Resin', handle: 'nesting-table-set-of-2-teak-wood-with-pearl-green-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Pearl_Green_Resin_Finish.png?v=1738232430', price: 12000, compare: 15000, pct: 20 },
       { title: 'Nesting Table Set of 2, Acacia Wood', handle: 'nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528', price: 20000, compare: 25000, pct: 20 },
-      { title: 'Acacia Wood Nesting Table Set of 2', handle: 'acacia-wood-nesting-table-set-of-2-grey', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_24.png?v=1751020696', price: 15349, compare: 19850, pct: 23 }
+      { title: 'Acacia Wood Nesting Table Set of 2', handle: 'acacia-wood-nesting-table-set-of-2-grey', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_24.png?v=1751020696', price: 15349, compare: 19850, pct: 23 },
+      { title: 'Nesting Table Set of 2, Sheesham Wood', handle: 'nesting-table-set-of-2-sheesham-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Sheesham_Wood_with_Transparent_Resin_Finish.png?v=1738232480', price: 11920, compare: 14900, pct: 20 },
+      { title: 'Nesting Table Set of 2, Round Grey', handle: 'nesting-table-set-of-2-teak-wood-with-round-grey', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/5_d664bdb3-7c9b-409a-b586-cd57140e8919.png?v=1744203518', price: 18999, compare: 27540, pct: 31 },
+      { title: 'Nesting Table Set of 3, Acacia Wood', handle: 'nesting-table-set-of-3-acacia-wood-with-transparent-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_44.png?v=1754054089', price: 14000, compare: 20980, pct: 33 },
+      { title: 'Nesting Table Set of 3', handle: 'nesting-table-set-of-2', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ChatGPTImageApr4_2025_03_35_36PM.png?v=1743761404', price: 23499, compare: 29650, pct: 21 },
+      { title: 'Nesting Table Set of 3', handle: 'nesting-table-set-of-2-copy', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wd_2.png?v=1743768762', price: 22499, compare: 31960, pct: 30 },
+      { title: 'Nesting Table Set of 3, Stainless Steel Legs', handle: 'nesting-table-set-of-3-teak-wood', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_f00a8bb8-1059-4c0b-8317-9d0c80af9477.png?v=1744203180', price: 39000, compare: 45960, pct: 15 }
     ],
     'dining-entertainment': [
       { title: 'Aqua Epoxy & Natural Wood Designer Platters', handle: 'aqua-epoxy-natural-wood-designer-platters-set-of-2', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_icrnvgicrnvgicrn.png?v=1771930060', price: 6900, compare: null, pct: null },
       { title: 'Cheese Board Cum Platter with Handle', handle: 'cheese-board-cum-platter-with-handle-acacia-wood-with-translucent-grey-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Wall_Clock_2.png?v=1739185402', price: 1999, compare: null, pct: null },
       { title: 'Cheese Board Platter, Aqua Blue Resin', handle: 'cheese-board-platter-acacia-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/DSC_3364.jpg?v=1733911593', price: 2999, compare: null, pct: null },
-      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null }
+      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Translucent Black Resin', handle: 'cheese-board-platter-acacia-wood-with-translucent-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ChatGPT_Image_Jun_20_2025_06_41_05_PM.png?v=1750425129', price: 2755, compare: 2900, pct: 5 },
+      { title: 'Cheese Board Platter', handle: 'cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998', price: 4080, compare: null, pct: null },
+      { title: 'Grey Epoxy & Natural Acacia Wood Organic Platters', handle: 'grey-epoxy-natural-acacia-wood-organic-platters-set-of-2-grey-resin-platters', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_j558xcj558xcj558.png?v=1771929914', price: 7900, compare: null, pct: null },
+      { title: 'Acacia Wood & Grey Epoxy Serving Tray', handle: 'handcrafted-acacia-wood-grey-epoxy-serving-tray-with-gold-handles', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_5kpbaq5kpbaq5kpb.png?v=1771929937', price: 4500, compare: null, pct: null },
+      { title: 'Wooden Tray with Handles, Black Resin', handle: 'wooden-tray-with-handles-acacia-wood-translucent-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12.png?v=1738322794', price: 2565, compare: 2700, pct: 5 },
+      { title: 'Wooden Tray with Handles, Grey Resin', handle: 'wooden-tray-with-handles-acacia-wood-translucent-grey-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/45.png?v=1739357252', price: 2249, compare: 2700, pct: 17 }
     ],
     'coffee-table': [
       { title: 'Acacia Wood Coffee Table Set, Tinted Grey', handle: 'acacia-wood-coffee-table-set-tinted-grey-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715', price: 28999, compare: null, pct: null },
       { title: 'Acacia Wood Nesting Tables, Translucent Black', handle: 'acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_25.png?v=1771591358', price: 15399, compare: 21950, pct: 30 },
       { title: 'Coffee Table, Black Resin Finish', handle: 'coffee-table-acacia-wood-with-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wall_1.png?v=1738239909', price: 16499, compare: null, pct: null },
-      { title: 'Coffee Table, Aqua Blue Resin Finish', handle: 'coffee-table-teak-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429', price: 9600, compare: 12000, pct: 20 }
+      { title: 'Coffee Table, Aqua Blue Resin Finish', handle: 'coffee-table-teak-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429', price: 9600, compare: 12000, pct: 20 },
+      { title: 'Nesting Table Set of 2, Round Grey', handle: 'nesting-table-set-of-2-teak-wood-with-round-grey', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/5_d664bdb3-7c9b-409a-b586-cd57140e8919.png?v=1744203518', price: 18999, compare: 27540, pct: 31 },
+      { title: 'Round Coffee Table, Black Resin Finish', handle: 'round-coffee-table-acacia-wood-with-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Table_1.png?v=1738239943', price: 6800, compare: 8500, pct: 20 },
+      { title: 'Round Coffee Table, Translucent Black Resin', handle: 'round-coffee-table-acacia-wood-with-translucent-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/14.png?v=1738323485', price: 14899, compare: 22500, pct: 34 },
+      { title: 'Round Coffee Table, Special Blue Resin', handle: 'round-coffee-table-teak-wood-with-special-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531', price: 14800, compare: 18500, pct: 20 },
+      { title: 'Round Side Table with Hairpin Legs', handle: 'round-side-table-with-hairpin-legs-wooden-and-resin-top-with-metal-base', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ChatGPT_Image_Jun_28_2025_05_57_24_PM.png?v=1751113684', price: 9499, compare: null, pct: null },
+      { title: 'Wood & Ocean Blue Epoxy Tree Table', handle: 'wood-ocean-blue-epoxy-tree-table', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_19.png?v=1750758324', price: 39899, compare: null, pct: null }
     ],
     'cheese-boards': [
       { title: 'Aqua Epoxy & Natural Wood Designer Platters', handle: 'aqua-epoxy-natural-wood-designer-platters-set-of-2', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_icrnvgicrnvgicrn.png?v=1771930060', price: 6900, compare: null, pct: null },
       { title: 'Cheese Board Cum Platter with Handle', handle: 'cheese-board-cum-platter-with-handle-acacia-wood-with-translucent-grey-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Wall_Clock_2.png?v=1739185402', price: 1999, compare: null, pct: null },
       { title: 'Cheese Board Platter, Aqua Blue Resin', handle: 'cheese-board-platter-acacia-wood-with-aqua-blue-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/DSC_3364.jpg?v=1733911593', price: 2999, compare: null, pct: null },
-      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null }
+      { title: 'Cheese Board Platter, Pearl Red Resin', handle: 'cheese-board-platter-acacia-wood-with-pearl-red-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_jm0dqjm0dqjm0dqj.png?v=1784909754', price: 4080, compare: null, pct: null },
+      { title: 'Cheese Board Platter', handle: 'cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998', price: 4080, compare: null, pct: null },
+      { title: 'Cheese Board Platter, Translucent Black Resin', handle: 'cheese-board-platter-acacia-wood-with-translucent-black-resin-finish', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ChatGPT_Image_Jun_20_2025_06_41_05_PM.png?v=1750425129', price: 2755, compare: 2900, pct: 5 },
+      { title: 'Grey Epoxy & Natural Acacia Wood Organic Platters', handle: 'grey-epoxy-natural-acacia-wood-organic-platters-set-of-2-grey-resin-platters', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_j558xcj558xcj558.png?v=1771929914', price: 7900, compare: null, pct: null },
+      { title: 'Acacia Wood & Grey Epoxy Serving Board', handle: 'handcrafted-acacia-wood-grey-epoxy-serving-board', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_v8280ov8280ov828.png?v=1771929928', price: 2900, compare: null, pct: null },
+      { title: 'Round Wooden & Resin Platter, Purple Inlay', handle: 'round-wooden-resin-platter-purple-inlay', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_h06r8mh06r8mh06r.png?v=1784905261', price: 6999, compare: null, pct: null }
     ],
     'clock': [
       { title: 'Elegant Resin Wall Clock, Sheesham Wood', handle: 'elegant-resin-wall-clock-perfect-blend-of-sheesham-wood-transparent-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283', price: 5900, compare: 6625, pct: 11 },
       { title: 'Pearl Green Resin Wall Clock, Oak', handle: 'pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/7_e06c94d1-e958-4644-9517-74c3797a89a0.png?v=1771919665', price: 3600, compare: 4500, pct: 20 },
       { title: 'Elegant Wooden Wall Clock, Acacia Wood', handle: 'elegant-wooden-wall-clock-natural-acacia-wood-with-transparent-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/10_38b9c489-e4ab-4806-9cf6-e79fc9241c56.png?v=1771929301', price: 3499, compare: 4125, pct: 15 },
-      { title: 'Stylish Resin Wall Clock, Teak Wood', handle: 'stylish-resin-wall-clock-teak-wood-transparent-resin-elegance', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699', price: 4900, compare: 5500, pct: 11 }
+      { title: 'Stylish Resin Wall Clock, Teak Wood', handle: 'stylish-resin-wall-clock-teak-wood-transparent-resin-elegance', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699', price: 4900, compare: 5500, pct: 11 },
+      { title: 'Stylish Wooden Wall Clock, Acacia Wood', handle: 'stylish-wooden-wall-clock-acacia-wood-with-transparent-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/5_162cb119-1e48-4375-a719-fcdf20c68ed4.png?v=1771929322', price: 3499, compare: 4125, pct: 15 },
+      { title: 'Ocean Themed Wooden Wall Clock', handle: 'ocean-themed-wooden-wall-clock-acacia-wood-resin-elegance', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/8_2e7cee31-6cd4-49e3-a52d-d6deb4085c69.png?v=1771929347', price: 3499, compare: 3980, pct: 12 },
+      { title: 'Tinted Grey Resin Wall Clock', handle: 'tinted-grey-resin-wall-clock-acacia-wood-masterpiece-with-modern-charm', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_d3d4cb5b-3619-4aad-a3dd-34061b719806.png?v=1771929363', price: 5999, compare: 7850, pct: 24 },
+      { title: 'Azur Resin Wall Clock', handle: 'azur-resin-wall-clock-elegant-fusion-of-acacia-wood-resin', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/11_84fbe617-5fed-46bd-ace8-25290d0c1b2e.png?v=1771929380', price: 5999, compare: 7850, pct: 24 },
+      { title: 'Azur Resin Wall Clock, Blue', handle: 'azur-resin-wall-clock-elegant-fusion-of-acacia-wood-resin-blue', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/4_8735940f-b41d-4f42-b9c7-47cd8842ca6e.png?v=1771929409', price: 5999, compare: 7850, pct: 24 },
+      { title: 'Azur Resin Wall Clock, White', handle: 'azur-resin-wall-clock-elegant-fusion-of-acacia-wood-resin-white', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/IMG_3669_26eeada5-a3f8-4c8a-8815-b25815c44738.jpg?v=1771929394', price: 5999, compare: 7850, pct: 24 }
     ],
     'ashtray': [
       { title: 'Elegant Black Ashtray', handle: 'elegant-black-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967', price: 1700, compare: null, pct: null },
       { title: 'Elegant Blue Ashtray', handle: 'elegant-blue-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/42.png?v=1751450839', price: 1700, compare: null, pct: null },
       { title: 'Elegant White Ashtray', handle: 'elegant-white-ashtray', img: 'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/37_df9e62a0-1c73-464f-aa8b-52adf0b93f8e.png?v=1751451065', price: 1700, compare: null, pct: null }
     ]
+  };
+  var CAT_META = {
+    'nesting-table': { total: 22, label: 'Nesting Table' },
+    'dining-entertainment': { total: 12, label: 'Dining & Entertainment' },
+    'coffee-table': { total: 10, label: 'Coffee Table' },
+    'cheese-boards': { total: 9, label: 'Cheese Boards' },
+    'clock': { total: 11, label: 'Clock' },
+    'ashtray': { total: 3, label: 'Ashtray' }
   };
   var catPicker = document.querySelectorAll('.cat-picker-item');
   var catRailTrack = document.getElementById('catRailTrack');
@@ -1146,6 +1204,18 @@
         card.appendChild(btn);
         catRailTrack.appendChild(card);
       });
+      var meta = CAT_META[key];
+      if (meta) {
+        var cta = document.createElement('a'); cta.className = 'product cta-card'; cta.href = 'https://wewood.co.in/collections/' + key;
+        var frame = document.createElement('span'); frame.className = 'pimg cta-frame';
+        frame.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6"/></svg>';
+        cta.appendChild(frame);
+        var ctaH3 = document.createElement('h3'); ctaH3.textContent = 'See all ' + meta.total + ' pieces'; cta.appendChild(ctaH3);
+        var ctaMeta = document.createElement('p'); ctaMeta.className = 'cta-meta'; ctaMeta.textContent = 'in ' + meta.label; cta.appendChild(ctaMeta);
+        var ctaBtn = document.createElement('span'); ctaBtn.className = 'btn btn-dark btn-sm'; ctaBtn.textContent = 'Know more';
+        cta.appendChild(ctaBtn);
+        catRailTrack.appendChild(cta);
+      }
       catRailTrack.scrollLeft = 0;
       if (catRailSeeAll) {
         catRailSeeAll.href = 'https://wewood.co.in/collections/' + key;
