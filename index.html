@@ -18,7 +18,7 @@
     --white:#fff; --black:#000;
     --text:#333333; --text-2:#525252; --text-3:#9d9d9d; --gray:#757575; --border:#cdcdcd;
     --dark:#161e13; --yellow:#f9d35c; --green:#198754; --sale:#cc0000;
-    --gutter:18px; --page-gutter:40px; --gap:20px; --inner:54px;
+    --gutter:18px; --page-gutter:60px; --gap:20px; --inner:54px;
   }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
@@ -77,7 +77,7 @@
   /* Hero keeps the original 18px inset (--gutter) even though .page's own
      side padding is now the larger --page-gutter - pulled back out by the
      difference so it never re-inherits the wider page margin. */
-  .hero{ margin:var(--gutter) calc(var(--gutter) - var(--page-gutter)) 0; position:relative; height:560px; border-radius:var(--radius); overflow:hidden; }
+  .hero{ margin:var(--gutter) calc(var(--gutter) - var(--page-gutter)) 0; position:relative; height:420px; border-radius:var(--radius); overflow:hidden; }
   .hero-slide{ position:absolute; inset:0; opacity:0; transition:opacity .7s ease-out; }
   .hero-slide.is-active{ opacity:1; }
   .hero-slide::after{ content:""; position:absolute; inset:0; background:linear-gradient(to right, rgba(0,0,0,.42), rgba(0,0,0,.08) 60%); }
