@@ -125,11 +125,12 @@
   .cat-picker-label{ max-width:98px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; line-height:1.3; }
   .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
   @media (max-width:900px){
-    .cat-picker{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; margin:18px calc(-1 * var(--page-gutter)) 0; padding:0 var(--page-gutter) 2px; }
-    .cat-picker::-webkit-scrollbar{ display:none; }
-    .cat-picker-item{ flex:none; }
-    .cat-picker-avatar{ width:78px; height:78px; }
-    .cat-picker-label{ font-size:10.5px; max-width:80px; }
+    /* Static 3-across grid instead of a swipe carousel, so every category
+       is visible at once with no scrolling - circles a touch smaller than
+       desktop since they no longer need to carry a touch-swipe target. */
+    .cat-picker{ display:grid; grid-template-columns:repeat(3, 1fr); justify-items:center; gap:20px 8px; margin:18px 0 0; }
+    .cat-picker-avatar{ width:64px; height:64px; }
+    .cat-picker-label{ font-size:10px; max-width:100%; }
   }
   /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
      the frame edge to edge (no white inset), border appears on hover only. */
@@ -228,9 +229,13 @@
   .promo-text b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:19px; margin-bottom:4px; }
   .promo-text span{ display:inline-flex; align-items:center; gap:6px; font-size:13px; color:rgba(255,255,255,.9); }
   @media (max-width:900px){
-    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    /* One full tile at a time, matching page-gutter on both sides - not a
+       peek carousel, so the next tile never bleeds past the right edge
+       the way a partial-width card would. */
+    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
     .promo-strip::-webkit-scrollbar{ display:none; }
-    .promo-tile{ flex:0 0 82%; scroll-snap-align:start; aspect-ratio:8/3; }
+    .promo-tile{ flex:0 0 100%; scroll-snap-align:start; aspect-ratio:8/3; }
+    .promo-tile:last-child{ scroll-snap-align:end; }
   }
 
   /* ===== EMI breaker: full-bleed, on the same dark panel already used for
