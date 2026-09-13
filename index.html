@@ -146,7 +146,7 @@
      keeps the normal bleed-to-edge swipe behaviour (arrows are hidden
      there anyway). */
   @media (min-width:641px){
-    #catRailTrack.products{ margin:0; padding:0 0 4px; scroll-padding-left:0; }
+    #catRailTrack.products{ margin:0; padding:0 0 4px; scroll-padding:0; }
   }
   /* Arrows sit beside the rail, vertically centered on the card row itself
      (not stacked underneath) - the progress bar keeps its own line below. */
@@ -176,8 +176,14 @@
   .carousel{ position:relative; }
   /* scroll-padding-left matters: without it the snapport starts at the padding
      edge, so card 1 snaps to scrollLeft:18 and rests clipped behind the gutter. */
-  .products{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:var(--page-gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; }
+  .products{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; }
   .products::-webkit-scrollbar{ display:none; }
+  /* Every card snaps to its own left edge (scroll-snap-align:start) except
+     the last one - left unchanged, it would rest with its right portion
+     hanging past the viewport with no trailing gutter. Snapping the last
+     card's END instead brings its right edge flush with the row's own
+     padding, giving it the same page-gutter margin the first card gets. */
+  .products .product:last-child{ scroll-snap-align:end; }
   /* Fractional card counts on purpose: the part-visible next card is the
      affordance that says "this scrolls". 3.4 up, 1.35 on phones - the 2.15
      phone version made 159px cards with a price row that wrapped. */
@@ -191,7 +197,7 @@
   .car-prog{ position:relative; width:190px; height:2px; background:var(--border); border-radius:2px; overflow:hidden; }
   .car-prog span{ position:absolute; top:0; bottom:0; left:0; width:50%; background:var(--text); border-radius:2px; transition:left .2s ease-out, width .2s ease-out; }
   .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; }
-  .product .pimg img{ object-fit:contain; padding:8%; transition:transform .3s ease-out; }
+  .product .pimg img{ object-fit:cover; transition:transform .3s ease-out; }
   @media (hover:hover) and (pointer:fine){ .product:hover .pimg img{ transform:scale(1.05); } }
   .badge{ position:absolute; top:14px; left:14px; z-index:1; background:var(--yellow); color:var(--black); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:var(--pill); font-family:var(--font-body); }
   .product h3{ font-family:var(--font-body); font-weight:400; font-size:15px; color:var(--text); line-height:1.4; margin-bottom:8px; min-height:42px; }
