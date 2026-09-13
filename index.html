@@ -132,10 +132,11 @@
        circle only shows the photo inscribed inside it (~78% of the tile),
        so the square shows the full photo - no cropped corners, no added
        height. */
-    .cat-picker{ display:grid; grid-template-columns:repeat(3, 1fr); justify-items:center; gap:20px 8px; margin:18px 0 0; }
-    .cat-picker-avatar{ width:64px; height:64px; border-radius:14px; }
-    .cat-picker-avatar img{ border-radius:12px; }
-    .cat-picker-label{ font-size:10px; max-width:100%; }
+    .cat-picker{ display:grid; grid-template-columns:repeat(3, 1fr); justify-items:center; gap:12px 6px; margin:18px 0 0; }
+    .cat-picker-item{ gap:7px; }
+    .cat-picker-avatar{ width:80px; height:80px; border-radius:16px; }
+    .cat-picker-avatar img{ border-radius:14px; }
+    .cat-picker-label{ font-size:10.5px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   }
   /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
      the frame edge to edge (no white inset), border appears on hover only. */
@@ -687,7 +688,7 @@
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="dining-entertainment">
       <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt=""></span>
-      <span class="cat-picker-label">Dining &amp; Entertainment</span>
+      <span class="cat-picker-label">Entertaining</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="coffee-table">
       <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt=""></span>
@@ -695,7 +696,7 @@
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="cheese-boards">
       <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt=""></span>
-      <span class="cat-picker-label">Cheese Boards</span>
+      <span class="cat-picker-label">Cheese Board</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="clock">
       <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt=""></span>
@@ -1259,8 +1260,7 @@
       catRailTrack.scrollLeft = 0;
       if (catRailSeeAll) {
         catRailSeeAll.href = 'https://wewood.co.in/collections/' + key;
-        var label = document.querySelector('.cat-picker-item[data-cat="' + key + '"] .cat-picker-label');
-        catRailSeeAll.textContent = 'See the full ' + (label ? label.textContent : 'collection') + ' collection';
+        catRailSeeAll.textContent = 'See the full ' + (meta ? meta.label : 'collection') + ' collection';
       }
       if (typeof syncCatRail === 'function') syncCatRail();
       if (typeof syncCatRailArrowPosition === 'function') syncCatRailArrowPosition();
