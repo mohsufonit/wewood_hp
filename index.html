@@ -116,14 +116,18 @@
   /* ===== Categories: circular picker (real collection photo + label) drives
          one product rail below it, reusing the .products/.product rail
          styling defined further down rather than a new card style. ===== */
-  .cat-picker{ display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:26px 0 0; }
+  .cat-picker{ display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:22px 0 0; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
-  .cat-picker-avatar{ width:96px; height:96px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
+  .cat-picker-avatar{ width:112px; height:112px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
   .cat-picker-item:hover .cat-picker-avatar{ border-color:var(--border); }
   .cat-picker-item.is-active .cat-picker-avatar{ border-color:var(--dark); }
-  .cat-picker-label{ max-width:98px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; line-height:1.3; }
+  .cat-picker-label{ max-width:110px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; line-height:1.3; }
   .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
+  /* Desktop drops the section heading entirely so the picker, the product
+     rail and its Add to cart button all land inside one viewport height -
+     mobile keeps the heading (see the max-width:900px block below). */
+  @media (min-width:901px){ h2.cat-heading{ display:none; } }
   @media (max-width:900px){
     /* Static 3-across grid (2 rows for 6 categories) instead of a swipe
        carousel. 110px is the largest circle that still fits 3-per-row on
@@ -678,7 +682,7 @@
        swapped by JS from real per-collection catalog data embedded below.
        Replaces the old always-visible 6-tile grid with a picker so the fold
        shows one collection's actual products, not just cover photos. -->
-  <h2 class="section-heading" style="padding-top:38px;">Handcrafted pieces for every room</h2>
+  <h2 class="section-heading cat-heading" style="padding-top:38px;">Handcrafted pieces for every room</h2>
   <div class="cat-picker" role="group" aria-label="Browse by category">
     <button type="button" class="cat-picker-item is-active" aria-pressed="true" data-cat="nesting-table">
       <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt=""></span>
