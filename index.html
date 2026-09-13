@@ -229,12 +229,14 @@
   .promo-text b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:19px; margin-bottom:4px; }
   .promo-text span{ display:inline-flex; align-items:center; gap:6px; font-size:13px; color:rgba(255,255,255,.9); }
   @media (max-width:900px){
-    /* One full tile at a time, matching page-gutter on both sides - not a
-       peek carousel, so the next tile never bleeds past the right edge
-       the way a partial-width card would. */
-    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    /* Peek carousel restored (partial next tile visible is the scroll
+       affordance) - but the row itself no longer bleeds to the raw screen
+       edge the way it used to. It sits inside .page's own padding, so the
+       peeking tile gets clipped at that same inset on the right, matching
+       the gutter on the left, instead of bleeding past it. */
+    .promo-strip{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0; gap:12px; margin:0; padding:0 0 4px; scrollbar-width:none; }
     .promo-strip::-webkit-scrollbar{ display:none; }
-    .promo-tile{ flex:0 0 100%; scroll-snap-align:start; aspect-ratio:8/3; }
+    .promo-tile{ flex:0 0 82%; scroll-snap-align:start; aspect-ratio:8/3; }
     .promo-tile:last-child{ scroll-snap-align:end; }
   }
 
@@ -459,14 +461,17 @@
     .promo-text span{ font-size:12px; }
     .credibility-track .mark{ font-size:14px; }
 
-    .products{ gap:12px; }
-    /* One full card + 3/4 of the next, sized off the real viewport rather
-       than the container's own %, since the visible-before-scrolling span
-       runs from the left gutter to the raw screen edge (not to the
-       container's own right padding) - see the .products comment above
-       on why scroll-padding-right exists for the same reason. */
-    .product{ flex-basis:calc((100vw - var(--page-gutter) - 12px) / 1.75); }
-    #catRailTrack.products .product{ flex-basis:calc((100vw - var(--page-gutter) - 12px) / 1.75); }
+    /* The row itself no longer bleeds to the raw screen edge on mobile - it
+       sits inside .page's own 18px padding like everything else, so a
+       peeking card gets clipped at that same 18px inset on the right, not
+       at the true viewport edge. Scroll-padding drops to 0 to match: the
+       row's own box is already the correct boundary, nothing extra to
+       reserve. */
+    .products{ gap:12px; margin:0; padding:0 0 4px; scroll-padding:0; }
+    /* One full card + 3/4 of the next, sized off the row's own (now
+       correctly symmetric) content width. */
+    .product{ flex-basis:calc((100% - 12px) / 1.75); }
+    #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 1.75); }
     .product h3{ font-size:14.5px; }
     .product .pimg{ margin-bottom:10px; }
     .car-ctl{ gap:0; margin-top:18px; }
