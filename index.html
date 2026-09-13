@@ -52,6 +52,12 @@
   .section-heading{ text-align:center; font-size:38px; padding:72px 0 10px; }
   .section-sub{ text-align:center; font-size:15px; color:var(--text-2); margin:0 0 36px; }
   .eyebrow{ display:block; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
+  /* Product-rail headings (Bestsellers, the category rail's mobile heading)
+     read smaller and left-aligned instead of the page's usual big centered
+     style - "Shop by Collections" is excluded, that stays as its own small
+     centered eyebrow. */
+  .section-heading.rail-heading{ text-align:left; font-size:24px; font-weight:600; padding:56px 0 8px; }
+  .section-sub.rail-sub{ text-align:left; margin-bottom:24px; }
 
   /* ===== Header: thin, persistent search, real categories ===== */
   .header-wrap{ position:sticky; top:var(--gutter); z-index:50; padding:0 var(--gutter); margin-top:var(--gutter); transition:transform .25s ease-out; }
@@ -454,6 +460,7 @@
     .hero-dot::before{ content:""; position:absolute; left:0; right:0; top:-16px; bottom:-16px; }
 
     .section-heading{ font-size:26px; padding:40px 0 6px !important; }
+    .section-heading.rail-heading{ text-align:left; font-size:19px; padding:32px 0 6px !important; }
     .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
     .section-sub.sub-desk{ display:none; }
     .eyebrow{ font-size:11.5px; margin-bottom:10px; }
@@ -687,7 +694,7 @@
        swapped by JS from real per-collection catalog data embedded below.
        Replaces the old always-visible 6-tile grid with a picker so the fold
        shows one collection's actual products, not just cover photos. -->
-  <h2 class="section-heading cat-heading" style="padding-top:38px;">Handcrafted pieces for every room</h2>
+  <h2 class="section-heading cat-heading rail-heading">Handcrafted pieces for every room</h2>
   <p class="cat-eyebrow">Shop by Collections</p>
   <div class="cat-picker" role="group" aria-label="Browse by category">
     <button type="button" class="cat-picker-item is-active" aria-pressed="true" data-cat="nesting-table">
@@ -772,8 +779,8 @@
   </section>
 
   <!-- BESTSELLERS: the live Best Seller collection, prices as listed today -->
-  <h2 class="section-heading" id="bestsellers" style="padding-top:64px;">What people keep buying</h2>
-  <p class="section-sub">The eight pieces in our Best Seller collection right now</p>
+  <h2 class="section-heading rail-heading" id="bestsellers">What people keep buying</h2>
+  <p class="section-sub rail-sub">The eight pieces in our Best Seller collection right now</p>
   <div class="carousel rail-carousel">
   <div class="rail-wrap">
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
