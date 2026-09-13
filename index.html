@@ -125,18 +125,16 @@
   .cat-picker-label{ max-width:98px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; line-height:1.3; }
   .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
   @media (max-width:900px){
-    /* Static 3-across grid instead of a swipe carousel, so every category
-       is visible at once with no scrolling - circles a touch smaller than
-       desktop since they no longer need to carry a touch-swipe target.
-       Rounded-square avatars instead of circles: same footprint, but a
-       circle only shows the photo inscribed inside it (~78% of the tile),
-       so the square shows the full photo - no cropped corners, no added
-       height. */
-    .cat-picker{ display:grid; grid-template-columns:repeat(3, 1fr); justify-items:center; gap:8px 4px; margin:18px 0 0; }
+    /* Static grid instead of a swipe carousel, so every category is visible
+       at once with no scrolling. Two per row, not three: at 120px, three
+       circles alone (360px) already don't fit a 354px-wide phone content
+       area before any gap is added - two per row is the largest circle
+       size that still shows all six without scrolling. */
+    .cat-picker{ display:grid; grid-template-columns:repeat(2, 120px); justify-content:center; gap:16px 28px; margin:18px 0 0; }
     .cat-picker-item{ gap:6px; }
-    .cat-picker-avatar{ width:100px; height:100px; border-radius:18px; }
-    .cat-picker-avatar img{ border-radius:16px; }
-    .cat-picker-label{ font-size:10.5px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cat-picker-avatar{ width:120px; height:120px; border-radius:50%; }
+    .cat-picker-avatar img{ border-radius:50%; }
+    .cat-picker-label{ font-size:11px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   }
   /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
      the frame edge to edge (no white inset), border appears on hover only. */
