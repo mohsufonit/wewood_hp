@@ -142,14 +142,15 @@
   /* Arrows sit beside the rail, vertically centered on the card row itself
      (not stacked underneath) - the progress bar keeps its own line below. */
   .cat-rail-carousel .rail-wrap{ position:relative; }
+  /* top is set inline by JS to the product image's own mid-height, since the
+     image is a fixed square and the card underneath it (title/price/button)
+     is taller - centering on the whole card would sit visibly below the
+     image. Arrows are inset from the row's own edge, not bled past it into
+     the page's side margin. */
   .cat-rail-carousel .car-side{ position:absolute; top:50%; transform:translateY(-50%); background:var(--white); box-shadow:0 4px 16px rgba(0,0,0,.12); }
-  .cat-rail-carousel .car-side-prev{ left:-20px; }
-  .cat-rail-carousel .car-side-next{ right:-20px; }
+  .cat-rail-carousel .car-side-prev{ left:12px; }
+  .cat-rail-carousel .car-side-next{ right:12px; }
   .cat-rail-carousel .car-ctl{ margin-top:18px; }
-  @media (max-width:1250px){
-    .cat-rail-carousel .car-side-prev{ left:-16px; }
-    .cat-rail-carousel .car-side-next{ right:-16px; }
-  }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
@@ -1223,6 +1224,7 @@
         catRailSeeAll.textContent = 'See the full ' + (label ? label.textContent : 'collection') + ' collection';
       }
       if (typeof syncCatRail === 'function') syncCatRail();
+      if (typeof syncCatRailArrowPosition === 'function') syncCatRailArrowPosition();
     }
     catPicker.forEach(function(item){
       item.addEventListener('click', function(){
@@ -1272,6 +1274,19 @@
     if (catRailNext) catRailNext.addEventListener('click', function(){ catRailTrack.scrollBy({ left: catRailStep(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
     catRailTrack.addEventListener('scroll', syncCatRail, { passive: true });
     window.addEventListener('resize', syncCatRail);
+
+    /* Arrows center on the product image itself, not the taller card
+       (image + title + price + button) - the image is a fixed square, so
+       its own mid-height is measured and applied directly as `top`. */
+    function syncCatRailArrowPosition(){
+      var img = catRailTrack.querySelector('.pimg');
+      if (!img) return;
+      var mid = img.getBoundingClientRect().height / 2;
+      if (catRailPrev) catRailPrev.style.top = mid + 'px';
+      if (catRailNext) catRailNext.style.top = mid + 'px';
+    }
+    window.addEventListener('resize', syncCatRailArrowPosition);
+    syncCatRailArrowPosition();
   }
 
   /* EMI modal */
