@@ -139,17 +139,28 @@
   #catRailTrack .pimg{ border:1px solid transparent; transition:border-color .15s ease; }
   #catRailTrack .pimg img{ object-fit:cover; padding:0; }
   @media (hover:hover) and (pointer:fine){ #catRailTrack .product:hover .pimg{ border-color:var(--border); } }
+  /* Above the mobile breakpoint (where the side arrows are visible), the
+     row must NOT bleed past its wrapper the way the other swipe rows do -
+     otherwise its real edges land 60px outside where the arrows sit, and
+     the left/right inset stops matching the rest of the page. Mobile
+     keeps the normal bleed-to-edge swipe behaviour (arrows are hidden
+     there anyway). */
+  @media (min-width:641px){
+    #catRailTrack.products{ margin:0; padding:0 0 4px; scroll-padding-left:0; }
+  }
   /* Arrows sit beside the rail, vertically centered on the card row itself
      (not stacked underneath) - the progress bar keeps its own line below. */
   .cat-rail-carousel .rail-wrap{ position:relative; }
   /* top is set inline by JS to the product image's own mid-height, since the
      image is a fixed square and the card underneath it (title/price/button)
      is taller - centering on the whole card would sit visibly below the
-     image. Arrows are inset from the row's own edge, not bled past it into
-     the page's side margin. */
+     image. Left/right sit in the page's own side margin (60px desktop),
+     beside the row rather than overlapping its cards - the rail itself no
+     longer bleeds past that margin above the mobile breakpoint, so the two
+     line up. */
   .cat-rail-carousel .car-side{ position:absolute; top:50%; transform:translateY(-50%); background:var(--white); box-shadow:0 4px 16px rgba(0,0,0,.12); }
-  .cat-rail-carousel .car-side-prev{ left:12px; }
-  .cat-rail-carousel .car-side-next{ right:12px; }
+  .cat-rail-carousel .car-side-prev{ left:-52px; }
+  .cat-rail-carousel .car-side-next{ right:-52px; }
   .cat-rail-carousel .car-ctl{ margin-top:18px; }
 
   /* ===== Credibility ticker (section breaker) ===== */
