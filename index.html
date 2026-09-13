@@ -99,13 +99,13 @@
   @media (max-width:760px){ .hero{ height:520px; } .hero-text{ left:24px; right:24px; bottom:56px; } .hero-text h1{ font-size:34px; } .hero-dots{ right:24px; } }
 
   /* ===== Shop by room: one large tile + four, real collections ===== */
-  .rooms{ display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2, 300px); gap:var(--gap); }
+  .rooms{ display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2, 260px); gap:14px; }
   .room{ position:relative; border-radius:var(--radius); overflow:hidden; background:#dedede; }
   .room.large{ grid-column:1 / 3; grid-row:1 / 3; }
   .room::after{ content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.05) 55%); }
   .room img{ transition:transform .3s ease-out; }
   @media (hover:hover) and (pointer:fine){ .room:hover img{ transform:scale(1.04); } }
-  .room-text{ position:absolute; left:24px; top:22px; right:24px; z-index:1; color:#fff; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
+  .room-text{ position:absolute; left:20px; top:18px; right:20px; z-index:1; color:#fff; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
   .room-text h3{ color:#fff; font-size:22px; width:100%; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
   .room.large .room-text h3{ font-size:34px; }
   .room-count{ font-family:var(--font-body); font-size:12.5px; border:1px solid rgba(255,255,255,.6); border-radius:var(--pill); padding:3px 10px; }
