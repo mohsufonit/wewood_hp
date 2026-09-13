@@ -148,26 +148,19 @@
     .cat-picker-avatar img{ border-radius:50%; }
     .cat-picker-label{ font-size:10.5px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   }
-  /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
-     the frame edge to edge (no white inset), border appears on hover only. */
-  #catRailTrack.products .product{ flex-basis:calc((100% - 3 * var(--gap)) / 4.9); }
-  @media (max-width:1000px){ #catRailTrack.products .product{ flex-basis:calc((100% - 2 * var(--gap)) / 3.4); } }
-  @media (max-width:760px){ #catRailTrack.products .product{ flex-basis:calc((100% - var(--gap)) / 2.6); } }
-  #catRailTrack .pimg{ border:1px solid transparent; transition:border-color .15s ease; }
-  #catRailTrack .pimg img{ object-fit:cover; padding:0; }
-  @media (hover:hover) and (pointer:fine){ #catRailTrack .product:hover .pimg{ border-color:var(--border); } }
-  /* Above the mobile breakpoint (where the side arrows are visible), the
-     row must NOT bleed past its wrapper the way the other swipe rows do -
+  /* Above the mobile breakpoint (where the side arrows are visible), a
+     rail must NOT bleed past its wrapper the way the other swipe rows do -
      otherwise its real edges land 60px outside where the arrows sit, and
      the left/right inset stops matching the rest of the page. Mobile
      keeps the normal bleed-to-edge swipe behaviour (arrows are hidden
-     there anyway). */
+     there anyway). Applies to every .rail-carousel row - Bestsellers and
+     the category rail both use this same shell. */
   @media (min-width:641px){
-    #catRailTrack.products{ margin:0; padding:0 0 4px; scroll-padding:0; }
+    .rail-carousel .products{ margin:0; padding:0 0 4px; scroll-padding:0; }
   }
   /* Arrows sit beside the rail, vertically centered on the card row itself
      (not stacked underneath) - the progress bar keeps its own line below. */
-  .cat-rail-carousel .rail-wrap{ position:relative; }
+  .rail-carousel .rail-wrap{ position:relative; }
   /* top is set inline by JS to the product image's own mid-height, since the
      image is a fixed square and the card underneath it (title/price/button)
      is taller - centering on the whole card would sit visibly below the
@@ -175,10 +168,10 @@
      beside the row rather than overlapping its cards - the rail itself no
      longer bleeds past that margin above the mobile breakpoint, so the two
      line up. */
-  .cat-rail-carousel .car-side{ position:absolute; top:50%; transform:translateY(-50%); background:var(--white); box-shadow:0 4px 16px rgba(0,0,0,.12); }
-  .cat-rail-carousel .car-side-prev{ left:-52px; }
-  .cat-rail-carousel .car-side-next{ right:-52px; }
-  .cat-rail-carousel .car-ctl{ margin-top:18px; }
+  .rail-carousel .car-side{ position:absolute; top:50%; transform:translateY(-50%); background:var(--white); box-shadow:0 4px 16px rgba(0,0,0,.12); }
+  .rail-carousel .car-side-prev{ left:-52px; }
+  .rail-carousel .car-side-next{ right:-52px; }
+  .rail-carousel .car-ctl{ margin-top:18px; }
 
   /* ===== Credibility ticker (section breaker) ===== */
   .credibility-ticker{ margin:44px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
@@ -202,20 +195,24 @@
      padding, giving it the same page-gutter margin the first card gets. */
   .products .product:last-child{ scroll-snap-align:end; }
   /* Fractional card counts on purpose: the part-visible next card is the
-     affordance that says "this scrolls". 3.4 up, 1.35 on phones - the 2.15
-     phone version made 159px cards with a price row that wrapped. */
-  .product{ flex:0 0 calc((100% - 3 * var(--gap)) / 3.4); scroll-snap-align:start; display:flex; flex-direction:column; }
-  @media (max-width:1000px){ .product{ flex-basis:calc((100% - 2 * var(--gap)) / 2.4); } }
-  @media (max-width:760px){ .product{ flex-basis:calc((100% - var(--gap)) / 1.8); } }
+     affordance that says "this scrolls". Same sizing on every rail on the
+     page (Bestsellers, the category rail) - one consistent card size, not
+     a different one per section. */
+  .product{ flex:0 0 calc((100% - 3 * var(--gap)) / 4.9); scroll-snap-align:start; display:flex; flex-direction:column; }
+  @media (max-width:1000px){ .product{ flex-basis:calc((100% - 2 * var(--gap)) / 3.4); } }
+  @media (max-width:760px){ .product{ flex-basis:calc((100% - var(--gap)) / 2.6); } }
   .car-ctl{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:26px; }
   .car-btn{ width:44px; height:44px; flex:none; border-radius:50%; border:1px solid var(--border); background:transparent; color:var(--text); display:flex; align-items:center; justify-content:center; transition:background .16s ease-out, color .16s ease-out, border-color .16s ease-out, opacity .16s ease-out; }
   .car-btn:hover:not(:disabled){ background:var(--black); border-color:var(--black); color:#fff; }
   .car-btn:disabled{ opacity:.28; cursor:default; }
   .car-prog{ position:relative; width:190px; height:2px; background:var(--border); border-radius:2px; overflow:hidden; }
   .car-prog span{ position:absolute; top:0; bottom:0; left:0; width:50%; background:var(--text); border-radius:2px; transition:left .2s ease-out, width .2s ease-out; }
-  .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; }
+  .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; border:1px solid transparent; transition:border-color .15s ease; }
   .product .pimg img{ object-fit:cover; transition:transform .3s ease-out; }
-  @media (hover:hover) and (pointer:fine){ .product:hover .pimg img{ transform:scale(1.05); } }
+  @media (hover:hover) and (pointer:fine){
+    .product:hover .pimg img{ transform:scale(1.05); }
+    .product:hover .pimg{ border-color:var(--border); }
+  }
   .badge{ position:absolute; top:14px; left:14px; z-index:1; background:var(--yellow); color:var(--black); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:var(--pill); font-family:var(--font-body); }
   .product h3{ font-family:var(--font-body); font-weight:400; font-size:15px; color:var(--text); line-height:1.4; margin-bottom:8px; min-height:42px; }
   .price-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:14px; }
@@ -718,7 +715,7 @@
       <span class="cat-picker-label">Ashtray</span>
     </button>
   </div>
-  <div class="carousel cat-rail-carousel" style="margin-top:32px;">
+  <div class="carousel rail-carousel" style="margin-top:32px;">
     <div class="rail-wrap">
       <section class="products" id="catRailTrack" tabindex="0" role="region" aria-label="Category products, scrollable"></section>
       <button type="button" class="car-btn car-side car-side-prev" id="catRailPrev" aria-label="Previous product" aria-controls="catRailTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -777,7 +774,8 @@
   <!-- BESTSELLERS: the live Best Seller collection, prices as listed today -->
   <h2 class="section-heading" id="bestsellers" style="padding-top:64px;">What people keep buying</h2>
   <p class="section-sub">The eight pieces in our Best Seller collection right now</p>
-  <div class="carousel">
+  <div class="carousel rail-carousel">
+  <div class="rail-wrap">
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13_52d797df-5f4d-4f3d-b30b-b5b40c3a9e34.png?v=1740653261" alt=""></a>
@@ -828,10 +826,11 @@
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
   </section>
+    <button type="button" class="car-btn car-side car-side-prev" id="bestPrev" aria-label="Previous product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="car-btn car-side car-side-next" id="bestNext" aria-label="Next product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
     <div class="car-ctl">
-      <button type="button" class="car-btn" id="bestPrev" aria-label="Previous product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
       <div class="car-prog" role="presentation"><span id="bestBar"></span></div>
-      <button type="button" class="car-btn" id="bestNext" aria-label="Next product" aria-controls="bestTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
   </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/best-seller" class="btn">See the full Best Seller collection</a></div>
@@ -1138,6 +1137,19 @@
     track.addEventListener('scroll', syncCarousel, { passive: true });
     window.addEventListener('resize', syncCarousel);
     syncCarousel();
+
+    /* Arrows center on the product image itself, same as the category
+       rail - the image is a fixed square, the card under it (title/price/
+       button) is taller. */
+    function syncBestArrowPosition(){
+      var img = track.querySelector('.pimg');
+      if (!img) return;
+      var mid = img.getBoundingClientRect().height / 2;
+      if (cPrev) cPrev.style.top = mid + 'px';
+      if (cNext) cNext.style.top = mid + 'px';
+    }
+    window.addEventListener('resize', syncBestArrowPosition);
+    syncBestArrowPosition();
   }
 
   /* Add to cart feedback */
