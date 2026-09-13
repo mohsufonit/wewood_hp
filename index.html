@@ -227,15 +227,16 @@
     .promo-tile{ flex:0 0 82%; scroll-snap-align:start; aspect-ratio:8/3; }
   }
 
-  /* ===== EMI breaker: full-bleed, on the theme's own accent, now a section
-         breaker directly under Categories. One bold line + real bank marks
-         inline, so the offer reads without opening the modal. ===== */
-  .emi-bar{ margin:56px calc(-1 * var(--page-gutter)) 0; background:var(--yellow); color:var(--dark); padding:20px var(--page-gutter); }
+  /* ===== EMI breaker: full-bleed, on the same dark panel already used for
+         Credibility/Craft (not yellow, which stays reserved for the sale
+         badge elsewhere on the page), a section breaker directly under
+         Categories. One bold line + real bank marks inline, so the offer
+         reads without opening the modal. ===== */
+  .emi-bar{ margin:56px calc(-1 * var(--page-gutter)) 0; background:var(--dark); color:#fff; padding:20px var(--page-gutter); }
   .emi-bar .inner{ display:flex; align-items:center; justify-content:center; gap:14px 28px; flex-wrap:wrap; }
-  .emi-headline{ font-size:16px; font-weight:500; color:var(--dark); text-align:center; }
+  .emi-headline{ font-size:16px; font-weight:500; color:#fff; text-align:center; }
   .emi-headline b{ font-weight:700; }
-  .emi-bar .btn{ background:var(--dark); border-color:var(--dark); color:#fff; padding:11px 22px; font-size:14.5px; flex:none; }
-  .emi-bar .btn:hover{ background:#fff; color:var(--dark); border-color:#fff; }
+  .emi-bar .btn{ padding:11px 22px; font-size:14.5px; flex:none; }
   /* Payment marks. Brand-coloured wordmarks drawn as inline SVG, not licensed
      logo files. Phase 4 should swap in the Shopify theme's real payment icons. */
   .pay-marks{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
@@ -704,7 +705,7 @@
         <span class="mark-tile" role="listitem" title="Visa"><svg viewBox="0 0 46 30" aria-label="Visa"><text x="23" y="19.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" font-style="italic" fill="#1A1F71" letter-spacing=".4">VISA</text></svg></span>
         <span class="mark-tile" role="listitem" title="RuPay"><svg viewBox="0 0 46 30" aria-label="RuPay"><text x="23" y="19" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10.5" font-weight="700"><tspan fill="#097DC6">Ru</tspan><tspan fill="#F58220">Pay</tspan></text></svg></span>
       </div>
-      <button type="button" id="emiOpenBtn" class="btn">View EMI options</button>
+      <button type="button" id="emiOpenBtn" class="btn btn-white">View EMI options</button>
     </div>
   </div>
 
