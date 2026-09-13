@@ -455,7 +455,13 @@
     .credibility-track .mark{ font-size:14px; }
 
     .products{ gap:12px; }
-    .product{ flex-basis:calc((100% - 12px) / 1.35); }
+    /* One full card + 3/4 of the next, sized off the real viewport rather
+       than the container's own %, since the visible-before-scrolling span
+       runs from the left gutter to the raw screen edge (not to the
+       container's own right padding) - see the .products comment above
+       on why scroll-padding-right exists for the same reason. */
+    .product{ flex-basis:calc((100vw - var(--page-gutter) - 12px) / 1.75); }
+    #catRailTrack.products .product{ flex-basis:calc((100vw - var(--page-gutter) - 12px) / 1.75); }
     .product h3{ font-size:14.5px; }
     .product .pimg{ margin-bottom:10px; }
     .car-ctl{ gap:0; margin-top:18px; }
