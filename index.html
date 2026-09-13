@@ -127,9 +127,14 @@
   @media (max-width:900px){
     /* Static 3-across grid instead of a swipe carousel, so every category
        is visible at once with no scrolling - circles a touch smaller than
-       desktop since they no longer need to carry a touch-swipe target. */
+       desktop since they no longer need to carry a touch-swipe target.
+       Rounded-square avatars instead of circles: same footprint, but a
+       circle only shows the photo inscribed inside it (~78% of the tile),
+       so the square shows the full photo - no cropped corners, no added
+       height. */
     .cat-picker{ display:grid; grid-template-columns:repeat(3, 1fr); justify-items:center; gap:20px 8px; margin:18px 0 0; }
-    .cat-picker-avatar{ width:64px; height:64px; }
+    .cat-picker-avatar{ width:64px; height:64px; border-radius:14px; }
+    .cat-picker-avatar img{ border-radius:12px; }
     .cat-picker-label{ font-size:10px; max-width:100%; }
   }
   /* Category rail cards: 30% smaller than Bestsellers' cards, image fills
