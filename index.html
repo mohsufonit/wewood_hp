@@ -316,6 +316,40 @@
   .elink:hover{ opacity:.6; }
   .elink svg{ flex:none; }
   .edit-more{ text-align:center; margin-top:48px; }
+
+  /* ===== Edit showcase: desktop-only interactive switcher, replacing the
+     stacked erow rows above 900px. One product shown full detail (gallery,
+     price, Add to cart) at a time; the pick row below swaps which one. The
+     stacked rows stay exactly as they are for mobile - they already fit the
+     narrow width; this only replaces the desktop experience. ===== */
+  .edit-showcase{ display:none; }
+  @media (min-width:901px){
+    .edit{ display:none; }
+    .edit-showcase{ display:grid; grid-template-columns:1.2fr 1fr; gap:44px; }
+    .es-main{ position:relative; aspect-ratio:16/11; border-radius:var(--radius); overflow:hidden; background:var(--white); }
+    .es-main img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .es-thumbs{ display:flex; gap:10px; margin-top:12px; }
+    .es-thumb{ width:64px; height:64px; border-radius:10px; overflow:hidden; border:2px solid transparent; padding:0; background:var(--white); cursor:pointer; flex:none; }
+    .es-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .es-thumb.is-active{ border-color:var(--dark); }
+    .es-info{ display:flex; flex-direction:column; justify-content:center; }
+    .es-eyebrow{ font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; }
+    .es-info h3{ font-size:28px; line-height:1.2; margin:0 0 10px; max-width:20ch; }
+    .es-line{ font-size:15px; color:var(--text-2); margin-bottom:18px; }
+    .es-price-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:22px; }
+    .es-price{ font-size:24px; font-weight:700; }
+    .es-compare{ font-size:15px; color:var(--text-3); text-decoration:line-through; }
+    .es-save{ font-size:13px; color:var(--green); font-weight:700; }
+    .es-actions{ display:flex; gap:12px; margin-bottom:32px; }
+    .es-actions .btn{ flex:1; text-align:center; justify-content:center; }
+    .es-picks{ grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .es-pick{ display:flex; gap:14px; align-items:center; text-align:left; background:var(--white); border:2px solid transparent; border-radius:var(--radius); padding:14px; cursor:pointer; font-family:var(--font-body); transition:border-color .15s ease; }
+    .es-pick:hover{ border-color:var(--border); }
+    .es-pick.is-active{ border-color:var(--dark); }
+    .es-pick img{ width:64px; height:64px; border-radius:10px; object-fit:cover; flex:none; }
+    .es-pick-name{ font-size:14px; font-weight:600; margin-bottom:3px; }
+    .es-pick-line{ font-size:12.5px; color:var(--text-2); }
+  }
   @media (max-width:1000px){
     .erow{ gap:26px; }
     .erow + .erow{ margin-top:-48px; }
@@ -981,6 +1015,34 @@
        CRO audit's "say why these were chosen" finding. Prices verified live. -->
   <h2 class="section-heading rail-heading">Three pieces we keep coming back to</h2>
   <p class="section-sub">Not a bestseller list. A short edit from the furniture range.</p>
+
+  <!-- Desktop-only interactive showcase: one product shown in full (gallery,
+       price, Add to cart) at a time, the pick row switches which. Mobile
+       keeps the stacked rows below unchanged - see .edit-showcase CSS. -->
+  <section class="edit-showcase" id="editShowcase">
+    <div class="es-media">
+      <a class="es-main" id="esMain" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
+        <img id="esMainImg" src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
+      </a>
+      <div class="es-thumbs" id="esThumbs"></div>
+    </div>
+    <div class="es-info">
+      <span class="es-eyebrow">From the furniture range</span>
+      <h3 id="esTitle"><a href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">Round Coffee Table, Blue Resin</a></h3>
+      <span class="es-line" id="esLine">A 35mm solid teak top</span>
+      <div class="es-price-row">
+        <span class="es-price" id="esPrice">&#8377;14,800</span>
+        <span class="es-compare" id="esCompare">&#8377;18,500</span>
+        <span class="es-save" id="esSave">Save 20%</span>
+      </div>
+      <div class="es-actions">
+        <button type="button" class="btn btn-dark js-atc" id="esAtc">Add to cart</button>
+        <a class="btn" id="esView" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View full details</a>
+      </div>
+    </div>
+    <div class="es-picks" id="esPicks"></div>
+  </section>
+
   <section class="edit">
 
     <div class="erow">
@@ -1366,6 +1428,115 @@
   initRail('bestTrack', 'bestPrev', 'bestNext', 'bestBar');
   initRail('naTrack', 'naPrev', 'naNext', 'naBar');
 
+  /* Edit showcase (desktop only): one of the three edit products shown in
+     full - gallery, price, Add to cart - with the pick row below switching
+     which. Prices, compare-at and every image below are from the live
+     product JSON (fetched 2026-09-15), the same figures already recorded
+     in the project doc's edit table. */
+  (function(){
+    var showcase = document.getElementById('editShowcase');
+    if (!showcase) return;
+    var EDIT_PRODUCTS = [
+      {
+        name: 'Round Coffee Table, Blue Resin',
+        alt: 'Round Coffee Table, teak wood with a special blue resin finish',
+        line: 'A 35mm solid teak top',
+        handle: 'round-coffee-table-teak-wood-with-special-blue-resin-finish',
+        price: 14800, compare: 18500,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/ct2.png?v=1738323531',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW301.jpg?v=1738323531',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW309.jpg?v=1738323531',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW315.jpg?v=1738323531'
+        ]
+      },
+      {
+        name: 'Nesting Table Set of 3, Teak',
+        alt: 'Nesting Table Set of 3, teak wood with a transparent resin finish',
+        line: 'Three tables, one footprint',
+        handle: 'nesting-table-set-of-3-teak-wood-with-transparent-resin-finish',
+        price: 13890, compare: 25980,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW032.jpg?v=1738232386',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW043.jpg?v=1738232386',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW044.jpg?v=1738232386',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WW045.jpg?v=1738232386'
+        ]
+      },
+      {
+        name: 'Live-Edge Wood and Blue Epoxy Table',
+        alt: 'Modern live-edge wood table with blue epoxy resin',
+        line: 'No two tops alike',
+        handle: 'modern-live-edge-wood-blue-epoxy-resin-table',
+        price: 39499, compare: 65000,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.16.00PM.jpg?v=1750327979',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsApp_Image_2025-06-19_at_12.15.58_PM_1.jpg?v=1750328031',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsApp_Image_2025-06-19_at_12.16.00_PM_1.jpg?v=1750328032',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsApp_Image_2025-06-19_at_12.16.00_PM_3.jpg?v=1750328031'
+        ]
+      }
+    ];
+    function inr(n){ return '₹' + n.toLocaleString('en-IN'); }
+    var esMain = document.getElementById('esMain');
+    var esMainImg = document.getElementById('esMainImg');
+    var esThumbs = document.getElementById('esThumbs');
+    var esTitle = document.getElementById('esTitle');
+    var esLine = document.getElementById('esLine');
+    var esPrice = document.getElementById('esPrice');
+    var esCompare = document.getElementById('esCompare');
+    var esSave = document.getElementById('esSave');
+    var esView = document.getElementById('esView');
+    var esPicks = document.getElementById('esPicks');
+    var picks = [];
+
+    function selectProduct(idx){
+      var p = EDIT_PRODUCTS[idx];
+      var url = 'https://wewood.co.in/products/' + p.handle;
+      esMain.href = url;
+      esMainImg.src = p.images[0];
+      esMainImg.alt = p.alt;
+      esTitle.innerHTML = '<a href="' + url + '">' + p.name + '</a>';
+      esLine.textContent = p.line;
+      esPrice.textContent = inr(p.price);
+      esCompare.textContent = inr(p.compare);
+      esSave.textContent = 'Save ' + Math.round((p.compare - p.price) / p.compare * 100) + '%';
+      esView.href = url;
+      esThumbs.innerHTML = '';
+      p.images.forEach(function(src, i){
+        var t = document.createElement('button');
+        t.type = 'button'; t.className = 'es-thumb' + (i === 0 ? ' is-active' : '');
+        t.setAttribute('aria-label', 'Show image ' + (i + 1) + ' of ' + p.name);
+        var img = document.createElement('img'); img.src = src; img.alt = '';
+        t.appendChild(img);
+        t.addEventListener('click', function(){
+          esMainImg.src = src;
+          esThumbs.querySelectorAll('.es-thumb').forEach(function(x){ x.classList.remove('is-active'); });
+          t.classList.add('is-active');
+        });
+        esThumbs.appendChild(t);
+      });
+      picks.forEach(function(el, i){ el.classList.toggle('is-active', i === idx); });
+    }
+
+    EDIT_PRODUCTS.forEach(function(p, i){
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'es-pick' + (i === 0 ? ' is-active' : '');
+      btn.setAttribute('aria-label', 'Show ' + p.name);
+      var img = document.createElement('img'); img.src = p.images[0]; img.alt = '';
+      var info = document.createElement('div');
+      info.innerHTML = '<div class="es-pick-name">' + p.name + '</div><div class="es-pick-line">' + p.line + '</div>';
+      btn.appendChild(img); btn.appendChild(info);
+      btn.addEventListener('click', function(){ selectProduct(i); });
+      esPicks.appendChild(btn);
+      picks.push(btn);
+    });
+    selectProduct(0);
+  })();
+
   /* Add to cart feedback */
   var cartCount = document.getElementById('cartCount');
   document.querySelectorAll('.js-atc').forEach(function(btn){
@@ -1656,7 +1827,7 @@
 
     var COMPONENT_SELECTORS = [
       '.product', '.room', '.promo-tile', '.review', '.faq-item',
-      '.cat-picker-item', '.mark-tile', '.erow',
+      '.cat-picker-item', '.mark-tile', '.erow', '.edit-showcase', '.es-pick',
       '.rail-carousel', '.cat-picker', '.hero', '.credibility-ticker',
       '.emi-bar', '.rooms', '.stl', '.reviews-ticker', '.assure',
       '.faq-list', 'footer.footer', 'header.header', '.promo-strip'
