@@ -227,7 +227,12 @@
   .fp-card.is-active{ transform:scale(1) translateY(0); opacity:1; }
   .fp-media{ position:relative; aspect-ratio:9/16; border-radius:var(--radius); overflow:hidden; background:var(--white); box-shadow:0 8px 24px rgba(0,0,0,.12); transition:box-shadow .35s ease-out; }
   .fp-card.is-active .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
-  .fp-media video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .fp-poster{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* The video sits over the poster image but stays invisible until this
+     card is active, so a paused/never-played video never shows through as
+     a random frame - inactive cards always read as a clean product photo. */
+  .fp-media video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity .25s ease-out; }
+  .fp-card.is-active .fp-media video{ opacity:1; }
   .fp-info{ padding:12px 2px 0; }
   .fp-title{ font-size:12.5px; color:var(--text); line-height:1.35; margin-bottom:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .fp-price{ font-size:13px; font-weight:700; }
@@ -1093,35 +1098,35 @@
   <div class="rail-wrap">
   <section class="fp-track" id="fpTrack" tabindex="0" role="region" aria-label="Featured product videos, scrollable">
     <a class="fp-card" href="https://wewood.co.in/products/premium-wood-resin-nesting-table-set-modern-black-metal-base-handcrafted-by-wewood">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/4642ff9794ad45bbbcbbce0c306975ef/4642ff9794ad45bbbcbbce0c306975ef.HD-720p-1.6Mbps-86344523.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/4642ff9794ad45bbbcbbce0c306975ef/4642ff9794ad45bbbcbbce0c306975ef.HD-720p-1.6Mbps-86344523.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Premium Wood &amp; Resin Nesting Table Set, Modern Black Metal Base Acacia Wood</div><div class="fp-price">&#8377;16,000</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/9df1fb3b63bb4fa194c4f81ffe685558.thumbnail.0000000000_small.jpg?v=1782901218"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/9df1fb3b63bb4fa194c4f81ffe685558/9df1fb3b63bb4fa194c4f81ffe685558.HD-1080p-2.5Mbps-87849290.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/9df1fb3b63bb4fa194c4f81ffe685558.thumbnail.0000000000_small.jpg?v=1782901218" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/9df1fb3b63bb4fa194c4f81ffe685558.thumbnail.0000000000_small.jpg?v=1782901218"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/9df1fb3b63bb4fa194c4f81ffe685558/9df1fb3b63bb4fa194c4f81ffe685558.HD-1080p-2.5Mbps-87849290.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Wood &amp; White Epoxy Nesting Tables, Set of 3</div><div class="fp-price">&#8377;20,000</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/premium-solid-wood-resin-rounf-nesting-side-tables">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/753cffe96b9f4a89a9a46973e9350b8f.thumbnail.0000000000_small.jpg?v=1782901457"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/753cffe96b9f4a89a9a46973e9350b8f/753cffe96b9f4a89a9a46973e9350b8f.HD-1080p-2.5Mbps-87849616.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/753cffe96b9f4a89a9a46973e9350b8f.thumbnail.0000000000_small.jpg?v=1782901457" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/753cffe96b9f4a89a9a46973e9350b8f.thumbnail.0000000000_small.jpg?v=1782901457"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/753cffe96b9f4a89a9a46973e9350b8f/753cffe96b9f4a89a9a46973e9350b8f.HD-1080p-2.5Mbps-87849616.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Premium Solid Wood Resin Round Nesting Side Tables, Set of 2</div><div class="fp-price">&#8377;15,000</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/black-floral-epoxy-natural-wood-nesting-tables-set-of-3">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/b12e479df2fc430f854b0a1b9aec27fe.thumbnail.0000000000_small.jpg?v=1782901570"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/b12e479df2fc430f854b0a1b9aec27fe/b12e479df2fc430f854b0a1b9aec27fe.HD-1080p-2.5Mbps-87849769.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/b12e479df2fc430f854b0a1b9aec27fe.thumbnail.0000000000_small.jpg?v=1782901570" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/b12e479df2fc430f854b0a1b9aec27fe.thumbnail.0000000000_small.jpg?v=1782901570"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/b12e479df2fc430f854b0a1b9aec27fe/b12e479df2fc430f854b0a1b9aec27fe.HD-1080p-2.5Mbps-87849769.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Black Floral Epoxy &amp; Natural Wood Nesting Tables, Set of 3</div><div class="fp-price">&#8377;20,000</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/c8af21ae83f547f5bfdf6176d251b252.thumbnail.0000000000_small.jpg?v=1782901972"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/c8af21ae83f547f5bfdf6176d251b252/c8af21ae83f547f5bfdf6176d251b252.HD-1080p-2.5Mbps-87850208.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/c8af21ae83f547f5bfdf6176d251b252.thumbnail.0000000000_small.jpg?v=1782901972" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/c8af21ae83f547f5bfdf6176d251b252.thumbnail.0000000000_small.jpg?v=1782901972"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/c8af21ae83f547f5bfdf6176d251b252/c8af21ae83f547f5bfdf6176d251b252.HD-1080p-2.5Mbps-87850208.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Round Coffee Table, Teak Wood with Special Blue Resin Finish</div><div class="fp-price">&#8377;14,800 <span class="compare">&#8377;18,500</span> <span class="save">Save 20%</span></div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/nesting-table-set-of-1-teak-wood-with-transparent-resin-finish">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/e631a2ef7c924fb5b6c35333531d0a50.thumbnail.0000000000_small.jpg?v=1783407546"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/e631a2ef7c924fb5b6c35333531d0a50/e631a2ef7c924fb5b6c35333531d0a50.HD-1080p-7.2Mbps-88293334.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/e631a2ef7c924fb5b6c35333531d0a50.thumbnail.0000000000_small.jpg?v=1783407546" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/e631a2ef7c924fb5b6c35333531d0a50.thumbnail.0000000000_small.jpg?v=1783407546"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/e631a2ef7c924fb5b6c35333531d0a50/e631a2ef7c924fb5b6c35333531d0a50.HD-1080p-7.2Mbps-88293334.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Side Table Set of 1, Teak Wood with Transparent Resin Finish</div><div class="fp-price">&#8377;2,999</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/03a6fb9358d14f42bdb4dec75d0118e9.thumbnail.0000000000_small.jpg?v=1783407547"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/03a6fb9358d14f42bdb4dec75d0118e9/03a6fb9358d14f42bdb4dec75d0118e9.HD-1080p-7.2Mbps-88293335.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/03a6fb9358d14f42bdb4dec75d0118e9.thumbnail.0000000000_small.jpg?v=1783407547" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/03a6fb9358d14f42bdb4dec75d0118e9.thumbnail.0000000000_small.jpg?v=1783407547"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/03a6fb9358d14f42bdb4dec75d0118e9/03a6fb9358d14f42bdb4dec75d0118e9.HD-1080p-7.2Mbps-88293335.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Aurelia Trio Nesting Tables, Wood &amp; Grey Resin</div><div class="fp-price">&#8377;39,000</div></div>
     </a>
     <a class="fp-card" href="https://wewood.co.in/products/round-wooden-resin-platter-purple-inlay">
-      <div class="fp-media"><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/a628541261b74d38ad00a0e6f8c5a4ee.thumbnail.0000000000_small.jpg?v=1783407560"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/a628541261b74d38ad00a0e6f8c5a4ee/a628541261b74d38ad00a0e6f8c5a4ee.HD-1080p-7.2Mbps-88293333.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/a628541261b74d38ad00a0e6f8c5a4ee.thumbnail.0000000000_small.jpg?v=1783407560" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/a628541261b74d38ad00a0e6f8c5a4ee.thumbnail.0000000000_small.jpg?v=1783407560"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/a628541261b74d38ad00a0e6f8c5a4ee/a628541261b74d38ad00a0e6f8c5a4ee.HD-1080p-7.2Mbps-88293333.mp4?v=0" type="video/mp4"></video></div>
       <div class="fp-info"><div class="fp-title">Round Wooden &amp; Resin Platter, Purple Inlay</div><div class="fp-price">&#8377;6,999</div></div>
     </a>
   </section>
@@ -1567,11 +1572,14 @@
 
   /* Featured Products video carousel. Explicit state, not scroll-position
      guessing: exactly one card is "active" at a time (activeIndex), only
-     its video plays, and every other video stays paused - hovering a
-     different card requests it become active, but a switch only actually
-     happens if at least 15s have passed since the last one (auto-rotate
-     runs on that same 15s beat, so the two never fight). Arrows/dots are
-     explicit user action and bypass the 15s gate.
+     its video plays and it's always centered, every other card shows a
+     plain product image (see the CSS - the video sits opacity:0 under a
+     poster <img> until it's the active one, so a paused card never shows
+     a random frozen video frame). Hover, swipe/manual scroll and the
+     arrows all switch immediately - only the automatic rotation is paced,
+     to a 15s-per-card beat, so the timer can't replace a video before
+     anyone's had a chance to look at it; any real interaction resets
+     that beat (see restart()).
 
      Nothing plays and the auto-rotate timer never runs while the section
      is off-screen - it used to run regardless, and the timer's own
@@ -1592,8 +1600,6 @@
     var lastSwitchAt = 0;
     var isVisible = false;
     var isProgrammaticScroll = false;
-    var hoveredIdx = null;
-    var hoverTimer = null;
     var fpTimer = null;
 
     var dots = cards.map(function(_, i){
@@ -1618,42 +1624,35 @@
       cards.forEach(function(c){ var v = c.querySelector('video'); if (v && !v.paused) v.pause(); });
     }
 
-    function setActive(idx){
+    function center(idx){
+      if (!isVisible) return;
+      isProgrammaticScroll = true;
+      cards[idx].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      setTimeout(function(){ isProgrammaticScroll = false; }, 700);
+    }
+
+    /* Hover, swipe/manual scroll and the arrows are all deliberate user
+       action - they switch immediately, no waiting. Only the automatic
+       rotation is paced, so a video isn't replaced by the timer before
+       anyone's had a chance to actually look at it. */
+    function setActive(idx, opts){
+      opts = opts || {};
       idx = Math.max(0, Math.min(cards.length - 1, idx));
+      if (idx === activeIndex && opts.force !== true) return;
       activeIndex = idx;
       lastSwitchAt = Date.now();
-      hoveredIdx = null;
-      if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
       cards.forEach(function(c, i){ c.classList.toggle('is-active', i === idx); });
       dots.forEach(function(d, i){ d.classList.toggle('is-active', i === idx); });
       if (fpPrev) fpPrev.disabled = idx === 0;
       if (fpNext) fpNext.disabled = idx === cards.length - 1;
-      if (isVisible) {
-        isProgrammaticScroll = true;
-        cards[idx].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-        setTimeout(function(){ isProgrammaticScroll = false; }, 700);
-      }
+      if (opts.center !== false) center(idx);
       playOnly(idx);
       restart();
     }
 
-    function requestSwitch(idx){
-      if (idx === activeIndex) return;
-      var elapsed = Date.now() - lastSwitchAt;
-      if (elapsed >= MIN_DWELL) { setActive(idx); return; }
-      hoveredIdx = idx;
-      if (hoverTimer) clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(function(){
-        if (hoveredIdx === idx) setActive(idx);
-      }, MIN_DWELL - elapsed);
-    }
     cards.forEach(function(c, i){
-      c.addEventListener('mouseenter', function(){ requestSwitch(i); });
-      c.addEventListener('mouseleave', function(){
-        if (hoveredIdx === i) { hoveredIdx = null; if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; } }
-      });
+      c.addEventListener('mouseenter', function(){ setActive(i); });
     });
-
     if (fpPrev) fpPrev.addEventListener('click', function(){ setActive(activeIndex - 1); });
     if (fpNext) fpNext.addEventListener('click', function(){ setActive(activeIndex + 1); });
 
@@ -1664,9 +1663,9 @@
     fpTrack.addEventListener('mouseleave', start);
     fpTrack.addEventListener('touchstart', stop, { passive: true });
 
-    /* A manual drag-scroll (not one of our own setActive calls) still
-       updates which card is visually "active" and playing, so dragging
-       feels direct - but it goes through the same 15s gate as a hover. */
+    /* A manual drag-scroll (not one of our own center() calls) also
+       switches immediately once it settles - swiping to the next video
+       shouldn't need to wait either. */
     var scrollTimer = null;
     fpTrack.addEventListener('scroll', function(){
       if (isProgrammaticScroll) return;
@@ -1679,7 +1678,7 @@
           var dist = Math.abs((r.left + r.width / 2) - trackMid);
           if (dist < bestDist) { bestDist = dist; best = i; }
         });
-        requestSwitch(best);
+        setActive(best, { center: false });
       }, 120);
     }, { passive: true });
 
@@ -1687,14 +1686,17 @@
     if (dots[0]) dots[0].classList.add('is-active');
     if (fpPrev) fpPrev.disabled = true;
 
+    var hasCentered = false;
     var observer = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         isVisible = entry.isIntersecting;
-        if (isVisible) { lastSwitchAt = Date.now(); playOnly(activeIndex); start(); }
-        else {
+        if (isVisible) {
+          lastSwitchAt = Date.now();
+          if (!hasCentered) { hasCentered = true; center(activeIndex); }
+          playOnly(activeIndex);
+          start();
+        } else {
           stop(); pauseAll();
-          hoveredIdx = null;
-          if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
         }
       });
     }, { threshold: 0.3, rootMargin: '200px 0px' });
