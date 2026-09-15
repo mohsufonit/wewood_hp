@@ -62,6 +62,12 @@
   .rail-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .rail-head .rail-heading{ padding-bottom:0; }
   .rail-cta{ margin-bottom:20px; white-space:nowrap; }
+  .tab-group{ display:flex; gap:10px; padding:56px 0 20px; }
+  .tab-btn{ font-family:var(--font-heading); font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; }
+  .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:transparent; transition:background .15s ease-out; }
+  .tab-btn.is-active{ color:var(--dark); }
+  .tab-btn.is-active::after{ background:var(--dark); }
+  .tab-btn + .tab-btn{ margin-left:8px; padding-left:14px; border-left:1px solid var(--border); }
   .section-sub.rail-sub{ text-align:left; margin-bottom:24px; }
 
   /* ===== Header: thin, persistent search, real categories ===== */
@@ -122,7 +128,7 @@
      thing controlling that lower gap - sized to match the section-break
      rhythm used elsewhere on the page (ticker, promo strip), not just
      enough room for the label's own line-height. */
-  .cat-eyebrow{ text-align:center; font-size:15px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3); margin:36px 0; }
+  .cat-eyebrow{ text-align:center; font-size:15px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dark); margin:36px 0; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
   .cat-picker-avatar{ width:136px; height:136px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
@@ -131,11 +137,8 @@
   .cat-picker-label{ max-width:110px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--text-2); text-align:center; line-height:1.3; }
   .cat-picker-item.is-active .cat-picker-label{ color:var(--dark); }
   /* Desktop drops the section heading entirely so the picker, the product
-     rail and its Add to cart button all land inside one viewport height -
-     mobile keeps the heading (see the max-width:900px block below). */
-  @media (min-width:901px){ h2.cat-heading{ display:none; } }
+     rail and its Add to cart button all land inside one viewport height. */
   @media (max-width:900px){
-    .cat-eyebrow{ display:none; }
     /* Static 3-across grid (2 rows for 6 categories) instead of a swipe
        carousel. 110px is the largest circle that still fits 3-per-row on
        a 390px phone: three circles alone are already 330px of the 354px
@@ -214,10 +217,20 @@
   .fp-carousel .rail-wrap{ padding:26px 0; }
   .fp-track{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--page-gutter)); padding:14px var(--page-gutter) 4px; }
   .fp-track::-webkit-scrollbar{ display:none; }
-  .fp-card{ flex:0 0 220px; scroll-snap-align:center; display:block; text-decoration:none; color:inherit; transform:scale(.84) translateY(8px); opacity:.5; transition:transform .35s ease-out, opacity .35s ease-out; }
-  .fp-card.is-active{ transform:scale(1) translateY(0); opacity:1; }
+  /* All cards sit at full strength by default on every breakpoint - every
+     video plays regardless of which card is "active", so nothing should
+     read as dimmed until there's a real reason (mobile: the one card in
+     view; desktop: whichever one you're pointing at). */
+  .fp-card{ flex:0 0 220px; scroll-snap-align:center; display:block; text-decoration:none; color:inherit; transform:scale(1) translateY(0); opacity:1; transition:transform .35s ease-out, opacity .35s ease-out; }
   .fp-media{ position:relative; aspect-ratio:9/16; border-radius:var(--radius); overflow:hidden; background:var(--white); box-shadow:0 8px 24px rgba(0,0,0,.12); transition:box-shadow .35s ease-out; }
-  .fp-card.is-active .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
+  /* Desktop: pure CSS :hover, independent of the JS activeIndex - dims
+     every sibling and zooms/deepens the shadow on whichever card the
+     pointer is actually over. */
+  @media (hover:hover) and (pointer:fine) and (min-width:901px){
+    .fp-track:hover .fp-card{ opacity:.5; transform:scale(.92) translateY(0); }
+    .fp-track .fp-card:hover{ opacity:1; transform:scale(1.08) translateY(0); z-index:2; }
+    .fp-track .fp-card:hover .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
+  }
   .fp-poster{ width:100%; height:100%; object-fit:cover; display:block; }
   /* Desktop: every video plays at once (real motion is the point of this
      section), the focused/hovered card is just bigger - see .fp-card
@@ -241,7 +254,8 @@
   @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
   /* Autoplay videos run indefinitely, so a manual stop control is required
      (not just decorative) - defaults to paused under prefers-reduced-motion. */
-  .fp-playtoggle{ width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; margin-bottom:20px; flex:none; }
+  .fp-heading{ text-align:center; }
+  .fp-playtoggle{ position:absolute; top:0; right:0; z-index:3; width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.1); }
   .fp-playtoggle:hover{ border-color:var(--dark); }
   .fp-playtoggle[aria-pressed="true"] .ic-pause{ display:none; }
   .fp-playtoggle[aria-pressed="true"] .ic-play{ display:block; }
@@ -641,7 +655,9 @@
     #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 1.75); }
     .fp-carousel .rail-wrap{ padding:14px 0; }
     .fp-track{ gap:12px; scroll-padding:0 18px; padding:10px 18px 4px; }
-    .fp-card{ flex-basis:74vw; max-width:260px; }
+    .fp-card{ flex-basis:74vw; max-width:260px; transform:scale(.84) translateY(8px); opacity:.5; }
+    .fp-card.is-active{ transform:scale(1) translateY(0); opacity:1; }
+    .fp-card.is-active .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
     .product h3{ font-size:14.5px; }
     .product .pimg{ margin-bottom:10px; }
     .wish-btn{ width:30px; height:30px; top:8px; right:8px; }
@@ -657,7 +673,6 @@
     .save{ font-size:11px; }
     .product .btn{ width:100%; padding:10px 12px; font-size:13.5px; }
     .see-all{ margin-top:22px; }
-    .see-all .btn{ width:100%; }
 
     .emi-bar{ margin-top:36px; padding:16px var(--page-gutter); }
     .emi-headline{ font-size:13.5px; }
@@ -851,7 +866,7 @@
       <div class="car-prog" role="presentation"><span id="catRailBar"></span></div>
     </div>
   </div>
-  <div class="see-all"><a href="https://wewood.co.in/collections/nesting-table" class="btn" id="catRailSeeAll">See the full collection</a></div>
+  <div class="see-all"><a href="https://wewood.co.in/collections/nesting-table" class="btn btn-sm" id="catRailSeeAll">Shop Nesting Tables</a></div>
 
   <!-- EMI BREAKER: moved here as a section breaker right after categories, per
        client request. Bold section breaker, real bank offers, real bank marks
@@ -871,36 +886,19 @@
     </div>
   </div>
 
-  <!-- REVIEWS: the six real testimonials on wewood.co.in, each with its real
-       per-review star count from the live theme's review carousel (fetched
-       2026-09-15 - five are 5-star, Aparna Agarwal is genuinely 4-star, not
-       rounded up). Run as a compact ticker acting as a section breaker
-       between Rooms and Bestsellers, duplicated once for a seamless loop.
-       Pauses on hover (desktop) and on tap (touch). -->
-  <h2 class="section-heading rail-heading is-caps">Loved by the homes that own them</h2>
-  <section class="reviews-ticker reviews-ticker-compact" id="reviewsTicker">
-    <div class="reviews-track">
-      <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting table"></div></div></div>
-      <div class="review" data-rating="5"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt="Teak and resin table"></div></div></div>
-      <div class="review" data-rating="5"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt="Coffee table"></div></div></div>
-      <div class="review" data-rating="5"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Serving tray"></div></div></div>
-      <div class="review" data-rating="4"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clock"></div></div></div>
-      <div class="review" data-rating="5"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt="Tabletop accent"></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt=""></div></div></div>
-      <div class="review" data-rating="4" aria-hidden="true"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt=""></div></div></div>
-    </div>
-  </section>
-
-  <!-- BESTSELLERS: the live Best Seller collection, prices as listed today -->
+  <!-- BESTSELLERS / NEW ARRIVALS: one rail, two tabs - the client wanted
+       these picked between rather than both always visible. Both tracks
+       exist in the DOM at all times (their carousel JS binds the same way
+       either way); the inactive one is just [hidden]. The CTA is tab-aware
+       ("Shop Bestsellers" / "Shop New Arrivals") and sits below the rail,
+       not beside the heading, since the tabs already do the heading's job. -->
   <div class="rail-head">
-    <h2 class="section-heading rail-heading is-caps" id="bestsellers">Bestsellers</h2>
-    <a href="https://wewood.co.in/collections/best-seller" class="elink rail-cta">See the full collection <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+    <div class="tab-group" role="tablist" aria-label="Bestsellers or New Arrivals">
+      <button type="button" class="tab-btn is-active" id="tabBestBtn" role="tab" aria-selected="true" aria-controls="bestWrap">Bestsellers</button>
+      <button type="button" class="tab-btn" id="tabNewBtn" role="tab" aria-selected="false" aria-controls="naWrap">New Arrivals</button>
+    </div>
   </div>
-  <div class="carousel rail-carousel">
+  <div class="carousel rail-carousel" id="bestWrap" role="tabpanel" aria-labelledby="tabBestBtn">
   <div class="rail-wrap">
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
@@ -968,34 +966,7 @@
     </div>
   </div>
 
-  <!-- PROMO STRIP: three real collections, each with its actual maximum live
-       discount computed from products.json, not an invented percentage.
-       Sits between Bestsellers and New Arrivals as a section breaker. -->
-  <section class="promo-strip" style="margin-top:44px;">
-    <a href="https://wewood.co.in/collections/nesting-table" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting tables">
-      <span class="promo-tag">Up to 47% off</span>
-      <div class="promo-text"><b>Nesting Tables</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
-    </a>
-    <a href="https://wewood.co.in/collections/dining-entertainment" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Dining and entertainment">
-      <span class="promo-tag">Up to 38% off</span>
-      <div class="promo-text"><b>Dining &amp; Entertainment</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
-    </a>
-    <a href="https://wewood.co.in/collections/clock" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clocks">
-      <span class="promo-tag">Up to 24% off</span>
-      <div class="promo-text"><b>Wall Clocks</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
-    </a>
-  </section>
-
-  <!-- NEW ARRIVALS: the live New Arrivals collection, prices as listed today.
-       Was a nav link only - the homepage itself had no dedicated rail for it. -->
-  <div class="rail-head">
-    <h2 class="section-heading rail-heading is-caps" id="new-arrivals">New Arrivals</h2>
-    <a href="https://wewood.co.in/collections/new-arrivals" class="elink rail-cta">See the full collection <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
-  </div>
-  <div class="carousel rail-carousel">
+  <div class="carousel rail-carousel" id="naWrap" role="tabpanel" aria-labelledby="tabNewBtn" hidden>
   <div class="rail-wrap">
   <section class="products" id="naTrack" tabindex="0" role="region" aria-label="New Arrivals products, scrollable">
     <div class="product">
@@ -1062,6 +1033,31 @@
       <div class="car-prog" role="presentation"><span id="naBar"></span></div>
     </div>
   </div>
+  <div class="see-all"><a href="https://wewood.co.in/collections/best-seller" class="btn btn-sm" id="bnCta">Shop Bestsellers</a></div>
+
+  <!-- REVIEWS: the six real testimonials on wewood.co.in, each with its real
+       per-review star count from the live theme's review carousel (fetched
+       2026-09-15 - five are 5-star, Aparna Agarwal is genuinely 4-star, not
+       rounded up). Run as a compact ticker acting as a section breaker,
+       duplicated once for a seamless loop. Pauses on hover (desktop) and
+       on tap (touch). -->
+  <h2 class="section-heading rail-heading is-caps">Loved by the homes that own them</h2>
+  <section class="reviews-ticker reviews-ticker-compact" id="reviewsTicker">
+    <div class="reviews-track">
+      <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting table"></div></div></div>
+      <div class="review" data-rating="5"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt="Teak and resin table"></div></div></div>
+      <div class="review" data-rating="5"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt="Coffee table"></div></div></div>
+      <div class="review" data-rating="5"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Serving tray"></div></div></div>
+      <div class="review" data-rating="4"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clock"></div></div></div>
+      <div class="review" data-rating="5"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt="Tabletop accent"></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="4" aria-hidden="true"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt=""></div></div></div>
+    </div>
+  </section>
 
   <!-- FEATURED PRODUCTS: the real "Featured Products" video carousel from
        wewood.co.in's own live homepage, rebuilt with the site's actual
@@ -1071,12 +1067,10 @@
        carousel auto-rotates through it (pausing on hover), closer to the
        "one piece in focus" reference the client gave. Manual arrows and
        dots always override the timer. -->
-  <div class="rail-head">
-    <h2 class="section-heading rail-heading is-caps">Featured Collection</h2>
-    <button type="button" class="fp-playtoggle" id="fpPlayToggle" aria-pressed="false" aria-label="Pause videos"><svg class="ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><svg class="ic-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 4l14 8-14 8V4z"/></svg></button>
-  </div>
+  <h2 class="section-heading is-caps fp-heading">Featured Collection</h2>
   <div class="carousel rail-carousel fp-carousel" id="fpCarousel">
   <div class="rail-wrap">
+    <button type="button" class="fp-playtoggle" id="fpPlayToggle" aria-pressed="false" aria-label="Pause videos"><svg class="ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><svg class="ic-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 4l14 8-14 8V4z"/></svg></button>
   <section class="fp-track" id="fpTrack" tabindex="0" role="region" aria-label="Featured product videos, scrollable">
     <a class="fp-card" href="https://wewood.co.in/products/premium-wood-resin-nesting-table-set-modern-black-metal-base-handcrafted-by-wewood">
       <div class="fp-media"><img class="fp-poster" src="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715" alt=""><video playsinline loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/4642ff9794ad45bbbcbbce0c306975ef/4642ff9794ad45bbbcbbce0c306975ef.HD-720p-1.6Mbps-86344523.mp4?v=0" type="video/mp4"></video></div>
@@ -1116,6 +1110,26 @@
   </div>
   <div class="fp-dots" id="fpDots"></div>
   </div>
+
+  <!-- PROMO STRIP: three real collections, each with its actual maximum live
+       discount computed from products.json, not an invented percentage. -->
+  <section class="promo-strip" style="margin-top:44px;">
+    <a href="https://wewood.co.in/collections/nesting-table" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting tables">
+      <span class="promo-tag">Up to 47% off</span>
+      <div class="promo-text"><b>Nesting Tables</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+    <a href="https://wewood.co.in/collections/dining-entertainment" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Dining and entertainment">
+      <span class="promo-tag">Up to 38% off</span>
+      <div class="promo-text"><b>Dining &amp; Entertainment</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+    <a href="https://wewood.co.in/collections/clock" class="promo-tile">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clocks">
+      <span class="promo-tag">Up to 24% off</span>
+      <div class="promo-text"><b>Wall Clocks</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
+    </a>
+  </section>
 
   <!-- THE EDIT: four real products, each with the reason it is here. Answers the
        CRO audit's "say why these were chosen" finding. Prices verified live.
@@ -1539,6 +1553,33 @@
   initRail('bestTrack', 'bestPrev', 'bestNext', 'bestBar');
   initRail('naTrack', 'naPrev', 'naNext', 'naBar');
 
+  /* Bestsellers / New Arrivals tabs: both carousels exist in the DOM (and
+     are already bound by initRail above) at all times - switching tabs
+     just toggles which one is [hidden] and updates the CTA below. */
+  (function(){
+    var tabBestBtn = document.getElementById('tabBestBtn');
+    var tabNewBtn = document.getElementById('tabNewBtn');
+    var bestWrap = document.getElementById('bestWrap');
+    var naWrap = document.getElementById('naWrap');
+    var bnCta = document.getElementById('bnCta');
+    if (!tabBestBtn || !tabNewBtn) return;
+    function showTab(which){
+      var isBest = which === 'best';
+      tabBestBtn.classList.toggle('is-active', isBest);
+      tabNewBtn.classList.toggle('is-active', !isBest);
+      tabBestBtn.setAttribute('aria-selected', isBest ? 'true' : 'false');
+      tabNewBtn.setAttribute('aria-selected', isBest ? 'false' : 'true');
+      bestWrap.hidden = !isBest;
+      naWrap.hidden = isBest;
+      if (bnCta) {
+        bnCta.href = isBest ? 'https://wewood.co.in/collections/best-seller' : 'https://wewood.co.in/collections/new-arrivals';
+        bnCta.textContent = isBest ? 'Shop Bestsellers' : 'Shop New Arrivals';
+      }
+    }
+    tabBestBtn.addEventListener('click', function(){ showTab('best'); });
+    tabNewBtn.addEventListener('click', function(){ showTab('new'); });
+  })();
+
   /* Featured Products video carousel - desktop and mobile behave
      differently on purpose:
        Desktop: every video plays at once (all 8 have room to breathe in
@@ -1902,12 +1943,12 @@
     ]
   };
   var CAT_META = {
-    'nesting-table': { total: 22, label: 'Nesting Table' },
-    'dining-entertainment': { total: 12, label: 'Dining & Entertainment' },
-    'coffee-table': { total: 10, label: 'Coffee Table' },
-    'cheese-boards': { total: 9, label: 'Cheese Boards' },
-    'clock': { total: 11, label: 'Clock' },
-    'ashtray': { total: 3, label: 'Ashtray' }
+    'nesting-table': { total: 22, label: 'Nesting Table', shopLabel: 'Nesting Tables' },
+    'dining-entertainment': { total: 12, label: 'Dining & Entertainment', shopLabel: 'Dining & Entertainment' },
+    'coffee-table': { total: 10, label: 'Coffee Table', shopLabel: 'Coffee Tables' },
+    'cheese-boards': { total: 9, label: 'Cheese Boards', shopLabel: 'Cheese Boards' },
+    'clock': { total: 11, label: 'Clock', shopLabel: 'Clocks' },
+    'ashtray': { total: 3, label: 'Ashtray', shopLabel: 'Ashtrays' }
   };
   var catPicker = document.querySelectorAll('.cat-picker-item');
   var catRailTrack = document.getElementById('catRailTrack');
@@ -1953,7 +1994,7 @@
       catRailTrack.scrollLeft = 0;
       if (catRailSeeAll) {
         catRailSeeAll.href = 'https://wewood.co.in/collections/' + key;
-        catRailSeeAll.textContent = 'See the full ' + (meta ? meta.label : 'collection') + ' collection';
+        catRailSeeAll.textContent = 'Shop ' + (meta ? meta.shopLabel : 'the collection');
       }
       if (typeof syncCatRail === 'function') syncCatRail();
       if (typeof syncCatRailArrowPosition === 'function') syncCatRailArrowPosition();
