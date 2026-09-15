@@ -57,13 +57,18 @@
      read smaller and left-aligned instead of the page's usual big centered
      style - "Shop by Collections" is excluded, that stays as its own small
      centered eyebrow. */
-  .section-heading.rail-heading{ text-align:left; font-size:18px; font-weight:600; padding:56px 0 20px; }
+  .section-heading.rail-heading{ text-align:left; font-size:24px; font-weight:400; padding:56px 0 20px; }
   .rail-heading.is-caps{ text-transform:uppercase; letter-spacing:.02em; }
   .rail-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .rail-head .rail-heading{ padding-bottom:0; }
   .rail-cta{ margin-bottom:20px; white-space:nowrap; }
-  .tab-group{ display:flex; justify-content:center; gap:10px; padding:56px 0 20px; }
-  .tab-btn{ font-family:var(--font-heading); font-size:18px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
+  /* width:100% is load-bearing here: .rail-head uses justify-content:
+     space-between for its usual two children (heading + CTA), but this
+     is its only child, so space-between alone pins it to the start
+     instead of centering it - the group has to claim the full row width
+     itself before its own justify-content:center means anything. */
+  .tab-group{ display:flex; justify-content:center; gap:10px; padding:56px 0 20px; width:100%; }
+  .tab-btn{ font-family:var(--font-heading); font-size:24px; font-weight:400; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
   .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--dark); transform:scaleX(0); transition:transform .25s ease-out; }
   .tab-btn.is-active{ color:var(--dark); }
   .tab-btn.is-active::after{ transform:scaleX(1); }
@@ -258,7 +263,7 @@
   @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
   /* Autoplay videos run indefinitely, so a manual stop control is required
      (not just decorative) - defaults to paused under prefers-reduced-motion. */
-  .fp-heading{ text-align:center; font-size:18px; padding:56px 0 20px; }
+  .fp-heading{ text-align:center; font-size:24px; padding:56px 0 20px; }
   .fp-playtoggle{ position:absolute; top:0; right:0; z-index:3; width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.1); }
   .fp-playtoggle:hover{ border-color:var(--dark); }
   .fp-playtoggle[aria-pressed="true"] .ic-pause{ display:none; }
@@ -378,7 +383,11 @@
     /* 1:1 at the media column's full width came out much taller than the
        old 16:9 box - capped so the picks row below it stays in the same
        viewport instead of needing a scroll to reach it. */
-    .es-main{ display:block; position:relative; aspect-ratio:1; max-width:340px; border-radius:var(--radius); overflow:hidden; background:var(--white); }
+    /* Capped to the info column's own height (not the media column's full
+       width), so the image grows to fill the dead space beside/below it
+       without making the row taller than the info column already made it -
+       nothing else in the section shifts as a result. */
+    .es-main{ display:block; position:relative; aspect-ratio:1; max-width:440px; max-height:440px; border-radius:var(--radius); overflow:hidden; background:var(--white); }
     .es-main img{ width:100%; height:100%; object-fit:cover; display:block; }
     .es-thumbs{ display:flex; flex-direction:column; gap:8px; }
     .es-thumb{ width:64px; height:64px; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:var(--white); cursor:pointer; flex:none; }
@@ -637,6 +646,8 @@
 
     .section-heading{ font-size:26px; padding:40px 0 6px !important; }
     .section-heading.rail-heading{ text-align:left; font-size:19px; padding:32px 0 16px !important; }
+    .tab-btn{ font-size:19px; }
+    .fp-heading{ font-size:19px; padding:32px 0 16px !important; }
     .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
     .section-sub.sub-desk{ display:none; }
     .eyebrow{ font-size:11.5px; margin-bottom:10px; }
@@ -1166,7 +1177,6 @@
       <div class="es-actions">
         <button type="button" class="btn btn-dark js-atc" id="esAtc">Add to cart</button>
       </div>
-      <a class="elink" id="esView" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View full details <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
     </div>
     <div class="es-picks" id="esPicks"></div>
   </section>
@@ -1827,7 +1837,6 @@
     var esPrice = document.getElementById('esPrice');
     var esCompare = document.getElementById('esCompare');
     var esSave = document.getElementById('esSave');
-    var esView = document.getElementById('esView');
     var esDesc = document.getElementById('esDesc');
     var esSpecs = document.getElementById('esSpecs');
     var esPicks = document.getElementById('esPicks');
@@ -1846,7 +1855,6 @@
       esPrice.textContent = inr(p.price);
       esCompare.textContent = inr(p.compare);
       esSave.textContent = 'Save ' + Math.round((p.compare - p.price) / p.compare * 100) + '%';
-      esView.href = url;
       esDesc.textContent = p.desc;
       esSpecs.innerHTML = '';
       p.specs.forEach(function(row){
