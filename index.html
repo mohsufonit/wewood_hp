@@ -215,6 +215,28 @@
   .car-btn:disabled{ opacity:.28; cursor:default; }
   .car-prog{ position:relative; width:190px; height:2px; background:var(--border); border-radius:2px; overflow:hidden; }
   .car-prog span{ position:absolute; top:0; bottom:0; left:0; width:50%; background:var(--text); border-radius:2px; transition:left .2s ease-out, width .2s ease-out; }
+
+  /* ===== Featured Products video carousel: real product videos from
+     wewood.co.in's own live "Featured Products" section. The active
+     (centered) card scales up and the rest recede, auto-rotating like a
+     highlight reel - manual scroll/arrows/dots always take over the timer. */
+  .fp-carousel .rail-wrap{ padding:26px 0; }
+  .fp-track{ display:flex; gap:var(--gap); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); scroll-behavior:smooth; scrollbar-width:none; margin:0 calc(-1 * var(--page-gutter)); padding:14px var(--page-gutter) 4px; }
+  .fp-track::-webkit-scrollbar{ display:none; }
+  .fp-card{ flex:0 0 220px; scroll-snap-align:center; display:block; text-decoration:none; color:inherit; transform:scale(.84) translateY(8px); opacity:.5; transition:transform .35s ease-out, opacity .35s ease-out; }
+  .fp-card.is-active{ transform:scale(1) translateY(0); opacity:1; }
+  .fp-media{ position:relative; aspect-ratio:9/16; border-radius:var(--radius); overflow:hidden; background:var(--white); box-shadow:0 8px 24px rgba(0,0,0,.12); transition:box-shadow .35s ease-out; }
+  .fp-card.is-active .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
+  .fp-media video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .fp-info{ padding:12px 2px 0; }
+  .fp-title{ font-size:12.5px; color:var(--text); line-height:1.35; margin-bottom:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .fp-price{ font-size:13px; font-weight:700; }
+  .fp-price .compare{ font-weight:400; color:var(--text-3); text-decoration:line-through; margin-left:5px; font-size:11.5px; }
+  .fp-price .save{ color:var(--green); font-weight:700; margin-left:5px; font-size:11.5px; }
+  .fp-dots{ display:flex; justify-content:center; gap:7px; margin-top:6px; }
+  .fp-dot{ width:7px; height:7px; border-radius:4px; border:none; padding:0; background:var(--border); cursor:pointer; transition:background .16s ease-out, width .16s ease-out; }
+  .fp-dot.is-active{ width:20px; background:var(--dark); }
+  @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
   .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; border:1px solid transparent; transition:border-color .15s ease; }
   .product .pimg img{ object-fit:cover; transition:transform .3s ease-out; }
   @media (hover:hover) and (pointer:fine){
@@ -612,6 +634,9 @@
        correctly symmetric) content width. */
     .product{ flex-basis:calc((100% - 12px) / 1.75); }
     #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 1.75); }
+    .fp-carousel .rail-wrap{ padding:14px 0; }
+    .fp-track{ gap:12px; scroll-padding:0 18px; padding:10px 18px 4px; }
+    .fp-card{ flex-basis:74vw; max-width:260px; }
     .product h3{ font-size:14.5px; }
     .product .pimg{ margin-bottom:10px; }
     .wish-btn{ width:30px; height:30px; top:8px; right:8px; }
@@ -1055,6 +1080,57 @@
   </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/new-arrivals" class="btn">See the full New Arrivals collection</a></div>
 
+  <!-- FEATURED PRODUCTS: the real "Featured Products" video carousel from
+       wewood.co.in's own live homepage, rebuilt with the site's actual
+       product videos (not re-encoded or re-hosted - same Shopify CDN mp4s
+       and posters the live store serves). The live version is a flat
+       equal-size Swiper row; here the centered card is scaled up and the
+       carousel auto-rotates through it (pausing on hover), closer to the
+       "one piece in focus" reference the client gave. Manual arrows and
+       dots always override the timer. -->
+  <h2 class="section-heading rail-heading">Watch it in motion</h2>
+  <div class="carousel rail-carousel fp-carousel" id="fpCarousel">
+  <div class="rail-wrap">
+  <section class="fp-track" id="fpTrack" tabindex="0" role="region" aria-label="Featured product videos, scrollable">
+    <a class="fp-card" href="https://wewood.co.in/products/premium-wood-resin-nesting-table-set-modern-black-metal-base-handcrafted-by-wewood">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/4642ff9794ad45bbbcbbce0c306975ef.thumbnail.0000000000_small.jpg?v=1781237715"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/4642ff9794ad45bbbcbbce0c306975ef/4642ff9794ad45bbbcbbce0c306975ef.HD-720p-1.6Mbps-86344523.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Premium Wood &amp; Resin Nesting Table Set, Modern Black Metal Base Acacia Wood</div><div class="fp-price">&#8377;16,000</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/9df1fb3b63bb4fa194c4f81ffe685558.thumbnail.0000000000_small.jpg?v=1782901218"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/9df1fb3b63bb4fa194c4f81ffe685558/9df1fb3b63bb4fa194c4f81ffe685558.HD-1080p-2.5Mbps-87849290.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Wood &amp; White Epoxy Nesting Tables, Set of 3</div><div class="fp-price">&#8377;20,000</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/premium-solid-wood-resin-rounf-nesting-side-tables">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/753cffe96b9f4a89a9a46973e9350b8f.thumbnail.0000000000_small.jpg?v=1782901457"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/753cffe96b9f4a89a9a46973e9350b8f/753cffe96b9f4a89a9a46973e9350b8f.HD-1080p-2.5Mbps-87849616.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Premium Solid Wood Resin Round Nesting Side Tables, Set of 2</div><div class="fp-price">&#8377;15,000</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/black-floral-epoxy-natural-wood-nesting-tables-set-of-3">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/b12e479df2fc430f854b0a1b9aec27fe.thumbnail.0000000000_small.jpg?v=1782901570"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/b12e479df2fc430f854b0a1b9aec27fe/b12e479df2fc430f854b0a1b9aec27fe.HD-1080p-2.5Mbps-87849769.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Black Floral Epoxy &amp; Natural Wood Nesting Tables, Set of 3</div><div class="fp-price">&#8377;20,000</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/c8af21ae83f547f5bfdf6176d251b252.thumbnail.0000000000_small.jpg?v=1782901972"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/c8af21ae83f547f5bfdf6176d251b252/c8af21ae83f547f5bfdf6176d251b252.HD-1080p-2.5Mbps-87850208.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Round Coffee Table, Teak Wood with Special Blue Resin Finish</div><div class="fp-price">&#8377;14,800 <span class="compare">&#8377;18,500</span> <span class="save">Save 20%</span></div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/nesting-table-set-of-1-teak-wood-with-transparent-resin-finish">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/e631a2ef7c924fb5b6c35333531d0a50.thumbnail.0000000000_small.jpg?v=1783407546"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/e631a2ef7c924fb5b6c35333531d0a50/e631a2ef7c924fb5b6c35333531d0a50.HD-1080p-7.2Mbps-88293334.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Side Table Set of 1, Teak Wood with Transparent Resin Finish</div><div class="fp-price">&#8377;2,999</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/03a6fb9358d14f42bdb4dec75d0118e9.thumbnail.0000000000_small.jpg?v=1783407547"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/03a6fb9358d14f42bdb4dec75d0118e9/03a6fb9358d14f42bdb4dec75d0118e9.HD-1080p-7.2Mbps-88293335.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Aurelia Trio Nesting Tables, Wood &amp; Grey Resin</div><div class="fp-price">&#8377;39,000</div></div>
+    </a>
+    <a class="fp-card" href="https://wewood.co.in/products/round-wooden-resin-platter-purple-inlay">
+      <div class="fp-media"><video playsinline autoplay loop muted preload="metadata" poster="https://wewood.co.in/cdn/shop/files/preview_images/a628541261b74d38ad00a0e6f8c5a4ee.thumbnail.0000000000_small.jpg?v=1783407560"><source src="https://wewood.co.in/cdn/shop/videos/c/vp/a628541261b74d38ad00a0e6f8c5a4ee/a628541261b74d38ad00a0e6f8c5a4ee.HD-1080p-7.2Mbps-88293333.mp4?v=0" type="video/mp4"></video></div>
+      <div class="fp-info"><div class="fp-title">Round Wooden &amp; Resin Platter, Purple Inlay</div><div class="fp-price">&#8377;6,999</div></div>
+    </a>
+  </section>
+    <button type="button" class="car-btn car-side car-side-prev" id="fpPrev" aria-label="Previous video" aria-controls="fpTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="car-btn car-side car-side-next" id="fpNext" aria-label="Next video" aria-controls="fpTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <div class="fp-dots" id="fpDots"></div>
+  </div>
+
   <!-- THE EDIT: four real products, each with the reason it is here. Answers the
        CRO audit's "say why these were chosen" finding. Prices verified live. -->
   <h2 class="section-heading rail-heading">Three pieces we keep coming back to</h2>
@@ -1488,6 +1564,67 @@
   }
   initRail('bestTrack', 'bestPrev', 'bestNext', 'bestBar');
   initRail('naTrack', 'naPrev', 'naNext', 'naBar');
+
+  /* Featured Products video carousel: the centered card is the "active"
+     one (scaled up via CSS); arrows/dots/autoplay all just scroll the
+     track, then a scroll listener figures out which card ended up
+     nearest-center and marks it active - one source of truth instead of
+     three separate index-trackers that could drift out of sync. */
+  (function(){
+    var fpTrack = document.getElementById('fpTrack');
+    if (!fpTrack) return;
+    var fpPrev = document.getElementById('fpPrev');
+    var fpNext = document.getElementById('fpNext');
+    var fpDotsWrap = document.getElementById('fpDots');
+    var cards = Array.prototype.slice.call(fpTrack.querySelectorAll('.fp-card'));
+    var dots = cards.map(function(_, i){
+      var d = document.createElement('button');
+      d.type = 'button'; d.className = 'fp-dot';
+      d.setAttribute('aria-label', 'Show video ' + (i + 1) + ' of ' + cards.length);
+      d.addEventListener('click', function(){ goTo(i); restart(); });
+      fpDotsWrap.appendChild(d);
+      return d;
+    });
+    function activeIndex(){
+      var trackMid = fpTrack.getBoundingClientRect().left + fpTrack.clientWidth / 2;
+      var best = 0, bestDist = Infinity;
+      cards.forEach(function(c, i){
+        var r = c.getBoundingClientRect();
+        var dist = Math.abs((r.left + r.width / 2) - trackMid);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+    function syncActive(){
+      var idx = activeIndex();
+      cards.forEach(function(c, i){ c.classList.toggle('is-active', i === idx); });
+      dots.forEach(function(d, i){ d.classList.toggle('is-active', i === idx); });
+      if (fpPrev) fpPrev.disabled = idx === 0;
+      if (fpNext) fpNext.disabled = idx === cards.length - 1;
+    }
+    function goTo(idx){
+      idx = Math.max(0, Math.min(cards.length - 1, idx));
+      cards[idx].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+    }
+    if (fpPrev) fpPrev.addEventListener('click', function(){ goTo(activeIndex() - 1); restart(); });
+    if (fpNext) fpNext.addEventListener('click', function(){ goTo(activeIndex() + 1); restart(); });
+    var scrollTimer = null;
+    fpTrack.addEventListener('scroll', function(){
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(syncActive, 80);
+    }, { passive: true });
+    window.addEventListener('resize', syncActive);
+    syncActive();
+
+    var fpTimer = null;
+    function start(){ if (reduceMotion || cards.length < 2) return; stop(); fpTimer = setInterval(function(){ var next = activeIndex() + 1; goTo(next > cards.length - 1 ? 0 : next); }, 4500); }
+    function stop(){ if (fpTimer) { clearInterval(fpTimer); fpTimer = null; } }
+    function restart(){ stop(); start(); }
+    fpTrack.addEventListener('mouseenter', stop);
+    fpTrack.addEventListener('mouseleave', start);
+    fpTrack.addEventListener('touchstart', stop, { passive: true });
+    start();
+  })();
 
   /* Edit showcase (desktop only): one of the three edit products shown in
      full - gallery, price, Add to cart - with the pick row below switching
@@ -1930,7 +2067,7 @@
     try { annotations = JSON.parse(window.localStorage.getItem(STORE_KEY) || '[]'); } catch (e) { annotations = []; }
 
     var COMPONENT_SELECTORS = [
-      '.product', '.room', '.promo-tile', '.review', '.faq-item',
+      '.product', '.room', '.promo-tile', '.review', '.faq-item', '.fp-card',
       '.cat-picker-item', '.mark-tile', '.erow', '.edit-showcase', '.es-pick',
       '.rail-carousel', '.cat-picker', '.hero', '.credibility-ticker',
       '.emi-bar', '.rooms', '.stl', '.reviews-ticker', '.assure',
