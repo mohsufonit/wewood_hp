@@ -6,6 +6,7 @@
 <title>WeWood Homepage</title>
 <meta name="description" content="Handcrafted wood and resin furniture and home decor from WeWood, Delhi. Nesting tables, coffee tables, wall clocks, trays and more, shipped pan-India.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&family=Inter:wght@500;600&display=swap" rel="stylesheet">
 <style>
   /* Tokens: the live theme's own CSS (main.build.css) - nothing introduced */
@@ -24,11 +25,11 @@
   html{ scroll-behavior:smooth; }
   body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); font-size:18px; line-height:1.5; -webkit-font-smoothing:antialiased; }
   img{ display:block; width:100%; height:100%; object-fit:cover; }
-  a{ color:inherit; text-decoration:none; }
+  a{ color:inherit; text-decoration:none; touch-action:manipulation; }
   p{ margin:0; }
   h1,h2,h3,h4{ font-family:var(--font-heading); font-weight:400; color:var(--text); margin:0; line-height:1.2; text-wrap:balance; }
   ul{ margin:0; padding:0; list-style:none; }
-  button{ font-family:inherit; cursor:pointer; }
+  button{ font-family:inherit; cursor:pointer; touch-action:manipulation; }
   /* Keyboard focus ring, page-wide. Mouse and touch never see it. */
   a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--black); outline-offset:3px; }
   .page{ padding:0 var(--page-gutter); }
@@ -73,7 +74,7 @@
   .nav a:hover{ border-color:var(--black); }
   .header-right{ display:flex; align-items:center; gap:18px; }
   .search{ display:flex; align-items:center; gap:10px; background:var(--bg-secondary); border:1px solid transparent; border-radius:var(--pill); height:42px; padding:0 14px 0 16px; width:240px; transition:border-color .16s ease-out, width .2s ease-out; }
-  .search:focus-within{ border-color:var(--black); width:280px; }
+  .search:focus-within{ border-color:var(--black); width:280px; box-shadow:0 0 0 2px var(--dark); }
   .search input{ flex:1; border:none; outline:none; background:transparent; font-family:var(--font-body); font-size:14px; color:var(--text); min-width:0; }
   .search input::placeholder{ color:var(--text-3); }
   .search svg{ flex:none; color:var(--text-2); }
@@ -231,13 +232,19 @@
   }
   .fp-info{ padding:12px 2px 0; }
   .fp-title{ font-size:12.5px; color:var(--text); line-height:1.35; margin-bottom:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .fp-price{ font-size:13px; font-weight:700; }
+  .fp-price{ font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
   .fp-price .compare{ font-weight:400; color:var(--text-3); text-decoration:line-through; margin-left:5px; font-size:11.5px; }
   .fp-price .save{ color:var(--green); font-weight:700; margin-left:5px; font-size:11.5px; }
   .fp-dots{ display:flex; justify-content:center; gap:7px; margin-top:6px; }
   .fp-dot{ width:7px; height:7px; border-radius:4px; border:none; padding:0; background:var(--border); cursor:pointer; transition:background .16s ease-out, width .16s ease-out; }
   .fp-dot.is-active{ width:20px; background:var(--dark); }
   @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
+  /* Autoplay videos run indefinitely, so a manual stop control is required
+     (not just decorative) - defaults to paused under prefers-reduced-motion. */
+  .fp-playtoggle{ width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; margin-bottom:20px; flex:none; }
+  .fp-playtoggle:hover{ border-color:var(--dark); }
+  .fp-playtoggle[aria-pressed="true"] .ic-pause{ display:none; }
+  .fp-playtoggle[aria-pressed="true"] .ic-play{ display:block; }
   .product .pimg{ position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); margin-bottom:14px; border:1px solid transparent; transition:border-color .15s ease; }
   .product .pimg img{ object-fit:cover; transition:transform .3s ease-out; }
   @media (hover:hover) and (pointer:fine){
@@ -256,9 +263,9 @@
   @media (prefers-reduced-motion:reduce){ .wish-btn{ transition:none; } }
   .product h3{ font-family:var(--font-body); font-weight:400; font-size:15px; color:var(--text); line-height:1.4; margin-bottom:8px; min-height:42px; }
   .price-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:14px; }
-  .price{ font-weight:700; font-size:16px; }
-  .compare{ font-size:13.5px; color:var(--text-3); text-decoration:line-through; }
-  .save{ font-size:12px; color:var(--green); font-weight:700; }
+  .price{ font-weight:700; font-size:16px; font-variant-numeric:tabular-nums; }
+  .compare{ font-size:13.5px; color:var(--text-3); text-decoration:line-through; font-variant-numeric:tabular-nums; }
+  .save{ font-size:12px; color:var(--green); font-weight:700; font-variant-numeric:tabular-nums; }
   .product .btn{ margin-top:auto; }
   .js-atc{ text-transform:uppercase; letter-spacing:.04em; }
   .see-all{ text-align:center; margin-top:34px; }
@@ -361,9 +368,9 @@
     .es-info h3{ font-size:23px; line-height:1.2; margin:0 0 6px; max-width:20ch; }
     .es-line{ font-size:14px; color:var(--text-2); margin-bottom:12px; }
     .es-price-row{ display:flex; align-items:baseline; gap:9px; margin-bottom:14px; }
-    .es-price{ font-size:21px; font-weight:700; }
-    .es-compare{ font-size:14px; color:var(--text-3); text-decoration:line-through; }
-    .es-save{ font-size:12.5px; color:var(--green); font-weight:700; }
+    .es-price{ font-size:21px; font-weight:700; font-variant-numeric:tabular-nums; }
+    .es-compare{ font-size:14px; color:var(--text-3); text-decoration:line-through; font-variant-numeric:tabular-nums; }
+    .es-save{ font-size:12.5px; color:var(--green); font-weight:700; font-variant-numeric:tabular-nums; }
     .es-desc{ font-size:14px; color:var(--text-2); line-height:1.6; margin:0 0 14px; max-width:48ch; }
     .es-specs{ margin:0 0 18px; font-size:13px; }
     .es-specs div{ display:flex; gap:8px; padding:7px 0; border-top:1px solid var(--bg); }
@@ -487,7 +494,8 @@
   .footer-help small{ display:block; font-size:12.5px; color:var(--text-2); }
   .newsletter{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-top:48px; padding:26px 0; border-top:1px solid var(--text); border-bottom:1px solid var(--text); }
   .newsletter p{ font-size:15.5px; max-width:52ch; }
-  .newsletter-pill{ width:520px; max-width:100%; height:52px; background:#fff; border:1px solid var(--black); border-radius:var(--pill); display:flex; align-items:center; padding:0 6px 0 22px; }
+  .newsletter-pill{ width:520px; max-width:100%; height:52px; background:#fff; border:1px solid var(--black); border-radius:var(--pill); display:flex; align-items:center; padding:0 6px 0 22px; transition:box-shadow .15s ease-out; }
+  .newsletter-pill:focus-within{ box-shadow:0 0 0 2px var(--white), 0 0 0 4px var(--dark); }
   .newsletter-pill input{ flex:1; border:none; background:transparent; font-family:var(--font-body); font-size:15px; outline:none; min-width:0; }
   .newsletter-pill button{ height:40px; padding:0 20px; border-radius:var(--pill); background:var(--black); color:#fff; border:none; font-family:var(--font-button); font-size:14px; font-weight:500; }
   .footer-bottom{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:22px 0; font-size:13px; color:var(--text-2); }
@@ -574,7 +582,8 @@
   .mobile-menu.open{ display:block; }
   .mobile-menu > a{ display:block; padding:13px 4px; font-size:16px; border-bottom:1px solid var(--bg); }
   .mobile-menu > a:last-of-type{ border-bottom:none; }
-  .mm-search{ display:flex; align-items:center; gap:10px; background:var(--bg-secondary); border-radius:var(--pill); height:44px; padding:0 14px 0 16px; margin-bottom:8px; }
+  .mm-search{ display:flex; align-items:center; gap:10px; background:var(--bg-secondary); border-radius:var(--pill); height:44px; padding:0 14px 0 16px; margin-bottom:8px; transition:box-shadow .15s ease-out; }
+  .mm-search:focus-within{ box-shadow:0 0 0 2px var(--dark); }
   .mm-search input{ flex:1; border:none; outline:none; background:transparent; font-family:var(--font-body); font-size:15px; min-width:0; }
   .mm-search svg{ color:var(--text-2); flex:none; }
   .mm-foot{ display:flex; flex-direction:column; gap:10px; margin-top:14px; padding-top:14px; border-top:1px solid var(--bg); font-size:14.5px; text-align:center; }
@@ -808,27 +817,27 @@
   <p class="cat-eyebrow">Shop by Collections</p>
   <div class="cat-picker" id="collections" role="group" aria-label="Browse by category">
     <button type="button" class="cat-picker-item is-active" aria-pressed="true" data-cat="nesting-table">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Nesting Table</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="dining-entertainment">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Entertaining</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="coffee-table">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Coffee Table</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="cheese-boards">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Cheese Board</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="clock">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Clock</span>
     </button>
     <button type="button" class="cat-picker-item" aria-pressed="false" data-cat="ashtray">
-      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" alt=""></span>
+      <span class="cat-picker-avatar"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/40_3ffcbb92-54ff-4dac-b966-b1eee130350a.png?v=1751450967" loading="lazy" alt=""></span>
       <span class="cat-picker-label">Ashtray</span>
     </button>
   </div>
@@ -868,21 +877,21 @@
        rounded up). Run as a compact ticker acting as a section breaker
        between Rooms and Bestsellers, duplicated once for a seamless loop.
        Pauses on hover (desktop) and on tap (touch). -->
-  <h2 class="section-heading rail-heading">Loved by the homes that own them</h2>
+  <h2 class="section-heading rail-heading is-caps">Loved by the homes that own them</h2>
   <section class="reviews-ticker reviews-ticker-compact" id="reviewsTicker">
     <div class="reviews-track">
-      <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting table"></div></div></div>
-      <div class="review" data-rating="5"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" alt="Teak and resin table"></div></div></div>
-      <div class="review" data-rating="5"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" alt="Coffee table"></div></div></div>
-      <div class="review" data-rating="5"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Serving tray"></div></div></div>
-      <div class="review" data-rating="4"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clock"></div></div></div>
-      <div class="review" data-rating="5"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" alt="Tabletop accent"></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt=""></div></div></div>
-      <div class="review" data-rating="4" aria-hidden="true"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt=""></div></div></div>
-      <div class="review" data-rating="5" aria-hidden="true"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" alt=""></div></div></div>
+      <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting table"></div></div></div>
+      <div class="review" data-rating="5"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt="Teak and resin table"></div></div></div>
+      <div class="review" data-rating="5"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt="Coffee table"></div></div></div>
+      <div class="review" data-rating="5"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Serving tray"></div></div></div>
+      <div class="review" data-rating="4"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clock"></div></div></div>
+      <div class="review" data-rating="5"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt="Tabletop accent"></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>The teak wood and transparent resin look stunning and add a modern, earthy vibe to my living room.</q><div class="who"><div><b>Sanya Singh Lohan</b><span>Rohtak, Haryana</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>It has been an excellent addition to our space. Sturdy build ensures durability while the sleek design compliments our decor.</q><div class="who"><div><b>Surbhi Sethi</b><span>Navnidh Designs, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_27.png?v=1751104715" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>The customer service was top-notch, and the product exceeded my expectations.</q><div class="who"><div><b>Gaurav Gupta</b><span>Punjabi Bagh, Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="4" aria-hidden="true"><q>The product is smart, sophisticated and functional. A must have in every household.</q><div class="who"><div><b>Aparna Agarwal</b><span>Delhi</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt=""></div></div></div>
+      <div class="review" data-rating="5" aria-hidden="true"><q>Highly recommended for anyone who is looking for a reliable product with great quality.</q><div class="who"><div><b>Alka</b><span>Noida</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511" loading="lazy" alt=""></div></div></div>
     </div>
   </section>
 
@@ -895,56 +904,56 @@
   <div class="rail-wrap">
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13_52d797df-5f4d-4f3d-b30b-b5b40c3a9e34.png?v=1740653261" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13_52d797df-5f4d-4f3d-b30b-b5b40c3a9e34.png?v=1740653261" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Nesting Table Set of 3, Teak Wood with Tinted Grey Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;15,600</span><span class="compare">&#8377;28,500</span><span class="save">Save 45%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/coffee-table-teak-wood-with-aqua-blue-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/coffee-table-teak-wood-with-aqua-blue-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="coffee-table-teak-wood-with-aqua-blue-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Coffee Table, Teak Wood with Aqua Blue Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;9,600</span><span class="compare">&#8377;12,000</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Nesting Table Set of 2, Acacia Wood with Transparent Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;20,000</span><span class="compare">&#8377;25,000</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/round-coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Table_1.png?v=1738239943" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/round-coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Table_1.png?v=1738239943" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="round-coffee-table-acacia-wood-with-black-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Round Coffee Table, Acacia Wood with Black Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;6,800</span><span class="compare">&#8377;8,500</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wall_1.png?v=1738239909" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wall_1.png?v=1738239909" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="coffee-table-acacia-wood-with-black-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Coffee Table, Acacia Wood with Black Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;16,499</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/7_e06c94d1-e958-4644-9517-74c3797a89a0.png?v=1771919665" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/7_e06c94d1-e958-4644-9517-74c3797a89a0.png?v=1771919665" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Pearl Green Resin Wall Clock, Wood Oak Elegance</h3>
       <div class="price-row"><span class="price">&#8377;3,600</span><span class="compare">&#8377;4,500</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Cheese Board Platter, Acacia Wood with Translucent Black Resin</h3>
       <div class="price-row"><span class="price">&#8377;4,080</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/stylish-resin-wall-clock-teak-wood-transparent-resin-elegance"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/stylish-resin-wall-clock-teak-wood-transparent-resin-elegance"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="stylish-resin-wall-clock-teak-wood-transparent-resin-elegance"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Stylish Resin Wall Clock, Teak Wood &amp; Black Resin</h3>
       <div class="price-row"><span class="price">&#8377;4,900</span><span class="compare">&#8377;5,500</span><span class="save">Save 11%</span></div>
@@ -964,17 +973,17 @@
        Sits between Bestsellers and New Arrivals as a section breaker. -->
   <section class="promo-strip" style="margin-top:44px;">
     <a href="https://wewood.co.in/collections/nesting-table" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting tables">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting tables">
       <span class="promo-tag">Up to 47% off</span>
       <div class="promo-text"><b>Nesting Tables</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
     </a>
     <a href="https://wewood.co.in/collections/dining-entertainment" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" alt="Dining and entertainment">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/cup_tray.png?v=1780316405" loading="lazy" alt="Dining and entertainment">
       <span class="promo-tag">Up to 38% off</span>
       <div class="promo-text"><b>Dining &amp; Entertainment</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
     </a>
     <a href="https://wewood.co.in/collections/clock" class="promo-tile">
-      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" alt="Wall clocks">
+      <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/12_b4fa523c-dd6e-4e0d-814e-ce537051a556.png?v=1771929283" loading="lazy" alt="Wall clocks">
       <span class="promo-tag">Up to 24% off</span>
       <div class="promo-text"><b>Wall Clocks</b><span>Explore now <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span></div>
     </a>
@@ -990,56 +999,56 @@
   <div class="rail-wrap">
   <section class="products" id="naTrack" tabindex="0" role="region" aria-label="New Arrivals products, scrollable">
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/black-floral-epoxy-natural-wood-nesting-tables-set-of-3"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_xe3rd1xe3rd1xe3r.png?v=1771591472" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/black-floral-epoxy-natural-wood-nesting-tables-set-of-3"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_xe3rd1xe3rd1xe3r.png?v=1771591472" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="black-floral-epoxy-natural-wood-nesting-tables-set-of-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Black Floral Epoxy Nesting Tables, Set of 3</h3>
       <div class="price-row"><span class="price">&#8377;20,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/01.jpg?v=1770122706" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/01.jpg?v=1770122706" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Aurelia Trio Nesting Tables, Grey Resin</h3>
       <div class="price-row"><span class="price">&#8377;39,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_zgze0tzgze0tzgze_d2389f2a-2aa4-4aea-b184-2b5f9da3848a.png?v=1771591852" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_zgze0tzgze0tzgze_d2389f2a-2aa4-4aea-b184-2b5f9da3848a.png?v=1771591852" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Wood &amp; White Epoxy Nesting Tables, Set of 3</h3>
       <div class="price-row"><span class="price">&#8377;20,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/premium-solid-wood-resin-rounf-nesting-side-tables"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/nesting_table_of_2.jpg?v=1778524844" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/premium-solid-wood-resin-rounf-nesting-side-tables"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/nesting_table_of_2.jpg?v=1778524844" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="premium-solid-wood-resin-rounf-nesting-side-tables"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Premium Nesting Side Tables, Set of 2</h3>
       <div class="price-row"><span class="price">&#8377;15,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_25.png?v=1771591358" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_25.png?v=1771591358" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Nesting Tables, Translucent Black Resin</h3>
       <div class="price-row"><span class="price">&#8377;15,399</span><span class="compare">&#8377;21,950</span><span class="save">Save 30%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/aurelia-trio-nesting-tables-wood-grey-resin-copy-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_table.png?v=1783945712" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/aurelia-trio-nesting-tables-wood-grey-resin-copy-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_table.png?v=1783945712" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="aurelia-trio-nesting-tables-wood-grey-resin-copy-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Wood Resin Nesting Tables, Set of 3</h3>
       <div class="price-row"><span class="price">&#8377;32,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/handcrafted-triangular-wood-black-epoxy-nesting-tables-set-of-2"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_ojg48pojg48pojg4.png?v=1771591528" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/handcrafted-triangular-wood-black-epoxy-nesting-tables-set-of-2"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_ojg48pojg48pojg4.png?v=1771591528" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="handcrafted-triangular-wood-black-epoxy-nesting-tables-set-of-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Triangular Wood &amp; Black Epoxy Nesting Tables</h3>
       <div class="price-row"><span class="price">&#8377;13,000</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
-      <a class="pimg" href="https://wewood.co.in/products/c-shaped-wood-pearl-resin-side-table"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_glr3uqglr3uqglr3.png?v=1771591722" alt=""></a>
+      <a class="pimg" href="https://wewood.co.in/products/c-shaped-wood-pearl-resin-side-table"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_glr3uqglr3uqglr3.png?v=1771591722" loading="lazy" alt=""></a>
       <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="c-shaped-wood-pearl-resin-side-table"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>C-Shaped Side Table, Pearl Resin</h3>
       <div class="price-row"><span class="price">&#8377;7,900</span></div>
@@ -1062,7 +1071,10 @@
        carousel auto-rotates through it (pausing on hover), closer to the
        "one piece in focus" reference the client gave. Manual arrows and
        dots always override the timer. -->
-  <h2 class="section-heading rail-heading is-caps">Featured Collection</h2>
+  <div class="rail-head">
+    <h2 class="section-heading rail-heading is-caps">Featured Collection</h2>
+    <button type="button" class="fp-playtoggle" id="fpPlayToggle" aria-pressed="false" aria-label="Pause videos"><svg class="ic-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><svg class="ic-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 4l14 8-14 8V4z"/></svg></button>
+  </div>
   <div class="carousel rail-carousel fp-carousel" id="fpCarousel">
   <div class="rail-wrap">
   <section class="fp-track" id="fpTrack" tabindex="0" role="region" aria-label="Featured product videos, scrollable">
@@ -1142,7 +1154,7 @@
 
     <div class="erow">
       <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">
-        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" alt="Round Coffee Table, teak wood with a special blue resin finish">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/15.png?v=1738323531" loading="lazy" alt="Round Coffee Table, teak wood with a special blue resin finish">
       </a>
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">Round Coffee Table, Blue Resin</a></h3>
@@ -1153,7 +1165,7 @@
 
     <div class="erow is-flipped">
       <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">
-        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting Table Set of 3, teak wood with a transparent resin finish">
       </a>
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">Nesting Table Set of 3, Teak</a></h3>
@@ -1164,7 +1176,7 @@
 
     <div class="erow">
       <a class="efig" tabindex="-1" aria-hidden="true" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">
-        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" alt="Modern live-edge wood table with blue epoxy resin">
+        <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-06-19at12.37.09PM.jpg?v=1750327978" loading="lazy" alt="Modern live-edge wood table with blue epoxy resin">
       </a>
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">Live-Edge Wood and Blue Epoxy Table</a></h3>
@@ -1198,7 +1210,7 @@
        outside the photo, like every other rail heading on the page, rather
        than overlaid on it. -->
   <div class="rail-head">
-    <h2 class="section-heading rail-heading">Shop the look</h2>
+    <h2 class="section-heading rail-heading is-caps">Shop the look</h2>
     <a href="https://wewood.co.in/collections/furniture" class="elink rail-cta">View all <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
   </div>
   <div class="stl-grid">
@@ -1214,7 +1226,7 @@
         <label for="hs1" class="hotspot-dot" aria-label="Show nesting tables"></label>
         <div class="hotspot-card">
           <label for="hs1" class="hotspot-close">&times;</label>
-          <div class="thumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" alt=""></div>
+          <div class="thumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" loading="lazy" alt=""></div>
           <div>
             <div class="name">Acacia Wood Nesting Tables, set of 2, translucent black resin</div>
             <div class="p">&#8377;15,399</div>
@@ -1557,6 +1569,8 @@
     var isProgrammaticScroll = false;
     var fpTimer = null;
     var desktopMQ = window.matchMedia('(min-width:901px)');
+    var fpPlayToggle = document.getElementById('fpPlayToggle');
+    var userPaused = reduceMotion;
 
     var dots = cards.map(function(_, i){
       var d = document.createElement('button');
@@ -1588,8 +1602,18 @@
       cards.forEach(function(c){ var v = c.querySelector('video'); if (!v.paused) v.pause(); });
     }
     function applyPlayback(){
-      if (!isVisible) { pauseAll(); return; }
+      if (!isVisible || userPaused) { pauseAll(); return; }
       if (desktopMQ.matches) playAll(); else playOnly(activeIndex);
+    }
+    if (fpPlayToggle) {
+      fpPlayToggle.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
+      fpPlayToggle.setAttribute('aria-label', userPaused ? 'Play videos' : 'Pause videos');
+      fpPlayToggle.addEventListener('click', function(){
+        userPaused = !userPaused;
+        fpPlayToggle.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
+        fpPlayToggle.setAttribute('aria-label', userPaused ? 'Play videos' : 'Pause videos');
+        applyPlayback();
+      });
     }
 
     /* Hover, swipe/manual scroll and the arrows are all deliberate user
@@ -1768,7 +1792,7 @@
         var t = document.createElement('button');
         t.type = 'button'; t.className = 'es-thumb' + (i === 0 ? ' is-active' : '');
         t.setAttribute('aria-label', 'Show image ' + (i + 1) + ' of ' + p.name);
-        var img = document.createElement('img'); img.src = src; img.alt = '';
+        var img = document.createElement('img'); img.src = src; img.alt = ''; img.loading = 'lazy';
         t.appendChild(img);
         t.addEventListener('click', function(){
           esMainImg.src = src;
@@ -1784,7 +1808,7 @@
       var btn = document.createElement('button');
       btn.type = 'button'; btn.className = 'es-pick' + (i === 0 ? ' is-active' : '');
       btn.setAttribute('aria-label', 'Show ' + p.name);
-      var img = document.createElement('img'); img.src = p.images[0]; img.alt = '';
+      var img = document.createElement('img'); img.src = p.images[0]; img.alt = ''; img.loading = 'lazy';
       var info = document.createElement('div');
       info.innerHTML = '<div class="es-pick-name">' + p.name + '</div><div class="es-pick-line">' + p.line + '</div>';
       btn.appendChild(img); btn.appendChild(info);
@@ -1895,7 +1919,7 @@
       (CAT_PRODUCTS[key] || []).forEach(function(p){
         var card = document.createElement('div'); card.className = 'product';
         var a = document.createElement('a'); a.className = 'pimg'; a.href = 'https://wewood.co.in/products/' + p.handle;
-        var img = document.createElement('img'); img.src = p.img; img.alt = '';
+        var img = document.createElement('img'); img.src = p.img; img.alt = ''; img.loading = 'lazy';
         a.appendChild(img); card.appendChild(a);
         var wish = document.createElement('button'); wish.type = 'button'; wish.className = 'wish-btn js-wish'; wish.setAttribute('aria-label', 'Save to wishlist'); wish.setAttribute('aria-pressed', 'false'); wish.setAttribute('data-handle', p.handle);
         wish.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg>';
