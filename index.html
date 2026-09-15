@@ -228,11 +228,17 @@
   .fp-media{ position:relative; aspect-ratio:9/16; border-radius:var(--radius); overflow:hidden; background:var(--white); box-shadow:0 8px 24px rgba(0,0,0,.12); transition:box-shadow .35s ease-out; }
   .fp-card.is-active .fp-media{ box-shadow:0 22px 48px rgba(0,0,0,.22); }
   .fp-poster{ width:100%; height:100%; object-fit:cover; display:block; }
-  /* The video sits over the poster image but stays invisible until this
-     card is active, so a paused/never-played video never shows through as
-     a random frame - inactive cards always read as a clean product photo. */
-  .fp-media video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity .25s ease-out; }
-  .fp-card.is-active .fp-media video{ opacity:1; }
+  /* Desktop: every video plays at once (real motion is the point of this
+     section), the focused/hovered card is just bigger - see .fp-card
+     above. Mobile only ever plays one at a time (see the JS), so there
+     the video sits invisible over its poster until it's the active card -
+     otherwise a paused-but-already-played video would show whatever
+     frame it stopped on instead of a clean product photo. */
+  .fp-media video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  @media (max-width:900px){
+    .fp-media video{ opacity:0; transition:opacity .25s ease-out; }
+    .fp-card.is-active .fp-media video{ opacity:1; }
+  }
   .fp-info{ padding:12px 2px 0; }
   .fp-title{ font-size:12.5px; color:var(--text); line-height:1.35; margin-bottom:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .fp-price{ font-size:13px; font-weight:700; }
@@ -1570,23 +1576,22 @@
   initRail('bestTrack', 'bestPrev', 'bestNext', 'bestBar');
   initRail('naTrack', 'naPrev', 'naNext', 'naBar');
 
-  /* Featured Products video carousel. Explicit state, not scroll-position
-     guessing: exactly one card is "active" at a time (activeIndex), only
-     its video plays and it's always centered, every other card shows a
-     plain product image (see the CSS - the video sits opacity:0 under a
-     poster <img> until it's the active one, so a paused card never shows
-     a random frozen video frame). Hover, swipe/manual scroll and the
-     arrows all switch immediately - only the automatic rotation is paced,
-     to a 15s-per-card beat, so the timer can't replace a video before
-     anyone's had a chance to look at it; any real interaction resets
-     that beat (see restart()).
+  /* Featured Products video carousel - desktop and mobile behave
+     differently on purpose:
+       Desktop: every video plays at once (all 8 have room to breathe in
+       the row), hovering a card just brings it forward - bigger, deeper
+       shadow, scrolled into full view - without touching playback.
+       Mobile: only one video plays at a time, auto-advancing through
+       them on a 15s beat; swiping to a different card makes it the one
+       playing immediately, no waiting.
+     Both share the same activeIndex/center/setActive machinery; only
+     applyPlayback() and start()'s auto-rotate branch on breakpoint.
 
-     Nothing plays and the auto-rotate timer never runs while the section
-     is off-screen - it used to run regardless, and the timer's own
-     scrollIntoView call would yank the page back down to the carousel
-     even while the visitor had scrolled away from it. An IntersectionObserver
-     is the single gate for both: videos only start once the section is
-     about to be in view, and everything stops the moment it scrolls out. */
+     Nothing plays and no timer runs while the section is off-screen - the
+     auto-rotate timer used to run regardless, and its own scrollIntoView
+     call would yank the page back down to the carousel even while the
+     visitor had scrolled away from it. An IntersectionObserver is the
+     single gate for all of it. */
   (function(){
     var fpCarousel = document.getElementById('fpCarousel');
     var fpTrack = document.getElementById('fpTrack');
@@ -1597,10 +1602,10 @@
     var cards = Array.prototype.slice.call(fpTrack.querySelectorAll('.fp-card'));
     var MIN_DWELL = 15000;
     var activeIndex = 0;
-    var lastSwitchAt = 0;
     var isVisible = false;
     var isProgrammaticScroll = false;
     var fpTimer = null;
+    var desktopMQ = window.matchMedia('(min-width:901px)');
 
     var dots = cards.map(function(_, i){
       var d = document.createElement('button');
@@ -1611,19 +1616,6 @@
       return d;
     });
 
-    function playOnly(idx){
-      if (!isVisible) return;
-      cards.forEach(function(c, i){
-        var v = c.querySelector('video');
-        if (!v) return;
-        if (i === idx) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
-        else if (!v.paused) { v.pause(); }
-      });
-    }
-    function pauseAll(){
-      cards.forEach(function(c){ var v = c.querySelector('video'); if (v && !v.paused) v.pause(); });
-    }
-
     function center(idx){
       if (!isVisible) return;
       isProgrammaticScroll = true;
@@ -1631,22 +1623,39 @@
       setTimeout(function(){ isProgrammaticScroll = false; }, 700);
     }
 
+    function playAll(){
+      cards.forEach(function(c){ var v = c.querySelector('video'); var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+    }
+    function playOnly(idx){
+      cards.forEach(function(c, i){
+        var v = c.querySelector('video');
+        if (i === idx) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        else if (!v.paused) { v.pause(); }
+      });
+    }
+    function pauseAll(){
+      cards.forEach(function(c){ var v = c.querySelector('video'); if (!v.paused) v.pause(); });
+    }
+    function applyPlayback(){
+      if (!isVisible) { pauseAll(); return; }
+      if (desktopMQ.matches) playAll(); else playOnly(activeIndex);
+    }
+
     /* Hover, swipe/manual scroll and the arrows are all deliberate user
-       action - they switch immediately, no waiting. Only the automatic
-       rotation is paced, so a video isn't replaced by the timer before
-       anyone's had a chance to actually look at it. */
+       action - they switch immediately, no waiting. Only mobile's
+       automatic rotation is paced, so the timer can't replace the
+       playing video before anyone's had a chance to look at it. */
     function setActive(idx, opts){
       opts = opts || {};
       idx = Math.max(0, Math.min(cards.length - 1, idx));
       if (idx === activeIndex && opts.force !== true) return;
       activeIndex = idx;
-      lastSwitchAt = Date.now();
       cards.forEach(function(c, i){ c.classList.toggle('is-active', i === idx); });
       dots.forEach(function(d, i){ d.classList.toggle('is-active', i === idx); });
       if (fpPrev) fpPrev.disabled = idx === 0;
       if (fpNext) fpNext.disabled = idx === cards.length - 1;
       if (opts.center !== false) center(idx);
-      playOnly(idx);
+      if (!desktopMQ.matches && isVisible) playOnly(idx);
       restart();
     }
 
@@ -1656,7 +1665,9 @@
     if (fpPrev) fpPrev.addEventListener('click', function(){ setActive(activeIndex - 1); });
     if (fpNext) fpNext.addEventListener('click', function(){ setActive(activeIndex + 1); });
 
-    function start(){ if (reduceMotion || !isVisible || cards.length < 2) return; stop(); fpTimer = setInterval(function(){ setActive(activeIndex + 1 > cards.length - 1 ? 0 : activeIndex + 1); }, MIN_DWELL); }
+    /* Desktop has nothing to auto-rotate - every video already plays at
+       once, so there's no "next" to advance to. */
+    function start(){ if (reduceMotion || !isVisible || desktopMQ.matches || cards.length < 2) return; stop(); fpTimer = setInterval(function(){ setActive(activeIndex + 1 > cards.length - 1 ? 0 : activeIndex + 1); }, MIN_DWELL); }
     function stop(){ if (fpTimer) { clearInterval(fpTimer); fpTimer = null; } }
     function restart(){ stop(); start(); }
     fpTrack.addEventListener('mouseenter', stop);
@@ -1691,16 +1702,20 @@
       entries.forEach(function(entry){
         isVisible = entry.isIntersecting;
         if (isVisible) {
-          lastSwitchAt = Date.now();
           if (!hasCentered) { hasCentered = true; center(activeIndex); }
-          playOnly(activeIndex);
+          applyPlayback();
           start();
         } else {
-          stop(); pauseAll();
+          stop();
+          applyPlayback();
         }
       });
     }, { threshold: 0.3, rootMargin: '200px 0px' });
     observer.observe(fpCarousel);
+
+    var onBreakpointChange = function(){ applyPlayback(); restart(); };
+    if (desktopMQ.addEventListener) desktopMQ.addEventListener('change', onBreakpointChange);
+    else if (desktopMQ.addListener) desktopMQ.addListener(onBreakpointChange);
   })();
 
   /* Edit showcase (desktop only): one of the three edit products shown in
