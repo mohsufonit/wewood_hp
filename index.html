@@ -57,17 +57,21 @@
      read smaller and left-aligned instead of the page's usual big centered
      style - "Shop by Collections" is excluded, that stays as its own small
      centered eyebrow. */
-  .section-heading.rail-heading{ text-align:left; font-size:24px; font-weight:600; padding:56px 0 20px; }
+  .section-heading.rail-heading{ text-align:left; font-size:18px; font-weight:600; padding:56px 0 20px; }
   .rail-heading.is-caps{ text-transform:uppercase; letter-spacing:.02em; }
   .rail-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .rail-head .rail-heading{ padding-bottom:0; }
   .rail-cta{ margin-bottom:20px; white-space:nowrap; }
-  .tab-group{ display:flex; gap:10px; padding:56px 0 20px; }
-  .tab-btn{ font-family:var(--font-heading); font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; }
-  .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:transparent; transition:background .15s ease-out; }
+  .tab-group{ display:flex; justify-content:center; gap:10px; padding:56px 0 20px; }
+  .tab-btn{ font-family:var(--font-heading); font-size:18px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
+  .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--dark); transform:scaleX(0); transition:transform .25s ease-out; }
   .tab-btn.is-active{ color:var(--dark); }
-  .tab-btn.is-active::after{ background:var(--dark); }
+  .tab-btn.is-active::after{ transform:scaleX(1); }
   .tab-btn + .tab-btn{ margin-left:8px; padding-left:14px; border-left:1px solid var(--border); }
+  /* Panels crossfade instead of an abrupt hide/show swap. */
+  .rail-carousel.tab-panel{ transition:opacity .2s ease-out; }
+  .rail-carousel.tab-panel.is-leaving{ opacity:0; }
+  @media (prefers-reduced-motion:reduce){ .tab-btn::after{ transition:none; } .rail-carousel.tab-panel{ transition:none; } }
   .section-sub.rail-sub{ text-align:left; margin-bottom:24px; }
 
   /* ===== Header: thin, persistent search, real categories ===== */
@@ -128,7 +132,7 @@
      thing controlling that lower gap - sized to match the section-break
      rhythm used elsewhere on the page (ticker, promo strip), not just
      enough room for the label's own line-height. */
-  .cat-eyebrow{ text-align:center; font-size:15px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dark); margin:36px 0; }
+  .cat-eyebrow{ text-align:center; font-size:18px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dark); margin:36px 0; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
   .cat-picker-avatar{ width:136px; height:136px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
@@ -254,7 +258,7 @@
   @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
   /* Autoplay videos run indefinitely, so a manual stop control is required
      (not just decorative) - defaults to paused under prefers-reduced-motion. */
-  .fp-heading{ text-align:center; }
+  .fp-heading{ text-align:center; font-size:18px; padding:56px 0 20px; }
   .fp-playtoggle{ position:absolute; top:0; right:0; z-index:3; width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.1); }
   .fp-playtoggle:hover{ border-color:var(--dark); }
   .fp-playtoggle[aria-pressed="true"] .ic-pause{ display:none; }
@@ -369,9 +373,12 @@
   .edit-showcase{ display:none; }
   @media (min-width:901px){
     .edit{ display:none; }
-    .edit-showcase{ display:grid; grid-template-columns:1.2fr 1fr; gap:32px; align-items:start; margin-top:56px; }
+    .edit-showcase{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-top:56px; }
     .es-media{ display:grid; grid-template-columns:64px 1fr; gap:10px; }
-    .es-main{ display:block; position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden; background:var(--white); }
+    /* 1:1 at the media column's full width came out much taller than the
+       old 16:9 box - capped so the picks row below it stays in the same
+       viewport instead of needing a scroll to reach it. */
+    .es-main{ display:block; position:relative; aspect-ratio:1; max-width:340px; border-radius:var(--radius); overflow:hidden; background:var(--white); }
     .es-main img{ width:100%; height:100%; object-fit:cover; display:block; }
     .es-thumbs{ display:flex; flex-direction:column; gap:8px; }
     .es-thumb{ width:64px; height:64px; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:var(--white); cursor:pointer; flex:none; }
@@ -898,7 +905,7 @@
       <button type="button" class="tab-btn" id="tabNewBtn" role="tab" aria-selected="false" aria-controls="naWrap">New Arrivals</button>
     </div>
   </div>
-  <div class="carousel rail-carousel" id="bestWrap" role="tabpanel" aria-labelledby="tabBestBtn">
+  <div class="carousel rail-carousel tab-panel" id="bestWrap" role="tabpanel" aria-labelledby="tabBestBtn">
   <div class="rail-wrap">
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
@@ -966,7 +973,7 @@
     </div>
   </div>
 
-  <div class="carousel rail-carousel" id="naWrap" role="tabpanel" aria-labelledby="tabNewBtn" hidden>
+  <div class="carousel rail-carousel tab-panel" id="naWrap" role="tabpanel" aria-labelledby="tabNewBtn" hidden>
   <div class="rail-wrap">
   <section class="products" id="naTrack" tabindex="0" role="region" aria-label="New Arrivals products, scrollable">
     <div class="product">
@@ -1563,18 +1570,37 @@
     var naWrap = document.getElementById('naWrap');
     var bnCta = document.getElementById('bnCta');
     if (!tabBestBtn || !tabNewBtn) return;
+    var tabSwitching = false;
     function showTab(which){
       var isBest = which === 'best';
+      if (tabSwitching || (isBest && !bestWrap.hidden) || (!isBest && !naWrap.hidden)) return;
+      tabSwitching = true;
       tabBestBtn.classList.toggle('is-active', isBest);
       tabNewBtn.classList.toggle('is-active', !isBest);
       tabBestBtn.setAttribute('aria-selected', isBest ? 'true' : 'false');
       tabNewBtn.setAttribute('aria-selected', isBest ? 'false' : 'true');
-      bestWrap.hidden = !isBest;
-      naWrap.hidden = isBest;
       if (bnCta) {
         bnCta.href = isBest ? 'https://wewood.co.in/collections/best-seller' : 'https://wewood.co.in/collections/new-arrivals';
         bnCta.textContent = isBest ? 'Shop Bestsellers' : 'Shop New Arrivals';
       }
+      var leaving = isBest ? naWrap : bestWrap;
+      var entering = isBest ? bestWrap : naWrap;
+      if (reduceMotion) {
+        leaving.hidden = true;
+        entering.hidden = false;
+        tabSwitching = false;
+        return;
+      }
+      leaving.classList.add('is-leaving');
+      setTimeout(function(){
+        leaving.hidden = true;
+        leaving.classList.remove('is-leaving');
+        entering.hidden = false;
+        entering.classList.add('is-leaving');
+        entering.getBoundingClientRect();
+        entering.classList.remove('is-leaving');
+        tabSwitching = false;
+      }, 200);
     }
     tabBestBtn.addEventListener('click', function(){ showTab('best'); });
     tabNewBtn.addEventListener('click', function(){ showTab('new'); });
