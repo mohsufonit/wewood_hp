@@ -50,14 +50,14 @@
   .btn-white:hover{ background:#fff; color:var(--black); }
   .btn-sm{ padding:10px 20px; font-size:14px; }
 
-  .section-heading{ text-align:center; font-size:38px; padding:72px 0 10px; }
+  .section-heading{ text-align:center; font-size:38px; padding:50px 0 10px; }
   .section-sub{ text-align:center; font-size:15px; color:var(--text-2); margin:0 0 36px; }
   .eyebrow{ display:block; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
   /* Product-rail headings (Bestsellers, the category rail's mobile heading)
      read smaller and left-aligned instead of the page's usual big centered
      style - "Shop by Collections" is excluded, that stays as its own small
      centered eyebrow. */
-  .section-heading.rail-heading{ text-align:left; font-size:38px; font-weight:400; padding:56px 0 20px; }
+  .section-heading.rail-heading{ text-align:left; font-size:38px; font-weight:400; padding:50px 0 20px; }
   .rail-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .rail-head .rail-heading{ padding-bottom:0; }
   .rail-cta{ margin-bottom:20px; white-space:nowrap; }
@@ -66,7 +66,7 @@
      is its only child, so space-between alone pins it to the start
      instead of centering it - the group has to claim the full row width
      itself before its own justify-content:center means anything. */
-  .tab-group{ display:flex; justify-content:center; gap:10px; padding:56px 0 20px; width:100%; }
+  .tab-group{ display:flex; justify-content:center; gap:10px; padding:50px 0 20px; width:100%; }
   .tab-btn{ font-family:var(--font-heading); font-size:38px; font-weight:400; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
   .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--dark); transform:scaleX(0); transition:transform .25s ease-out; }
   .tab-btn.is-active{ color:var(--dark); }
@@ -136,7 +136,7 @@
      thing controlling that lower gap - sized to match the section-break
      rhythm used elsewhere on the page (ticker, promo strip), not just
      enough room for the label's own line-height. */
-  .cat-eyebrow{ text-align:center; font-size:18px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dark); margin:36px 0; }
+  .cat-eyebrow{ text-align:center; font-size:18px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dark); margin:50px 0 36px; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
   .cat-picker-avatar{ width:136px; height:136px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
@@ -184,7 +184,7 @@
   .rail-carousel .car-ctl{ margin-top:18px; }
 
   /* ===== Credibility ticker (section breaker) ===== */
-  .credibility-ticker{ margin:44px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
+  .credibility-ticker{ margin:50px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
   .credibility-track{ display:flex; align-items:center; gap:34px; width:max-content; white-space:nowrap; animation:ticker 46s linear infinite; }
   .credibility-track span{ display:flex; align-items:center; gap:34px; }
   .credibility-track .mark{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15.5px; color:var(--text); letter-spacing:.02em; }
@@ -262,7 +262,7 @@
   @media (prefers-reduced-motion:reduce){ .fp-track{ scroll-behavior:auto; } .fp-card{ transition:none; } }
   /* Autoplay videos run indefinitely, so a manual stop control is required
      (not just decorative) - defaults to paused under prefers-reduced-motion. */
-  .fp-heading{ text-align:center; font-size:38px; padding:56px 0 20px; }
+  .fp-heading{ text-align:center; font-size:38px; padding:50px 0 20px; }
   .fp-playtoggle{ position:absolute; top:0; right:0; z-index:3; width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--text); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,.1); }
   .fp-playtoggle:hover{ border-color:var(--dark); }
   .fp-playtoggle[aria-pressed="true"] .ic-pause{ display:none; }
@@ -328,7 +328,7 @@
          badge elsewhere on the page), a section breaker directly under
          Categories. One bold line + real bank marks inline, so the offer
          reads without opening the modal. ===== */
-  .emi-bar{ margin:56px calc(-1 * var(--page-gutter)) 0; background:var(--dark); color:#fff; padding:20px var(--page-gutter); }
+  .emi-bar{ margin:50px calc(-1 * var(--page-gutter)) 0; background:var(--dark); color:#fff; padding:20px var(--page-gutter); }
   .emi-bar .inner{ display:flex; align-items:center; justify-content:center; gap:14px 28px; flex-wrap:wrap; }
   .emi-headline{ font-size:16px; font-weight:500; color:#fff; text-align:center; }
   .emi-headline b{ font-weight:700; }
@@ -377,7 +377,7 @@
   .edit-showcase{ display:none; }
   @media (min-width:901px){
     .edit{ display:none; }
-    .edit-showcase{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-top:56px; }
+    .edit-showcase{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-top:50px; }
     /* The image is capped to the info column's height (see .es-main), so
        it's narrower than the grid column it sits in - shrink this to its
        own content width and center it, instead of letting it hug the
@@ -429,7 +429,7 @@
   }
 
   /* ===== Story: curated, grounded ===== */
-  .story{ display:grid; grid-template-columns:.9fr 1.1fr; gap:var(--gap); align-items:center; margin-top:80px; }
+  .story{ display:grid; grid-template-columns:.9fr 1.1fr; gap:var(--gap); align-items:center; margin-top:50px; }
   @media (max-width:900px){ .story{ grid-template-columns:1fr; } }
   .story .copy{ padding:24px var(--inner); }
   .story h2{ font-size:36px; margin-bottom:20px; }
@@ -495,7 +495,7 @@
 
 
   /* ===== Assurance + WhatsApp ===== */
-  .assure{ margin-top:80px; background:var(--white); border-radius:var(--radius); padding:26px 32px; display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:24px; align-items:center; }
+  .assure{ margin-top:50px; background:var(--white); border-radius:var(--radius); padding:26px 32px; display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:24px; align-items:center; }
   @media (max-width:1000px){ .assure{ grid-template-columns:1fr 1fr; } }
   @media (max-width:640px){ .assure{ grid-template-columns:1fr; } }
   .assure div b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:17px; margin-bottom:4px; }
@@ -514,7 +514,7 @@
   .faq-item p{ padding:0 30px 24px; color:var(--text-2); font-size:15.5px; line-height:1.6; max-width:72ch; }
 
   /* ===== Footer ===== */
-  .footer{ margin:64px 0 18px; background:var(--silver); border-radius:var(--radius); padding:64px var(--inner) 0; color:var(--text); }
+  .footer{ margin:50px 0 18px; background:var(--silver); border-radius:var(--radius); padding:64px var(--inner) 0; color:var(--text); }
   .footer-cols{ display:grid; grid-template-columns:1.2fr repeat(3,1fr) 1.1fr; gap:24px; }
   @media (max-width:900px){ .footer-cols{ grid-template-columns:repeat(2,1fr); } }
   .footer-cols h4{ font-size:18px; margin-bottom:16px; }
@@ -1062,7 +1062,7 @@
        rounded up). Run as a compact ticker acting as a section breaker,
        duplicated once for a seamless loop. Pauses on hover (desktop) and
        on tap (touch). -->
-  <h2 class="section-heading rail-heading">Loved by the homes that own them</h2>
+  <h2 class="section-heading">Loved by the homes that own them</h2>
   <section class="reviews-ticker reviews-ticker-compact" id="reviewsTicker">
     <div class="reviews-track">
       <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting table"></div></div></div>
@@ -1134,7 +1134,7 @@
 
   <!-- PROMO STRIP: three real collections, each with its actual maximum live
        discount computed from products.json, not an invented percentage. -->
-  <section class="promo-strip" style="margin-top:44px;">
+  <section class="promo-strip" style="margin-top:50px;">
     <a href="https://wewood.co.in/collections/nesting-table" class="promo-tile">
       <img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting tables">
       <span class="promo-tag">Up to 47% off</span>
@@ -1287,7 +1287,7 @@
   </div>
 
   <!-- FAQ -->
-  <h2 class="section-heading" style="padding-top:72px;">Before you order</h2>
+  <h2 class="section-heading" style="padding-top:50px;">Before you order</h2>
   <p class="section-sub">The four questions we get asked most</p>
   <div class="faq-list">
     <details class="faq-item">
