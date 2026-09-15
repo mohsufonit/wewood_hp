@@ -58,7 +58,6 @@
      style - "Shop by Collections" is excluded, that stays as its own small
      centered eyebrow. */
   .section-heading.rail-heading{ text-align:left; font-size:38px; font-weight:400; padding:56px 0 20px; }
-  .rail-heading.is-caps{ text-transform:uppercase; letter-spacing:.02em; }
   .rail-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .rail-head .rail-heading{ padding-bottom:0; }
   .rail-cta{ margin-bottom:20px; white-space:nowrap; }
@@ -68,7 +67,7 @@
      instead of centering it - the group has to claim the full row width
      itself before its own justify-content:center means anything. */
   .tab-group{ display:flex; justify-content:center; gap:10px; padding:56px 0 20px; width:100%; }
-  .tab-btn{ font-family:var(--font-heading); font-size:38px; font-weight:400; text-transform:uppercase; letter-spacing:.02em; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
+  .tab-btn{ font-family:var(--font-heading); font-size:38px; font-weight:400; background:none; border:none; padding:0; color:var(--text-3); position:relative; padding-bottom:8px; transition:color .2s ease-out; }
   .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--dark); transform:scaleX(0); transition:transform .25s ease-out; }
   .tab-btn.is-active{ color:var(--dark); }
   .tab-btn.is-active::after{ transform:scaleX(1); }
@@ -379,7 +378,11 @@
   @media (min-width:901px){
     .edit{ display:none; }
     .edit-showcase{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-top:56px; }
-    .es-media{ display:grid; grid-template-columns:64px 1fr; gap:10px; }
+    /* The image is capped to the info column's height (see .es-main), so
+       it's narrower than the grid column it sits in - shrink this to its
+       own content width and center it, instead of letting it hug the
+       left edge and leave all the leftover space piled on the right. */
+    .es-media{ display:grid; grid-template-columns:64px 1fr; gap:10px; width:max-content; max-width:100%; margin:0 auto; }
     /* 1:1 at the media column's full width came out much taller than the
        old 16:9 box - capped so the picks row below it stays in the same
        viewport instead of needing a scroll to reach it. */
@@ -1059,7 +1062,7 @@
        rounded up). Run as a compact ticker acting as a section breaker,
        duplicated once for a seamless loop. Pauses on hover (desktop) and
        on tap (touch). -->
-  <h2 class="section-heading rail-heading is-caps">Loved by the homes that own them</h2>
+  <h2 class="section-heading rail-heading">Loved by the homes that own them</h2>
   <section class="reviews-ticker reviews-ticker-compact" id="reviewsTicker">
     <div class="reviews-track">
       <div class="review" data-rating="5"><q>Absolutely love this nesting table set! Perfect space-saving design, sturdy, and stylish.</q><div class="who"><div><b>Pooja Bansal</b><span>Gurgaon</span></div><div class="pthumb"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table_Teak_Wood_with_Transparent_Resin_Finish.png?v=1738232386" loading="lazy" alt="Nesting table"></div></div></div>
@@ -1241,7 +1244,7 @@
        outside the photo, like every other rail heading on the page, rather
        than overlaid on it. -->
   <div class="rail-head">
-    <h2 class="section-heading rail-heading is-caps">Shop the look</h2>
+    <h2 class="section-heading rail-heading">Shop the look</h2>
     <a href="https://wewood.co.in/collections/furniture" class="elink rail-cta">View all <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
   </div>
   <div class="stl-grid">
