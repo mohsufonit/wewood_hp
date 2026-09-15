@@ -204,7 +204,7 @@
      affordance that says "this scrolls". Same sizing on every rail on the
      page (Bestsellers, the category rail) - one consistent card size, not
      a different one per section. */
-  .product{ flex:0 0 calc((100% - 3 * var(--gap)) / 4.9); scroll-snap-align:start; display:flex; flex-direction:column; }
+  .product{ position:relative; flex:0 0 calc((100% - 3 * var(--gap)) / 4.9); scroll-snap-align:start; display:flex; flex-direction:column; }
   @media (max-width:1000px){ .product{ flex-basis:calc((100% - 2 * var(--gap)) / 3.4); } }
   @media (max-width:760px){ .product{ flex-basis:calc((100% - var(--gap)) / 2.6); } }
   .car-ctl{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:26px; }
@@ -220,6 +220,15 @@
     .product:hover .pimg{ border-color:var(--border); }
   }
   .badge{ position:absolute; top:14px; left:14px; z-index:1; background:var(--yellow); color:var(--black); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:var(--pill); font-family:var(--font-body); }
+  /* Wishlist: a considered purchase like furniture is rarely bought on the
+     first visit - this lets someone mark a piece and find it again, which
+     a "come back later" shopper actually needs and this page didn't have. */
+  .wish-btn{ position:absolute; top:10px; right:10px; z-index:2; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; color:var(--text-2); box-shadow:0 2px 8px rgba(0,0,0,.14); transition:color .15s ease, transform .15s ease; }
+  .wish-btn:hover{ color:var(--dark); }
+  .wish-btn.is-active{ color:var(--dark); }
+  .wish-btn.is-active svg{ fill:var(--dark); }
+  .wish-btn.is-pop{ transform:scale(1.18); }
+  @media (prefers-reduced-motion:reduce){ .wish-btn{ transition:none; } }
   .product h3{ font-family:var(--font-body); font-weight:400; font-size:15px; color:var(--text); line-height:1.4; margin-bottom:8px; min-height:42px; }
   .price-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:14px; }
   .price{ font-weight:700; font-size:16px; }
@@ -494,6 +503,8 @@
     #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 1.75); }
     .product h3{ font-size:14.5px; }
     .product .pimg{ margin-bottom:10px; }
+    .wish-btn{ width:30px; height:30px; top:8px; right:8px; }
+    .wish-btn svg{ width:16px; height:16px; }
     .car-ctl{ gap:0; margin-top:18px; }
     .car-btn{ display:none; }
     .car-prog{ width:100%; }
@@ -786,48 +797,56 @@
   <section class="products" id="bestTrack" tabindex="0" role="region" aria-label="Best Seller products, scrollable">
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13_52d797df-5f4d-4f3d-b30b-b5b40c3a9e34.png?v=1740653261" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="nesting-table-set-of-3-teak-wood-with-tinted-gray-resin-finish-gloss"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Nesting Table Set of 3, Teak Wood with Tinted Grey Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;15,600</span><span class="compare">&#8377;28,500</span><span class="save">Save 45%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/coffee-table-teak-wood-with-aqua-blue-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/13.png?v=1738323429" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="coffee-table-teak-wood-with-aqua-blue-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Coffee Table, Teak Wood with Aqua Blue Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;9,600</span><span class="compare">&#8377;12,000</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Nesting_Table__Acacia_Wood_with_Transparent_Resin_Finish.png?v=1738232528" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="nesting-table-set-of-2-acacia-wood-with-transparent-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Nesting Table Set of 2, Acacia Wood with Transparent Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;20,000</span><span class="compare">&#8377;25,000</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/round-coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Table_1.png?v=1738239943" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="round-coffee-table-acacia-wood-with-black-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Round Coffee Table, Acacia Wood with Black Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;6,800</span><span class="compare">&#8377;8,500</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/coffee-table-acacia-wood-with-black-resin-finish"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/wall_1.png?v=1738239909" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="coffee-table-acacia-wood-with-black-resin-finish"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Coffee Table, Acacia Wood with Black Resin Finish</h3>
       <div class="price-row"><span class="price">&#8377;16,499</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/7_e06c94d1-e958-4644-9517-74c3797a89a0.png?v=1771919665" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="pearl-green-resin-wall-clock-wood-oak-elegance-with-a-modern-touch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Pearl Green Resin Wall Clock, Wood Oak Elegance</h3>
       <div class="price-row"><span class="price">&#8377;3,600</span><span class="compare">&#8377;4,500</span><span class="save">Save 20%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Cheese_Bord.png?v=1738239998" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="cheese-board-platter-acacia-wood-with-translucent-black-resin-finish-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Cheese Board Platter, Acacia Wood with Translucent Black Resin</h3>
       <div class="price-row"><span class="price">&#8377;4,080</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
     </div>
     <div class="product">
       <a class="pimg" href="https://wewood.co.in/products/stylish-resin-wall-clock-teak-wood-transparent-resin-elegance"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_a5222d49-74d2-4fc9-8875-81e76a9f4954.png?v=1771919699" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="stylish-resin-wall-clock-teak-wood-transparent-resin-elegance"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       <h3>Stylish Resin Wall Clock, Teak Wood &amp; Black Resin</h3>
       <div class="price-row"><span class="price">&#8377;4,900</span><span class="compare">&#8377;5,500</span><span class="save">Save 11%</span></div>
       <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
@@ -841,6 +860,79 @@
     </div>
   </div>
   <div class="see-all"><a href="https://wewood.co.in/collections/best-seller" class="btn">See the full Best Seller collection</a></div>
+
+  <!-- NEW ARRIVALS: the live New Arrivals collection, prices as listed today.
+       Was a nav link only - the homepage itself had no dedicated rail for it. -->
+  <h2 class="section-heading rail-heading" id="new-arrivals">Just landed</h2>
+  <p class="section-sub rail-sub">Eight of the newest pieces in the New Arrivals collection</p>
+  <div class="carousel rail-carousel">
+  <div class="rail-wrap">
+  <section class="products" id="naTrack" tabindex="0" role="region" aria-label="New Arrivals products, scrollable">
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/black-floral-epoxy-natural-wood-nesting-tables-set-of-3"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_xe3rd1xe3rd1xe3r.png?v=1771591472" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="black-floral-epoxy-natural-wood-nesting-tables-set-of-3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Black Floral Epoxy Nesting Tables, Set of 3</h3>
+      <div class="price-row"><span class="price">&#8377;20,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/01.jpg?v=1770122706" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Aurelia Trio Nesting Tables, Grey Resin</h3>
+      <div class="price-row"><span class="price">&#8377;39,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_zgze0tzgze0tzgze_d2389f2a-2aa4-4aea-b184-2b5f9da3848a.png?v=1771591852" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Wood &amp; White Epoxy Nesting Tables, Set of 3</h3>
+      <div class="price-row"><span class="price">&#8377;20,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/premium-solid-wood-resin-rounf-nesting-side-tables"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/nesting_table_of_2.jpg?v=1778524844" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="premium-solid-wood-resin-rounf-nesting-side-tables"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Premium Nesting Side Tables, Set of 2</h3>
+      <div class="price-row"><span class="price">&#8377;15,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/COASTER_25.png?v=1771591358" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="acacia-wood-nesting-tables-set-of-2-with-translucent-black-resin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Nesting Tables, Translucent Black Resin</h3>
+      <div class="price-row"><span class="price">&#8377;15,399</span><span class="compare">&#8377;21,950</span><span class="save">Save 30%</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/aurelia-trio-nesting-tables-wood-grey-resin-copy-1"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/3_table.png?v=1783945712" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="aurelia-trio-nesting-tables-wood-grey-resin-copy-1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Wood Resin Nesting Tables, Set of 3</h3>
+      <div class="price-row"><span class="price">&#8377;32,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/handcrafted-triangular-wood-black-epoxy-nesting-tables-set-of-2"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_ojg48pojg48pojg4.png?v=1771591528" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="handcrafted-triangular-wood-black-epoxy-nesting-tables-set-of-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>Triangular Wood &amp; Black Epoxy Nesting Tables</h3>
+      <div class="price-row"><span class="price">&#8377;13,000</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+    <div class="product">
+      <a class="pimg" href="https://wewood.co.in/products/c-shaped-wood-pearl-resin-side-table"><img src="https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_glr3uqglr3uqglr3.png?v=1771591722" alt=""></a>
+      <button type="button" class="wish-btn js-wish" aria-label="Save to wishlist" aria-pressed="false" data-handle="c-shaped-wood-pearl-resin-side-table"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
+      <h3>C-Shaped Side Table, Pearl Resin</h3>
+      <div class="price-row"><span class="price">&#8377;7,900</span></div>
+      <button type="button" class="btn btn-dark btn-sm js-atc">Add to cart</button>
+    </div>
+  </section>
+    <button type="button" class="car-btn car-side car-side-prev" id="naPrev" aria-label="Previous product" aria-controls="naTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="car-btn car-side car-side-next" id="naNext" aria-label="Next product" aria-controls="naTrack"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+    <div class="car-ctl">
+      <div class="car-prog" role="presentation"><span id="naBar"></span></div>
+    </div>
+  </div>
+  <div class="see-all"><a href="https://wewood.co.in/collections/new-arrivals" class="btn">See the full New Arrivals collection</a></div>
 
   <!-- THE EDIT: four real products, each with the reason it is here. Answers the
        CRO audit's "say why these were chosen" finding. Prices verified live. -->
@@ -1115,12 +1207,16 @@
     }, { passive: true });
   }
 
-  /* Bestsellers carousel: one row, advances one card at a time */
-  var track = document.getElementById('bestTrack');
-  if (track) {
-    var cPrev = document.getElementById('bestPrev');
-    var cNext = document.getElementById('bestNext');
-    var cBar = document.getElementById('bestBar');
+  /* Static product rails (Bestsellers, New Arrivals): one row each,
+     advances one card at a time. Shared init so both behave identically -
+     the category rail has its own version since its cards are re-rendered
+     per category rather than fixed markup. */
+  function initRail(trackId, prevId, nextId, barId){
+    var track = document.getElementById(trackId);
+    if (!track) return;
+    var cPrev = document.getElementById(prevId);
+    var cNext = document.getElementById(nextId);
+    var cBar = document.getElementById(barId);
     function cardStep(){
       var card = track.querySelector('.product');
       var gap = parseFloat(window.getComputedStyle(track).columnGap) || 20;
@@ -1148,16 +1244,18 @@
     /* Arrows center on the product image itself, same as the category
        rail - the image is a fixed square, the card under it (title/price/
        button) is taller. */
-    function syncBestArrowPosition(){
+    function syncArrowPosition(){
       var img = track.querySelector('.pimg');
       if (!img) return;
       var mid = img.getBoundingClientRect().height / 2;
       if (cPrev) cPrev.style.top = mid + 'px';
       if (cNext) cNext.style.top = mid + 'px';
     }
-    window.addEventListener('resize', syncBestArrowPosition);
-    syncBestArrowPosition();
+    window.addEventListener('resize', syncArrowPosition);
+    syncArrowPosition();
   }
+  initRail('bestTrack', 'bestPrev', 'bestNext', 'bestBar');
+  initRail('naTrack', 'naPrev', 'naNext', 'naBar');
 
   /* Add to cart feedback */
   var cartCount = document.getElementById('cartCount');
@@ -1261,6 +1359,9 @@
         var a = document.createElement('a'); a.className = 'pimg'; a.href = 'https://wewood.co.in/products/' + p.handle;
         var img = document.createElement('img'); img.src = p.img; img.alt = '';
         a.appendChild(img); card.appendChild(a);
+        var wish = document.createElement('button'); wish.type = 'button'; wish.className = 'wish-btn js-wish'; wish.setAttribute('aria-label', 'Save to wishlist'); wish.setAttribute('aria-pressed', 'false'); wish.setAttribute('data-handle', p.handle);
+        wish.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg>';
+        card.appendChild(wish);
         var h3 = document.createElement('h3'); h3.textContent = p.title; card.appendChild(h3);
         var row = document.createElement('div'); row.className = 'price-row';
         var priceSpan = document.createElement('span'); priceSpan.className = 'price'; priceSpan.textContent = inr(p.price);
@@ -1294,6 +1395,7 @@
       }
       if (typeof syncCatRail === 'function') syncCatRail();
       if (typeof syncCatRailArrowPosition === 'function') syncCatRailArrowPosition();
+      if (typeof markWishButtons === 'function') markWishButtons();
     }
     catPicker.forEach(function(item){
       item.addEventListener('click', function(){
@@ -1317,6 +1419,43 @@
       setTimeout(function(){ btn.textContent = original; }, 1100);
     });
   }
+
+  /* Wishlist: one delegated listener on the whole page, since cards exist
+     both as static markup (Bestsellers) and JS-rendered markup (category
+     rail) - saved handles persist in localStorage so a piece someone marks
+     is still marked if they come back later, which is the point of a
+     wishlist for a considered purchase like furniture. */
+  var WISH_KEY = 'wewood_wishlist';
+  function getWishlist(){
+    try { return JSON.parse(window.localStorage.getItem(WISH_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function setWishlist(list){
+    try { window.localStorage.setItem(WISH_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function markWishButtons(){
+    var saved = getWishlist();
+    document.querySelectorAll('.js-wish').forEach(function(btn){
+      var on = saved.indexOf(btn.getAttribute('data-handle')) !== -1;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.js-wish');
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    var handle = btn.getAttribute('data-handle');
+    var list = getWishlist();
+    var i = list.indexOf(handle);
+    if (i === -1) { list.push(handle); } else { list.splice(i, 1); }
+    setWishlist(list);
+    markWishButtons();
+    if (!reduceMotion) {
+      btn.classList.add('is-pop');
+      setTimeout(function(){ btn.classList.remove('is-pop'); }, 180);
+    }
+  });
+  markWishButtons();
 
   /* Category rail carousel controls (same pattern as Bestsellers) */
   var catRailPrev = document.getElementById('catRailPrev');
