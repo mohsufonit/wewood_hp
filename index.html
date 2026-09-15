@@ -414,6 +414,52 @@
 
   .wa-fab{ position:fixed; right:22px; bottom:22px; z-index:60; width:56px; height:56px; border-radius:50%; background:var(--green); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,.22); }
 
+  /* ===== Annotate: prototype-review tool, not part of the real site ===== */
+  .annot-toggle{ position:fixed; left:22px; bottom:22px; z-index:70; display:flex; align-items:center; gap:8px; background:#fff; color:var(--dark); border:1px solid var(--border); border-radius:var(--pill); padding:12px 18px; font-family:var(--font-body); font-size:14px; font-weight:600; box-shadow:0 4px 14px rgba(0,0,0,.16); transition:background .15s ease, color .15s ease; }
+  .annot-toggle[aria-pressed="true"]{ background:var(--dark); color:#fff; border-color:var(--dark); }
+  .annot-toggle-count{ background:var(--yellow); color:var(--black); font-size:11px; font-weight:700; border-radius:var(--pill); padding:1px 7px; }
+  .annot-note{ position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:70; background:var(--dark); color:#fff; font-family:var(--font-body); font-size:13px; padding:10px 18px; border-radius:var(--pill); box-shadow:0 6px 18px rgba(0,0,0,.25); }
+  .annot-hover-target{ outline:2px solid var(--dark) !important; outline-offset:3px; cursor:crosshair !important; }
+  .annot-pin{ position:absolute; top:-9px; left:-9px; z-index:5; width:22px; height:22px; border-radius:50%; background:var(--dark); color:#fff; font-family:var(--font-body); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,.3); pointer-events:none; }
+
+  /* :not([hidden]) rather than a plain display:flex on the base rule - an
+     author style always beats the browser's own [hidden]{display:none},
+     so declaring display here directly would silently keep the panel (and
+     the form overlay below) visible and eating clicks even while hidden
+     was set from JS. */
+  .annot-panel{ position:fixed; left:22px; bottom:84px; z-index:70; width:320px; max-width:calc(100vw - 44px); max-height:60vh; background:#fff; border-radius:var(--radius); box-shadow:0 12px 36px rgba(0,0,0,.22); flex-direction:column; overflow:hidden; }
+  .annot-panel:not([hidden]){ display:flex; }
+  .annot-panel-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; font-family:var(--font-body); font-weight:700; font-size:14px; border-bottom:1px solid var(--border); }
+  .annot-panel-close{ color:var(--text-2); }
+  .annot-list{ overflow-y:auto; padding:6px 10px; }
+  .annot-empty{ padding:16px; margin:0; font-size:13px; color:var(--text-2); text-align:center; }
+  .annot-row{ display:flex; gap:10px; align-items:flex-start; padding:10px 6px; border-bottom:1px solid var(--bg); cursor:pointer; }
+  .annot-row:last-child{ border-bottom:none; }
+  .annot-row:hover{ background:var(--bg); }
+  .annot-row-num{ flex:none; width:20px; height:20px; border-radius:50%; background:var(--dark); color:#fff; font-size:10.5px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+  .annot-row-body{ flex:1; min-width:0; }
+  .annot-row-label{ font-size:12.5px; font-weight:700; color:var(--text); margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .annot-row-comment{ font-size:12.5px; color:var(--text-2); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .annot-row-viewport{ font-size:10.5px; color:var(--text-3); text-transform:uppercase; letter-spacing:.04em; margin-top:3px; }
+  .annot-row-del{ flex:none; color:var(--text-3); padding:2px; }
+  .annot-row-del:hover{ color:var(--sale); }
+  .annot-panel-actions{ display:flex; gap:10px; padding:12px 16px; border-top:1px solid var(--border); }
+
+  .annot-form-overlay{ position:fixed; inset:0; z-index:110; background:rgba(0,0,0,.4); align-items:center; justify-content:center; padding:20px; }
+  .annot-form-overlay:not([hidden]){ display:flex; }
+  .annot-form{ width:380px; max-width:100%; background:#fff; border-radius:var(--radius); padding:20px; box-shadow:0 20px 50px rgba(0,0,0,.3); }
+  .annot-form-label{ font-family:var(--font-heading); font-size:16px; margin-bottom:12px; }
+  .annot-form-input{ width:100%; border:1px solid var(--border); border-radius:12px; padding:12px 14px; font-family:var(--font-body); font-size:14px; resize:vertical; margin-bottom:14px; }
+  .annot-form-actions{ display:flex; justify-content:flex-end; gap:10px; }
+  .annot-btn{ font-family:var(--font-body); font-size:13.5px; font-weight:600; padding:9px 16px; border-radius:var(--pill); border:1px solid var(--border); background:#fff; color:var(--text); }
+  .annot-btn-ghost:hover{ border-color:var(--dark); color:var(--dark); }
+  .annot-btn-dark{ background:var(--dark); border-color:var(--dark); color:#fff; }
+  .annot-btn-dark:hover{ background:#000; }
+  @media (max-width:640px){
+    .annot-toggle{ left:14px; bottom:14px; padding:10px 14px; font-size:13px; }
+    .annot-panel{ left:14px; right:14px; bottom:76px; width:auto; max-width:none; }
+  }
+
   /* ===== EMI modal ===== */
   .emi-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:100; display:none; align-items:flex-start; justify-content:center; padding:60px 20px; overflow-y:auto; }
   .emi-modal-overlay.open{ display:flex; }
@@ -1126,6 +1172,43 @@
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.3c-.3.8-1.5 1.4-2.4 1.6-.6.1-1.5.2-4.2-.9-3.4-1.4-5.6-4.9-5.8-5.1-.2-.2-1.4-1.9-1.4-3.6 0-1.7.9-2.5 1.2-2.9.3-.3.7-.4 1-.4h.7c.2 0 .5 0 .8.6.3.7 1 2.4 1.1 2.6.1.2.2.4 0 .7-.1.2-.2.4-.4.6-.2.2-.4.5-.6.6-.2.2-.4.4-.2.8.2.4.9 1.5 1.9 2.4 1.3 1.2 2.4 1.5 2.8 1.7.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 2 .9 2.3 1.1.3.2.5.3.6.4.1.2.1.9-.2 1.7z"/></svg>
 </a>
 
+<!-- ANNOTATE: a client-side review tool for this prototype only, not part
+     of the real WeWood site. Toggle it, click any component on the page
+     (mobile or desktop), leave a comment, export everything as one JSON
+     file. Nothing here talks to a server - localStorage plus a
+     client-side download, so it works on GitHub Pages with no backend. -->
+<button type="button" class="annot-toggle" id="annotToggle" aria-pressed="false" aria-label="Toggle annotate mode">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+  <span>Annotate</span>
+  <span class="annot-toggle-count" id="annotToggleCount" hidden>0</span>
+</button>
+
+<div class="annot-note" id="annotNote" hidden>Annotate mode is on - click any part of the page to leave a comment.</div>
+
+<div class="annot-panel" id="annotPanel" hidden>
+  <div class="annot-panel-head">
+    <span>Annotations (<span id="annotCount">0</span>)</span>
+    <button type="button" class="annot-panel-close" id="annotPanelClose" aria-label="Close list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="annot-list" id="annotList"></div>
+  <p class="annot-empty" id="annotEmpty">No annotations yet. Turn on Annotate, then click something on the page.</p>
+  <div class="annot-panel-actions">
+    <button type="button" class="annot-btn annot-btn-ghost" id="annotClearAll">Clear all</button>
+    <button type="button" class="annot-btn annot-btn-dark" id="annotExport">Export JSON</button>
+  </div>
+</div>
+
+<div class="annot-form-overlay" id="annotFormOverlay" hidden>
+  <div class="annot-form" role="dialog" aria-modal="true" aria-labelledby="annotFormLabel">
+    <div class="annot-form-label" id="annotFormLabel"></div>
+    <textarea class="annot-form-input" id="annotFormInput" placeholder="What should be different here?" rows="4"></textarea>
+    <div class="annot-form-actions">
+      <button type="button" class="annot-btn annot-btn-ghost" id="annotFormCancel">Cancel</button>
+      <button type="button" class="annot-btn annot-btn-dark" id="annotFormSave">Save comment</button>
+    </div>
+  </div>
+</div>
+
 <!-- EMI MODAL: the real bank list from the live checkout -->
 <div class="emi-modal-overlay" id="emiOverlay">
   <div class="emi-modal" role="dialog" aria-modal="true" aria-labelledby="emiTitle">
@@ -1507,6 +1590,222 @@
   if (closeBtn) closeBtn.addEventListener('click', closeEmi);
   if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) closeEmi(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeEmi(); });
+
+  /* Annotate: prototype-review tool. Click any component, leave a
+     comment, export as JSON. Nothing here is part of the real WeWood
+     site or talks to a server - localStorage plus a client-side
+     download, works on the static GitHub Pages build with no backend. */
+  (function(){
+    var STORE_KEY = 'wewood_annotations';
+    var toggle = document.getElementById('annotToggle');
+    var toggleCount = document.getElementById('annotToggleCount');
+    var note = document.getElementById('annotNote');
+    var panel = document.getElementById('annotPanel');
+    var panelClose = document.getElementById('annotPanelClose');
+    var list = document.getElementById('annotList');
+    var empty = document.getElementById('annotEmpty');
+    var countEl = document.getElementById('annotCount');
+    var clearAllBtn = document.getElementById('annotClearAll');
+    var exportBtn = document.getElementById('annotExport');
+    var formOverlay = document.getElementById('annotFormOverlay');
+    var formLabel = document.getElementById('annotFormLabel');
+    var formInput = document.getElementById('annotFormInput');
+    var formCancel = document.getElementById('annotFormCancel');
+    var formSave = document.getElementById('annotFormSave');
+    if (!toggle) return;
+
+    var active = false;
+    var hovered = null;
+    var pendingTarget = null;
+    var annotations = [];
+    try { annotations = JSON.parse(window.localStorage.getItem(STORE_KEY) || '[]'); } catch (e) { annotations = []; }
+
+    var COMPONENT_SELECTORS = [
+      '.product', '.room', '.promo-tile', '.review', '.faq-item',
+      '.cat-picker-item', '.mark-tile', '.erow',
+      '.rail-carousel', '.cat-picker', '.hero', '.credibility-ticker',
+      '.emi-bar', '.rooms', '.stl', '.reviews-grid', '.cred', '.assure',
+      '.faq-list', 'footer.footer', 'header.header', '.promo-strip'
+    ];
+
+    function findComponent(el){
+      for (var i = 0; i < COMPONENT_SELECTORS.length; i++) {
+        var m = el.closest(COMPONENT_SELECTORS[i]);
+        if (m) return m;
+      }
+      return el.closest('section, header, footer, div[class]') || el;
+    }
+
+    function labelFor(el){
+      var h3 = el.querySelector && el.querySelector('h3');
+      if (h3 && h3.textContent.trim()) return h3.textContent.trim();
+      var who = el.querySelector && el.querySelector('.who b');
+      if (who) return 'Review: ' + who.textContent.trim();
+      var summary = el.querySelector && el.querySelector('summary');
+      if (summary) return summary.childNodes[0] ? summary.childNodes[0].textContent.trim() : summary.textContent.trim();
+      var promoText = el.querySelector && el.querySelector('.promo-text b');
+      if (promoText) return promoText.textContent.trim();
+      var title = el.getAttribute && (el.getAttribute('title') || el.getAttribute('aria-label'));
+      if (title) return title;
+      if (el.id) return '#' + el.id;
+      var cls = (el.className && typeof el.className === 'string') ? el.className.split(' ')[0] : el.tagName.toLowerCase();
+      return cls || el.tagName.toLowerCase();
+    }
+
+    function cssPath(el){
+      if (!(el instanceof Element)) return '';
+      var path = [];
+      var node = el;
+      while (node && node.nodeType === 1 && node !== document.body && path.length < 8) {
+        var selector = node.tagName.toLowerCase();
+        if (node.id) { selector += '#' + node.id; path.unshift(selector); break; }
+        var sibIndex = 1, sib = node;
+        while ((sib = sib.previousElementSibling)) { if (sib.tagName === node.tagName) sibIndex++; }
+        selector += ':nth-of-type(' + sibIndex + ')';
+        path.unshift(selector);
+        node = node.parentElement;
+      }
+      return path.join(' > ');
+    }
+
+    function save(){
+      try { window.localStorage.setItem(STORE_KEY, JSON.stringify(annotations)); } catch (e) {}
+    }
+
+    function repaintPins(){
+      document.querySelectorAll('.annot-pin').forEach(function(p){ p.remove(); });
+      annotations.forEach(function(a, i){
+        var el = null;
+        try { el = document.querySelector(a.selector); } catch (e) { el = null; }
+        if (!el) return;
+        var cs = window.getComputedStyle(el);
+        if (cs.position === 'static') el.style.position = 'relative';
+        var pin = document.createElement('span');
+        pin.className = 'annot-pin';
+        pin.textContent = String(i + 1);
+        el.appendChild(pin);
+      });
+    }
+
+    function renderList(){
+      list.innerHTML = '';
+      empty.hidden = annotations.length > 0;
+      countEl.textContent = String(annotations.length);
+      if (annotations.length) { toggleCount.hidden = false; toggleCount.textContent = String(annotations.length); }
+      else { toggleCount.hidden = true; }
+      annotations.forEach(function(a, i){
+        var row = document.createElement('div'); row.className = 'annot-row';
+        var num = document.createElement('span'); num.className = 'annot-row-num'; num.textContent = String(i + 1);
+        var body = document.createElement('div'); body.className = 'annot-row-body';
+        var lab = document.createElement('div'); lab.className = 'annot-row-label'; lab.textContent = a.label;
+        var com = document.createElement('div'); com.className = 'annot-row-comment'; com.textContent = a.comment;
+        var vp = document.createElement('div'); vp.className = 'annot-row-viewport'; vp.textContent = a.viewport + ' · ' + a.windowWidth + 'px';
+        body.appendChild(lab); body.appendChild(com); body.appendChild(vp);
+        var del = document.createElement('button'); del.type = 'button'; del.className = 'annot-row-del'; del.setAttribute('aria-label', 'Delete annotation');
+        del.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+        del.addEventListener('click', function(ev){ ev.stopPropagation(); annotations.splice(i, 1); save(); renderList(); repaintPins(); });
+        row.appendChild(num); row.appendChild(body); row.appendChild(del);
+        row.addEventListener('click', function(){
+          var el = null;
+          try { el = document.querySelector(a.selector); } catch (e) { el = null; }
+          if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        });
+        list.appendChild(row);
+      });
+    }
+
+    function setActive(next){
+      active = next;
+      toggle.setAttribute('aria-pressed', active ? 'true' : 'false');
+      note.hidden = !active;
+      panel.hidden = !active;
+      if (!active && hovered) { hovered.classList.remove('annot-hover-target'); hovered = null; }
+    }
+
+    toggle.addEventListener('click', function(){ setActive(!active); });
+
+    document.addEventListener('mouseover', function(e){
+      if (!active) return;
+      if (e.target.closest('.annot-toggle, .annot-panel, .annot-form-overlay, .annot-note')) return;
+      var comp = findComponent(e.target);
+      if (comp === hovered) return;
+      if (hovered) hovered.classList.remove('annot-hover-target');
+      hovered = comp;
+      hovered.classList.add('annot-hover-target');
+    });
+
+    document.addEventListener('click', function(e){
+      if (!active) return;
+      if (e.target.closest('.annot-toggle, .annot-panel, .annot-form-overlay, .annot-note')) return;
+      e.preventDefault(); e.stopPropagation();
+      pendingTarget = findComponent(e.target);
+      formLabel.textContent = labelFor(pendingTarget);
+      formInput.value = '';
+      formOverlay.hidden = false;
+      formInput.focus();
+    }, true);
+
+    formCancel.addEventListener('click', function(){ formOverlay.hidden = true; pendingTarget = null; });
+    formOverlay.addEventListener('click', function(e){ if (e.target === formOverlay) { formOverlay.hidden = true; pendingTarget = null; } });
+    formSave.addEventListener('click', function(){
+      var comment = formInput.value.trim();
+      if (!comment || !pendingTarget) { formOverlay.hidden = true; return; }
+      annotations.push({
+        id: 'a' + Date.now() + Math.round(Math.random() * 999),
+        label: labelFor(pendingTarget),
+        selector: cssPath(pendingTarget),
+        comment: comment,
+        viewport: window.innerWidth <= 900 ? 'mobile' : 'desktop',
+        windowWidth: window.innerWidth,
+        page: window.location.href,
+        createdAt: new Date().toISOString()
+      });
+      save();
+      renderList();
+      repaintPins();
+      formOverlay.hidden = true;
+      pendingTarget = null;
+    });
+
+    panelClose.addEventListener('click', function(){ setActive(false); });
+
+    clearAllBtn.addEventListener('click', function(){
+      if (!annotations.length) return;
+      annotations = [];
+      save();
+      renderList();
+      repaintPins();
+    });
+
+    exportBtn.addEventListener('click', function(){
+      var payload = {
+        page: window.location.href,
+        exportedAt: new Date().toISOString(),
+        count: annotations.length,
+        annotations: annotations
+      };
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'wewood-annotations-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') {
+        if (!formOverlay.hidden) { formOverlay.hidden = true; pendingTarget = null; }
+        else if (active) setActive(false);
+      }
+    });
+
+    renderList();
+    repaintPins();
+    window.addEventListener('resize', repaintPins);
+  })();
 })();
 </script>
 </body>
