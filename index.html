@@ -146,7 +146,10 @@
      thing controlling that lower gap - sized to match the section-break
      rhythm used elsewhere on the page (ticker, promo strip), not just
      enough room for the label's own line-height. */
-  .cat-eyebrow{ text-align:center; font-size:18px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--dark); margin:36px 0; }
+  /* Matches the Bestsellers/New Arrivals tab typography exactly (2026-09-16,
+     client request) - same font-family/size/weight as .tab-btn, dropping
+     the small uppercase-label treatment this used to have. */
+  .cat-eyebrow{ text-align:center; font-family:var(--font-heading); font-size:38px; font-weight:400; letter-spacing:-.01em; color:var(--dark); margin:36px 0; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
   .cat-picker-avatar{ width:136px; height:136px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
@@ -193,19 +196,25 @@
   .rail-carousel .car-side-next{ right:-52px; }
   .rail-carousel .car-ctl{ margin-top:18px; }
 
-  /* ===== Credibility ticker (section breaker). Two markups sharing one
-     band, 2026-09-16: desktop is a static, evenly-spaced row with a
-     divider between each claim (.cred-static); mobile keeps the original
-     scrolling marquee (.credibility-track) - a static 6-across row has no
-     room to breathe at phone width, a marquee still does. Toggled at the
-     same 640px breakpoint every other mobile override in this file uses. ===== */
+  /* ===== Credibility ticker (section breaker). Desktop and mobile now both
+     scroll (2026-09-16, client request - desktop was static for one round,
+     reverted); desktop uses the icon+divider design (.cred-static, content
+     duplicated in the HTML for a seamless loop, same technique as
+     .credibility-track below); mobile keeps its own simpler icon-beside-
+     text marquee. justify-content:center (not space-between) so the group
+     reads as one centered cluster of its own natural width, not stretched
+     edge to edge; line-height:1 on the label tightens its box to the
+     glyphs themselves so it lines up with the icon's true visual center
+     instead of the icon looking low against a label sitting in extra
+     leading space above/below it. ===== */
   .credibility-ticker{ margin:64px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
-  .cred-static{ display:flex; justify-content:space-between; align-items:stretch; width:100%; padding:0 var(--page-gutter); }
-  .cred-item{ display:flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15px; color:var(--text); letter-spacing:.02em; white-space:nowrap; padding:4px 24px; position:relative; }
-  .cred-item:first-child{ padding-left:0; }
-  .cred-item:last-child{ padding-right:0; }
+  .cred-static{ display:flex; justify-content:center; align-items:center; gap:0; width:max-content; margin:0 auto; animation:credScroll 34s linear infinite; }
+  .credibility-ticker:hover .cred-static, .credibility-ticker.is-paused .cred-static{ animation-play-state:paused; }
+  @keyframes credScroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  .cred-item{ display:flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15px; color:var(--text); letter-spacing:.02em; white-space:nowrap; padding:4px 24px; position:relative; flex:none; }
+  .cred-item span{ line-height:1; }
   .cred-item + .cred-item::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:1px; background:var(--border); }
-  .cred-item svg{ flex:none; color:var(--text); }
+  .cred-item svg{ flex:none; color:var(--text); display:block; }
   .credibility-track{ display:none; align-items:center; gap:34px; width:max-content; white-space:nowrap; animation:ticker 46s linear infinite; }
   .credibility-track span{ display:flex; align-items:center; gap:34px; }
   .credibility-track .mark{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15px; color:var(--text); letter-spacing:.02em; }
@@ -350,8 +359,12 @@
          Credibility/Craft (not yellow, which stays reserved for the sale
          badge elsewhere on the page), a section breaker directly under
          Categories. One bold line + real bank marks inline, so the offer
-         reads without opening the modal. ===== */
-  .emi-bar{ margin:64px calc(-1 * var(--page-gutter)) 0; background:var(--dark); color:#fff; padding:22px var(--page-gutter); }
+         reads without opening the modal. Gap above matches the ticker's own
+         gap to "Shop by Collections" (36px, client's own picked exception
+         to the page's shared 64px rhythm) rather than that shared value -
+         client's ask 2026-09-16: the space above and below the whole
+         Categories section should read the same, not larger below. ===== */
+  .emi-bar{ margin:36px calc(-1 * var(--page-gutter)) 0; background:var(--dark); color:#fff; padding:22px var(--page-gutter); }
   .emi-bar .inner{ display:flex; align-items:center; justify-content:center; gap:14px 28px; flex-wrap:wrap; }
   .emi-headline{ font-size:16px; font-weight:500; color:#fff; text-align:center; }
   .emi-headline b{ font-weight:700; }
@@ -719,7 +732,7 @@
     .tab-btn + .tab-btn{ margin-left:21px; }
     .tab-btn + .tab-btn::before{ left:-11px; }
     .fp-heading{ font-size:24px; padding:40px 0 16px !important; }
-    .cat-eyebrow{ margin:32px 0; }
+    .cat-eyebrow{ font-size:22px; margin:32px 0; }
     .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
     .section-sub.sub-desk{ display:none; }
     .eyebrow{ font-size:11px; margin-bottom:10px; }
@@ -765,7 +778,7 @@
     .product .btn{ width:100%; padding:10px 12px; font-size:13px; }
     .see-all{ margin-top:22px; }
 
-    .emi-bar{ margin-top:40px; padding:18px var(--page-gutter); }
+    .emi-bar{ margin-top:32px; padding:18px var(--page-gutter); }
     .emi-headline{ font-size:14px; }
     .emi-bar .btn{ width:100%; }
     .mark-tile{ width:38px; height:25px; }
@@ -836,6 +849,7 @@
     .efig img, .room img, .product .pimg img{ transition:none; }
     .car-prog span{ transition:none; }
     .credibility-track{ animation:none; }
+    .cred-static{ animation:none; }
     .reviews-track{ animation:none; }
     .hero-slide{ transition:none; }
     .hero-dot.is-active::after{ animation:none; transform:scaleX(1); }
@@ -931,6 +945,12 @@
       <span class="cred-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg><span>Free Shipping</span></span>
       <span class="cred-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="7.2" width="18.4" height="11.6" rx="1.6"/><circle cx="12" cy="13" r="2.6"/><path d="M5.6 10.2v0M18.4 15.8v0"/></svg><span>COD Available</span></span>
       <span class="cred-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg><span>7-Day Exchange</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg><span>Handmade</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg><span>20 Years in Timber</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg><span>Patented &amp; Exhibited</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg><span>Free Shipping</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="7.2" width="18.4" height="11.6" rx="1.6"/><circle cx="12" cy="13" r="2.6"/><path d="M5.6 10.2v0M18.4 15.8v0"/></svg><span>COD Available</span></span>
+      <span class="cred-item" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg><span>7-Day Exchange</span></span>
     </div>
     <div class="credibility-track">
       <span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 4.5h11.2a1.1 1.1 0 0 1 1.1 1.1v2.8a1.1 1.1 0 0 1-1.1 1.1H4.4z" fill="currentColor" stroke="none"/><path d="M13 9.5l1.7 10.1"/></svg>Handmade</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2v-3.4"/><path d="M12 16.8H7l3.1-3.9H8L12 6.8l4 6.1h-2.1l3.1 3.9z"/></svg>20 Years in Timber</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9.4" r="5"/><path d="M9 13.7L7.5 20.4 12 17.9l4.5 2.5-1.5-6.7"/></svg>Patented &amp; Exhibited</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 6.8h10.4v9.4H2.8z"/><path d="M13.2 10.2h3.6l3.4 3.4v2.6h-7z"/><circle cx="6.6" cy="18" r="1.8"/><circle cx="16.6" cy="18" r="1.8"/></svg>Free Shipping</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="7.2" width="18.4" height="11.6" rx="1.6"/><circle cx="12" cy="13" r="2.6"/><path d="M5.6 10.2v0M18.4 15.8v0"/></svg>COD Available</span><span class="dot"></span></span><span><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.6 6.2L4.5 8.3"/><path d="M4.5 4.3v4h4"/><path d="M4 12.5a8 8 0 0 0 13.4 5.3l2.1-2.1"/><path d="M19.5 19.7v-4h-4"/></svg>7-Day Exchange</span><span class="dot"></span></span>
