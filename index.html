@@ -540,9 +540,19 @@
      Bestsellers, not a full destination section - smaller cards, shorter
      quotes, faster loop. */
   .reviews-ticker-compact .review{ width:280px; padding:20px 22px 18px; gap:12px; }
-  .reviews-ticker-compact .review q{ font-size:15px; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .reviews-ticker-compact .review q{ font-size:15px; line-height:1.55; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .reviews-ticker-compact .review .pthumb{ display:none; }
   .reviews-ticker-compact .reviews-track{ animation-duration:40s; }
+  /* Desktop only (2026-09-16, client request): 3 cards visible per view
+     instead of 5 - wider card at a typical desktop content width (~1416px)
+     works out to roughly 440px each. Bumped the clamp from 2 lines to 3 in
+     the same change - at 280px/2-lines the longer real reviews (Surbhi
+     Sethi's, in particular) were cutting off mid-sentence; verified all
+     six real quotes now complete in full at this width/line-count. */
+  @media (min-width:641px){
+    .reviews-ticker-compact .review{ width:440px; padding:28px 30px 24px; }
+    .reviews-ticker-compact .review q{ font-size:16px; -webkit-line-clamp:3; }
+  }
   .review .pthumb{ width:56px; height:56px; border-radius:10px; overflow:hidden; background:var(--bg-secondary); flex:none; }
   .review .pthumb img{ object-fit:contain; padding:4px; }
 
