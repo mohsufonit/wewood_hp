@@ -383,15 +383,12 @@
     .edit{ display:none; }
     /* Lifestyle-first (2026-09-16, replacing the vertical-rail layout):
        the styled room photo leads, sized wider than tall so it reads as a
-       photo instead of a studio cutout. Scaled to 80% width and centered
-       2026-09-16 (was full-width) - it was reading oversized next to the
-       rest of the rail-width sections above and below it. align-items:
-       center now vertically centers the info column against the image
-       (was top-aligned, back when the un-scaled image was tall enough
-       that centering risked pushing the button out of view - the 80%
-       scale-down keeps everything inside one viewport either way, so
-       centered is the better default). */
-    .edit-showcase{ display:grid; grid-template-columns:1.15fr 1fr; gap:32px; align-items:center; width:80%; margin:64px auto 0; }
+       photo instead of a studio cutout. Full-width again as of the same
+       day's later round - the 80%-centered version read oversized-but-
+       cramped once the jump-to rail (.es-picks) needed real room; left
+       edge now matches the product rails above it (same page-gutter
+       inset every other section uses) instead of an inset centered block. */
+    .edit-showcase{ display:grid; grid-template-columns:1.05fr 1fr 190px; gap:28px; align-items:center; width:100%; margin:64px 0 0; }
     .es-media{ display:flex; flex-direction:column; gap:10px; }
     .es-main{ display:block; position:relative; aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden; background:var(--white); }
     .es-main img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -428,13 +425,24 @@
     .es-wish.is-active svg{ fill:var(--dark); }
     .es-wish.is-pop{ transform:scale(1.15); }
     @media (prefers-reduced-motion:reduce){ .es-wish{ transition:none; } }
-    .es-picks{ grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:28px; }
-    .es-pick{ display:flex; gap:12px; align-items:center; text-align:left; background:var(--white); border:2px solid transparent; border-radius:var(--radius); padding:10px; cursor:pointer; font-family:var(--font-body); transition:border-color .15s ease; }
+    /* Jump-to rail (2026-09-16, replacing the 3-across row below the
+       section): sits beside the info column instead of under the whole
+       section, so switching products is one click on the piece you
+       actually want, not two clicks of "next." Capped height shows about
+       two and a half items on purpose - the partial third card is the
+       "there's more, scroll" cue - and clicking a card scrolls it toward
+       the top of the rail so whatever comes after it is pulled into view
+       too, instead of just centering the one you clicked. */
+    .es-picks{ display:flex; flex-direction:column; gap:10px; max-height:230px; overflow-y:auto; scroll-behavior:smooth; padding-right:2px; }
+    .es-picks::-webkit-scrollbar{ width:4px; }
+    .es-picks::-webkit-scrollbar-thumb{ background:var(--border); border-radius:2px; }
+    .es-pick{ display:flex; gap:10px; align-items:center; text-align:left; background:var(--white); border:2px solid transparent; border-radius:12px; padding:8px; cursor:pointer; font-family:var(--font-body); transition:border-color .15s ease; flex:none; }
     .es-pick:hover{ border-color:var(--border); }
     .es-pick.is-active{ border-color:var(--dark); }
-    .es-pick img{ width:52px; height:52px; border-radius:8px; object-fit:cover; flex:none; }
-    .es-pick-name{ font-size:13px; font-weight:600; margin-bottom:2px; }
-    .es-pick-line{ font-size:12px; color:var(--text-2); }
+    .es-pick img{ width:44px; height:44px; border-radius:8px; object-fit:cover; flex:none; }
+    .es-pick-name{ font-size:12.5px; font-weight:600; margin-bottom:2px; line-height:1.25; }
+    .es-pick-line{ font-size:11px; color:var(--text-2); }
+    @media (prefers-reduced-motion:reduce){ .es-picks{ scroll-behavior:auto; } }
   }
   @media (max-width:1000px){
     .erow{ gap:26px; }
@@ -1916,7 +1924,10 @@
       var info = document.createElement('div');
       info.innerHTML = '<div class="es-pick-name">' + p.name + '</div><div class="es-pick-line">' + p.line + '</div>';
       btn.appendChild(img); btn.appendChild(info);
-      btn.addEventListener('click', function(){ selectProduct(i); });
+      btn.addEventListener('click', function(){
+        selectProduct(i);
+        esPicks.scrollTo({ top: btn.offsetTop - 4, behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
       esPicks.appendChild(btn);
       picks.push(btn);
     });
