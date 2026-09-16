@@ -512,7 +512,10 @@
      verified product tag (name/price/link); the other two are honest
      photo tiles linking straight to their real collection, since there's
      no verified per-product data to tag them with. ===== */
-  .stl-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
+  /* Scaled down 30% on desktop, 2026-09-16 (client request) - was full
+     page-width, same "narrow the block, keep it centered" technique
+     already used for the edit showcase's own 20% scale-down. */
+  .stl-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); width:70%; margin:0 auto; }
   .stl-tile{ position:relative; display:block; aspect-ratio:3/4; text-decoration:none; }
   .stl-tile-img{ position:absolute; inset:0; border-radius:var(--radius); overflow:hidden; background:var(--white); }
   .stl-tile-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease-out; }
@@ -809,7 +812,7 @@
        against the scrollport's own edge, cancelling out the padding-left
        gutter entirely (verified live: scrollLeft sat at 18px on load,
        exactly the gutter width, with no way to scroll back to see it). */
-    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; width:100%; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
     .stl-grid::-webkit-scrollbar{ display:none; }
     /* Reduced 30% (2026-09-16, client request) - was 78vw/320px max. */
     .stl-tile{ flex:0 0 55vw; max-width:224px; aspect-ratio:3/4; scroll-snap-align:start; }
