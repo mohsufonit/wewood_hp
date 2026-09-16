@@ -503,9 +503,6 @@
   .story h2{ font-size:38px; margin-bottom:22px; }
   .story p{ font-size:16px; color:var(--text-2); line-height:1.65; margin-bottom:18px; max-width:50ch; }
   .story .img{ aspect-ratio:4/3; }
-  .story-facts{ display:flex; gap:28px; margin:26px 0 30px; flex-wrap:wrap; }
-  .story-facts div b{ display:block; font-family:var(--font-heading); font-weight:400; font-size:26px; }
-  .story-facts div span{ font-size:13px; color:var(--text-3); }
   @media (max-width:900px){ .story .copy{ padding:8px 4px; } }
 
   /* ===== Shop the look: a grid of real WeWood lifestyle photos, one per
@@ -807,16 +804,14 @@
     .story .copy{ padding:0; }
     .story h2{ font-size:24px; margin-bottom:14px; }
     .story p{ font-size:15px; margin-bottom:14px; }
-    .story-facts{ flex-wrap:nowrap; justify-content:space-between; gap:10px; margin:18px 0 22px; }
-    .story-facts div{ min-width:0; }
-    .story-facts div b{ font-size:22px; }
+    .story .btn{ display:flex; width:max-content; margin:0 auto; }
 
-    /* scroll-padding matters here for the same reason the comment on
-       .products explains: without it, mandatory snap rests card 1 flush
-       against the scrollport's own edge, cancelling out the padding-left
-       gutter entirely (verified live: scrollLeft sat at 18px on load,
-       exactly the gutter width, with no way to scroll back to see it). */
-    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; width:auto; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    /* Contained, not full-bleed (2026-09-16, client request: "no bleeding") -
+       same treatment as .products: the row sits inside .page's own 18px
+       padding, so a peeking tile is clipped at that inset, not the true
+       screen edge. Gives a clean, matching 18px gutter on both sides at
+       rest instead of a full-width scrollport. */
+    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0; gap:12px; width:auto; margin:0; padding:0 0 4px; scrollbar-width:none; }
     .stl-grid::-webkit-scrollbar{ display:none; }
     /* Reduced 30% (2026-09-16, client request) - was 78vw/320px max. */
     .stl-tile{ flex:0 0 55vw; max-width:224px; aspect-ratio:3/4; scroll-snap-align:start; }
@@ -1347,11 +1342,6 @@
       <span class="eyebrow">Our story</span>
       <h2>Twenty years in timber. Four years of WeWood.</h2>
       <p>WeWood grew out of Starwood Veneers, a Kirti Nagar veneer manufacturer of two decades. Four years ago we started shaping that same wood - teak, sheesham and acacia - into furniture and decor of our own, hand-finished with resin.</p>
-      <div class="story-facts">
-        <div><b>20 yrs</b><span>working with wood</span></div>
-        <div><b>3</b><span>timbers: teak, sheesham, acacia</span></div>
-        <div><b>Delhi</b></div>
-      </div>
       <a href="https://wewood.co.in/pages/about" class="btn">Read our story</a>
     </div>
   </section>
