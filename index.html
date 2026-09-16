@@ -73,7 +73,15 @@
   .tab-btn::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--dark); transform:scaleX(0); transition:transform .25s ease-out; }
   .tab-btn.is-active{ color:var(--dark); }
   .tab-btn.is-active::after{ transform:scaleX(1); }
-  .tab-btn + .tab-btn{ margin-left:16px; padding-left:16px; border-left:1px solid var(--border); }
+  /* The divider is its own pseudo-element, not a border+padding on the
+     button itself - the underline below is also absolutely positioned
+     left:0/right:0 against the button's own box, so if the divider gap
+     were padding (inside that box) the underline would stretch into it
+     and visibly touch the divider line. Keeping the divider entirely in
+     the button's outer margin keeps the underline exactly text-width on
+     both tabs. */
+  .tab-btn + .tab-btn{ position:relative; margin-left:33px; }
+  .tab-btn + .tab-btn::before{ content:""; position:absolute; left:-17px; top:0; bottom:8px; width:1px; background:var(--border); }
   /* Panels crossfade instead of an abrupt hide/show swap. */
   .rail-carousel.tab-panel{ transition:opacity .2s ease-out; }
   .rail-carousel.tab-panel.is-leaving{ opacity:0; }
@@ -428,12 +436,22 @@
     /* Jump-to rail (2026-09-16, replacing the 3-across row below the
        section): sits beside the info column instead of under the whole
        section, so switching products is one click on the piece you
-       actually want, not two clicks of "next." Capped height shows about
-       two and a half items on purpose - the partial third card is the
-       "there's more, scroll" cue - and clicking a card scrolls it toward
-       the top of the rail so whatever comes after it is pulled into view
-       too, instead of just centering the one you clicked. */
-    .es-picks{ display:flex; flex-direction:column; gap:10px; max-height:230px; overflow-y:auto; scroll-behavior:smooth; padding-right:2px; }
+       actually want, not two clicks of "next." Now carries the edit's
+       three pieces plus the Featured Collection's own products (see
+       EDIT_PRODUCTS below) - ten total - so there's a real list to
+       scroll, not three items in a box built for more.
+       Height is set from JS (syncPicksHeight), not CSS align-self:stretch -
+       with ten items and no cap, the rail's own intrinsic height (nearly
+       900px) became the tallest thing in the row, so the grid's auto row
+       track grew to match IT instead of the image, and align-items:center
+       then centered the much-shorter image inside that oversized row.
+       Measuring the actual rendered image+thumbnails height and setting
+       that as the rail's own height keeps them genuinely matched, with
+       the rail scrolling internally past that point. Clicking a card
+       scrolls it toward the rail's top so whatever comes after it is
+       pulled into view too, instead of just centering the one you
+       clicked. */
+    .es-picks{ display:flex; flex-direction:column; gap:10px; overflow-y:auto; scroll-behavior:smooth; padding-right:2px; }
     .es-picks::-webkit-scrollbar{ width:4px; }
     .es-picks::-webkit-scrollbar-thumb{ background:var(--border); border-radius:2px; }
     .es-pick{ display:flex; gap:10px; align-items:center; text-align:left; background:var(--white); border:2px solid transparent; border-radius:12px; padding:8px; cursor:pointer; font-family:var(--font-body); transition:border-color .15s ease; flex:none; }
@@ -677,7 +695,8 @@
     .section-heading.rail-heading{ font-size:24px; }
     .tab-group{ padding-top:40px; }
     .tab-btn{ font-size:22px; }
-    .tab-btn + .tab-btn{ margin-left:10px; padding-left:10px; }
+    .tab-btn + .tab-btn{ margin-left:21px; }
+    .tab-btn + .tab-btn::before{ left:-11px; }
     .fp-heading{ font-size:24px; padding:40px 0 16px !important; }
     .cat-eyebrow{ margin:32px 0; }
     .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
@@ -745,12 +764,19 @@
     .story .copy{ padding:0; }
     .story h2{ font-size:24px; margin-bottom:14px; }
     .story p{ font-size:15px; margin-bottom:14px; }
-    .story-facts{ gap:18px; margin:18px 0 22px; }
+    .story-facts{ flex-wrap:nowrap; justify-content:space-between; gap:10px; margin:18px 0 22px; }
+    .story-facts div{ min-width:0; }
     .story-facts div b{ font-size:22px; }
 
-    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    /* scroll-padding matters here for the same reason the comment on
+       .products explains: without it, mandatory snap rests card 1 flush
+       against the scrollport's own edge, cancelling out the padding-left
+       gutter entirely (verified live: scrollLeft sat at 18px on load,
+       exactly the gutter width, with no way to scroll back to see it). */
+    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
     .stl-grid::-webkit-scrollbar{ display:none; }
-    .stl-tile{ flex:0 0 78vw; max-width:320px; aspect-ratio:3/4; scroll-snap-align:start; }
+    /* Reduced 30% (2026-09-16, client request) - was 78vw/320px max. */
+    .stl-tile{ flex:0 0 55vw; max-width:224px; aspect-ratio:3/4; scroll-snap-align:start; }
     .hotspot{ position:static; }
     .hotspot-card{ left:14px; right:14px; width:auto; top:auto; bottom:16px; }
 
@@ -1861,6 +1887,110 @@
           'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsApp_Image_2025-06-19_at_12.16.00_PM_1.jpg?v=1750328032',
           'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsApp_Image_2025-06-19_at_12.16.00_PM_3.jpg?v=1750328031'
         ]
+      },
+      /* The Featured Collection's own products (2026-09-16) - linked into the
+         showcase rail so clicking any of the videos-carousel pieces above
+         previews it here too, instead of the rail only ever offering the
+         same three edit products. Round Coffee Table is excluded - it's
+         already EDIT_PRODUCTS[0], no need to list the same product twice.
+         Copy grounded in each product's own live body_html (wewood.co.in/
+         products/<handle>.json), not invented; none of these have a real
+         compare-at price live, so `compare` is left unset for all seven. */
+      {
+        name: 'Premium Wood & Resin Nesting Table Set, Black Metal Base',
+        alt: 'Acacia wood nesting table set with a high-gloss resin pour on a black metal base',
+        line: 'Set of 2, black metal base',
+        desc: 'Solid acacia wood with a high-gloss resin pour, on a modern black metal frame.',
+        specs: [['Material', 'Acacia wood'], ['Finish', 'High-gloss resin'], ['Base', 'Black metal frame'], ['Set', '2 tables']],
+        handle: 'premium-wood-resin-nesting-table-set-modern-black-metal-base-handcrafted-by-wewood',
+        price: 16000, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_9919e976-1211-4198-b618-45a32d8c8d69.jpg?v=1769540511',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Infographic1.jpg?v=1769540511',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Infographic2.jpg?v=1769540511'
+        ]
+      },
+      {
+        name: 'Wood & White Epoxy Nesting Tables, Set of 3',
+        alt: 'Natural wood slab nesting tables with white epoxy and black metal legs',
+        line: 'Set of 3, white epoxy finish',
+        desc: 'Natural wood slabs set in high-grade white epoxy, on sleek black metal legs.',
+        specs: [['Material', 'Solid wood'], ['Finish', 'White epoxy'], ['Legs', 'Black metal'], ['Set', '3 tables']],
+        handle: 'wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india',
+        price: 20000, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_zgze0tzgze0tzgze_d2389f2a-2aa4-4aea-b184-2b5f9da3848a.png?v=1771591852',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_7lytg87lytg87lyt_8e1dd81d-1fc8-4951-9638-20e819deebce.png?v=1771591874',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/IMG_3903copy_1006e208-39cd-4c2f-8213-bf0587ba0e9e.jpg?v=1768461372'
+        ]
+      },
+      {
+        name: 'Premium Solid Wood Resin Round Nesting Side Tables, Set of 2',
+        alt: 'Round solid wood side tables with glossy resin top on metal legs',
+        line: 'Set of 2, glossy resin top',
+        desc: 'Solid wood and resin nesting side tables with a glossy finish and sturdy metal legs.',
+        specs: [['Material', 'Solid wood'], ['Finish', 'Glossy resin'], ['Legs', 'Metal'], ['Set', '2 tables']],
+        handle: 'premium-solid-wood-resin-rounf-nesting-side-tables',
+        price: 15000, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/nesting_table_of_2.jpg?v=1778524844',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/2_1.jpg?v=1778524486',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_3_cf18b5d5-9406-4ee0-abb9-08068bdbc3b5.jpg?v=1778524486'
+        ]
+      },
+      {
+        name: 'Black Floral Epoxy & Natural Wood Nesting Tables, Set of 3',
+        alt: 'Natural wood nesting tables with black epoxy and pressed flowers',
+        line: 'Set of 3, pressed flowers in resin',
+        desc: 'Natural wood slabs set in high-gloss black epoxy with real pressed flowers, on matte black metal legs.',
+        specs: [['Material', 'Natural wood'], ['Finish', 'Black epoxy, pressed flowers'], ['Legs', 'Matte black metal'], ['Set', '3 tables']],
+        handle: 'black-floral-epoxy-natural-wood-nesting-tables-set-of-3',
+        price: 20000, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_xe3rd1xe3rd1xe3r.png?v=1771591472',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_efnaftefnaftefna.png?v=1768460914',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/IMG_3925copy_e3a825d4-58ef-4e63-89bc-5b56ba6ce80f.jpg?v=1768460915'
+        ]
+      },
+      {
+        name: 'Side Table Set of 1, Teak Wood with Transparent Resin Finish',
+        alt: 'Teak wood side table with transparent resin inlay',
+        line: '18" diameter, transparent resin',
+        desc: 'Premium teak wood with a transparent resin inlay and a 40mm thick tabletop.',
+        specs: [['Dimensions', '18" diameter, 16" H'], ['Top thickness', '40mm'], ['Material', 'Teak wood'], ['Finish', 'Transparent resin']],
+        handle: 'nesting-table-set-of-1-teak-wood-with-transparent-resin-finish',
+        price: 2999, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/WhatsAppImage2025-03-16at6.47.24PM.jpg?v=1771919839'
+        ]
+      },
+      {
+        name: 'Aurelia Trio Nesting Tables, Wood & Grey Resin',
+        alt: 'Teak wood nesting tables preserved in grey resin on a matte black frame',
+        line: 'Set of 3, one-of-a-kind grain',
+        desc: 'Natural teak wood preserved in resin, on a minimal matte-black metal frame.',
+        specs: [['Material', 'Teak wood'], ['Finish', 'Grey resin'], ['Frame', 'Matte black metal'], ['Set', '3 tables']],
+        handle: 'wood-white-epoxy-nesting-tables-set-of-3-handcrafted-by-wewood-india-copy',
+        price: 39000, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/01.jpg?v=1770122706',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/02.jpg?v=1770122706',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/1_2_f10467b5-f13c-4a32-a90d-47b5b273910e.jpg?v=1770122706'
+        ]
+      },
+      {
+        name: 'Round Wooden & Resin Platter, Purple Inlay',
+        alt: 'Round wooden serving platter with purple resin inlay',
+        line: 'Serving platter, purple inlay',
+        desc: 'A handcrafted round platter in natural wood with a purple resin inlay.',
+        specs: [['Material', 'Natural wood'], ['Finish', 'Purple resin inlay'], ['Use', 'Serving platter']],
+        handle: 'round-wooden-resin-platter-purple-inlay',
+        price: 6999, compare: null,
+        images: [
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_h06r8mh06r8mh06r.png?v=1784905261',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_3679q13679q13679.png?v=1784905261',
+          'https://cdn.shopify.com/s/files/1/0904/5832/5311/files/Gemini_Generated_Image_8f8zm88f8zm88f8z.png?v=1784905261'
+        ]
       }
     ];
     function inr(n){ return '₹' + n.toLocaleString('en-IN'); }
@@ -1890,8 +2020,13 @@
       esTitle.innerHTML = '<a href="' + url + '">' + p.name + '</a>';
       esLine.textContent = p.line;
       esPrice.textContent = inr(p.price);
-      esCompare.textContent = inr(p.compare);
-      esSave.textContent = 'Save ' + Math.round((p.compare - p.price) / p.compare * 100) + '%';
+      if (p.compare && p.compare > p.price) {
+        esCompare.textContent = inr(p.compare);
+        esSave.textContent = 'Save ' + Math.round((p.compare - p.price) / p.compare * 100) + '%';
+      } else {
+        esCompare.textContent = '';
+        esSave.textContent = '';
+      }
       esDesc.textContent = p.desc;
       esSpecs.innerHTML = '';
       p.specs.forEach(function(row){
@@ -1932,6 +2067,15 @@
       picks.push(btn);
     });
     selectProduct(0);
+
+    var esMediaEl = document.querySelector('.es-media');
+    function syncPicksHeight(){
+      if (!esMediaEl || !esPicks) return;
+      var h = esMediaEl.getBoundingClientRect().height;
+      if (h > 0) esPicks.style.height = h + 'px';
+    }
+    window.addEventListener('resize', syncPicksHeight);
+    syncPicksHeight();
   })();
 
   /* Add to cart feedback */
