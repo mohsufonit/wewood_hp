@@ -124,7 +124,7 @@
      of heading-to-paragraph, sized accordingly. */
   .hero-text h1{ font-size:48px; color:#fff; margin-bottom:26px; line-height:1.08; letter-spacing:-.015em; }
   .hero-paths{ display:flex; gap:12px; }
-  .hero-paths .btn{ border-color:rgba(255,255,255,.7); color:#fff; padding:12px 22px; font-size:14px; text-transform:uppercase; letter-spacing:.04em; }
+  .hero-paths .btn{ border-color:rgba(255,255,255,.7); color:#fff; padding:12px 22px; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
   .hero-paths .btn:hover{ background:#fff; color:var(--black); border-color:#fff; }
   .hero-paths .btn.primary{ background:#fff; color:var(--black); border-color:#fff; }
   .hero-paths .btn.primary:hover{ background:var(--header); }
@@ -151,7 +151,7 @@
   /* Matches the Bestsellers/New Arrivals tab typography exactly (2026-09-16,
      client request) - same font-family/size/weight as .tab-btn, dropping
      the small uppercase-label treatment this used to have. */
-  .cat-eyebrow{ text-align:center; font-family:var(--font-heading); font-size:38px; font-weight:400; letter-spacing:-.01em; color:var(--dark); margin:36px 0; }
+  .cat-eyebrow{ text-align:center; font-family:var(--font-heading); font-size:38px; font-weight:400; letter-spacing:-.01em; color:var(--dark); margin:18px 0 36px; }
   .cat-picker-item{ display:flex; flex-direction:column; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; font-family:var(--font-body); }
   .cat-picker-avatar{ width:136px; height:136px; border-radius:50%; padding:3px; border:2px solid transparent; transition:border-color .15s ease; }
   .cat-picker-avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
@@ -209,11 +209,11 @@
      glyphs themselves so it lines up with the icon's true visual center
      instead of the icon looking low against a label sitting in extra
      leading space above/below it. ===== */
-  .credibility-ticker{ margin:64px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
+  .credibility-ticker{ margin:18px calc(-1 * var(--page-gutter)) 0; background:var(--bg-secondary); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0; overflow:hidden; }
   .cred-static{ display:flex; justify-content:center; align-items:center; gap:0; width:max-content; margin:0 auto; animation:credScroll 34s linear infinite; }
   .credibility-ticker:hover .cred-static, .credibility-ticker.is-paused .cred-static{ animation-play-state:paused; }
   @keyframes credScroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-  .cred-item{ display:flex; align-items:center; gap:10px; font-family:var(--font-heading); font-size:15px; color:var(--text); letter-spacing:.02em; white-space:nowrap; padding:4px 24px; position:relative; flex:none; }
+  .cred-item{ display:flex; align-items:center; gap:12px; font-family:var(--font-heading); font-size:15px; color:var(--text); letter-spacing:.02em; white-space:nowrap; padding:14px 32px; position:relative; flex:none; }
   .cred-item span{ line-height:1; }
   .cred-item + .cred-item::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:1px; background:var(--border); }
   .cred-item svg{ flex:none; color:var(--text); display:block; }
@@ -738,13 +738,13 @@
     .tab-btn + .tab-btn{ margin-left:21px; }
     .tab-btn + .tab-btn::before{ left:-11px; }
     .fp-heading{ font-size:24px; padding:40px 0 16px !important; }
-    .cat-eyebrow{ font-size:22px; margin:32px 0; }
+    .cat-eyebrow{ font-size:22px; margin:12px 0 32px; }
     .section-sub{ font-size:14px; margin:0 0 20px; padding:0 8px; }
     .section-sub.sub-desk{ display:none; }
     .eyebrow{ font-size:11px; margin-bottom:10px; }
 
 
-    .credibility-ticker{ margin-top:40px; padding:12px 0; }
+    .credibility-ticker{ margin-top:12px; padding:12px 0; }
     .cred-static{ display:none; }
     .credibility-track{ display:flex; }
     .promo-strip{ margin-top:40px !important; }
@@ -760,10 +760,11 @@
        row's own box is already the correct boundary, nothing extra to
        reserve. */
     .products{ gap:12px; margin:0; padding:0 0 4px; scroll-padding:0; }
-    /* One full card + 3/4 of the next, sized off the row's own (now
-       correctly symmetric) content width. */
-    .product{ flex-basis:calc((100% - 12px) / 1.75); }
-    #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 1.75); }
+    /* Two full cards visible by default (2026-09-16, client request - the
+       previous 1.75 divisor cut the second card off), sized off the row's
+       own (now correctly symmetric) content width. */
+    .product{ flex-basis:calc((100% - 12px) / 2); }
+    #catRailTrack.products .product{ flex-basis:calc((100% - 12px) / 2); }
     .fp-carousel .rail-wrap{ padding:0; }
     .fp-track{ gap:12px; scroll-padding:0 18px; padding:10px 18px 4px; }
     .fp-card{ flex-basis:74vw; max-width:260px; transform:scale(.84) translateY(8px); opacity:.5; }
@@ -815,7 +816,7 @@
        against the scrollport's own edge, cancelling out the padding-left
        gutter entirely (verified live: scrollLeft sat at 18px on load,
        exactly the gutter width, with no way to scroll back to see it). */
-    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; width:100%; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
+    .stl-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 var(--page-gutter); gap:12px; width:auto; margin:0 calc(-1 * var(--page-gutter)); padding:0 var(--page-gutter) 4px; scrollbar-width:none; }
     .stl-grid::-webkit-scrollbar{ display:none; }
     /* Reduced 30% (2026-09-16, client request) - was 78vw/320px max. */
     .stl-tile{ flex:0 0 55vw; max-width:224px; aspect-ratio:3/4; scroll-snap-align:start; }
@@ -1349,7 +1350,7 @@
       <div class="story-facts">
         <div><b>20 yrs</b><span>working with wood</span></div>
         <div><b>3</b><span>timbers: teak, sheesham, acacia</span></div>
-        <div><b>Delhi</b><span>Kirti Nagar timber block</span></div>
+        <div><b>Delhi</b></div>
       </div>
       <a href="https://wewood.co.in/pages/about" class="btn">Read our story</a>
     </div>
