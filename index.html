@@ -383,11 +383,15 @@
     .edit{ display:none; }
     /* Lifestyle-first (2026-09-16, replacing the vertical-rail layout):
        the styled room photo leads, sized wider than tall so it reads as a
-       photo instead of a studio cutout; the buy button must still land
-       inside one viewport alongside it, so the info column stays compact
-       (top-aligned, not centered against the taller image) rather than
-       growing to match the image's height. */
-    .edit-showcase{ display:grid; grid-template-columns:1.15fr 1fr; gap:40px; align-items:start; margin-top:64px; }
+       photo instead of a studio cutout. Scaled to 80% width and centered
+       2026-09-16 (was full-width) - it was reading oversized next to the
+       rest of the rail-width sections above and below it. align-items:
+       center now vertically centers the info column against the image
+       (was top-aligned, back when the un-scaled image was tall enough
+       that centering risked pushing the button out of view - the 80%
+       scale-down keeps everything inside one viewport either way, so
+       centered is the better default). */
+    .edit-showcase{ display:grid; grid-template-columns:1.15fr 1fr; gap:32px; align-items:center; width:80%; margin:64px auto 0; }
     .es-media{ display:flex; flex-direction:column; gap:10px; }
     .es-main{ display:block; position:relative; aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden; background:var(--white); }
     .es-main img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -395,9 +399,6 @@
     .es-thumb{ width:64px; height:64px; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:var(--white); cursor:pointer; flex:none; }
     .es-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
     .es-thumb.is-active{ border-color:var(--dark); }
-    /* Top-aligned on purpose (not vertically centered) - the buy button
-       must sit near the top of the section, not wherever the midpoint of
-       a much taller image happens to fall. */
     .es-info{ display:flex; flex-direction:column; padding-top:4px; }
     .es-eyebrow{ font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; }
     /* Product name sits one clear step above the price, not a near-tie. */
@@ -415,8 +416,18 @@
     .es-specs div{ display:block; }
     .es-specs dt{ color:var(--text-3); margin:0 0 2px; text-transform:uppercase; letter-spacing:.04em; font-size:10.5px; }
     .es-specs dd{ margin:0; color:var(--text); font-weight:500; }
-    .es-actions{ display:flex; gap:10px; }
-    .es-actions .btn{ flex:1; text-align:center; justify-content:center; padding:14px 18px; max-width:280px; font-size:15px; text-transform:uppercase; letter-spacing:.06em; }
+    /* Pill now fills the row instead of capping at 280px - beside a
+       roomier viewport (the 80% scale above freed up the extra width to
+       spend), it was leaving visible dead space next to a small button. */
+    .es-actions{ display:flex; align-items:center; gap:12px; }
+    .es-actions .btn{ flex:1; text-align:center; justify-content:center; padding:16px 22px; font-size:15px; text-transform:uppercase; letter-spacing:.06em; }
+    .es-wish{ width:52px; height:52px; flex:none; border-radius:50%; border:1px solid var(--text-2); background:transparent; color:var(--text-2); display:flex; align-items:center; justify-content:center; padding:0; transition:border-color .15s ease, color .15s ease, transform .15s ease; }
+    .es-wish svg{ width:20px; height:20px; }
+    .es-wish:hover{ border-color:var(--dark); color:var(--dark); }
+    .es-wish.is-active{ border-color:var(--dark); color:var(--dark); }
+    .es-wish.is-active svg{ fill:var(--dark); }
+    .es-wish.is-pop{ transform:scale(1.15); }
+    @media (prefers-reduced-motion:reduce){ .es-wish{ transition:none; } }
     .es-picks{ grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:28px; }
     .es-pick{ display:flex; gap:12px; align-items:center; text-align:left; background:var(--white); border:2px solid transparent; border-radius:var(--radius); padding:10px; cursor:pointer; font-family:var(--font-body); transition:border-color .15s ease; }
     .es-pick:hover{ border-color:var(--border); }
@@ -1188,6 +1199,7 @@
       <dl class="es-specs" id="esSpecs"></dl>
       <div class="es-actions">
         <button type="button" class="btn btn-dark js-atc" id="esAtc">Add to cart</button>
+        <button type="button" class="es-wish js-wish" id="esWish" aria-label="Save to wishlist" aria-pressed="false" data-handle="round-coffee-table-teak-wood-with-special-blue-resin-finish"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20.5s-7-4.35-9.5-8.8C.8 8.4 2.3 4.9 5.8 4.3a4.9 4.9 0 0 1 6.2 2 4.9 4.9 0 0 1 6.2-2c3.5.6 5 4.1 3.3 7.4-2.5 4.45-9.5 8.8-9.5 8.8z"/></svg></button>
       </div>
     </div>
     <div class="es-picks" id="esPicks"></div>
@@ -1855,6 +1867,7 @@
     var esDesc = document.getElementById('esDesc');
     var esSpecs = document.getElementById('esSpecs');
     var esPicks = document.getElementById('esPicks');
+    var esWish = document.getElementById('esWish');
     var picks = [];
     var activeIdx = 0;
 
@@ -1863,6 +1876,7 @@
       var p = EDIT_PRODUCTS[idx];
       var url = 'https://wewood.co.in/products/' + p.handle;
       esMain.href = url;
+      if (esWish) { esWish.setAttribute('data-handle', p.handle); markWishButtons(); }
       esMainImg.src = p.images[0];
       esMainImg.alt = p.alt;
       esTitle.innerHTML = '<a href="' + url + '">' + p.name + '</a>';
