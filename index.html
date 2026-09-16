@@ -124,7 +124,7 @@
      of heading-to-paragraph, sized accordingly. */
   .hero-text h1{ font-size:48px; color:#fff; margin-bottom:26px; line-height:1.08; letter-spacing:-.015em; }
   .hero-paths{ display:flex; gap:12px; }
-  .hero-paths .btn{ border-color:rgba(255,255,255,.7); color:#fff; padding:12px 22px; font-size:15px; }
+  .hero-paths .btn{ border-color:rgba(255,255,255,.7); color:#fff; padding:12px 22px; font-size:14px; text-transform:uppercase; letter-spacing:.04em; }
   .hero-paths .btn:hover{ background:#fff; color:var(--black); border-color:#fff; }
   .hero-paths .btn.primary{ background:#fff; color:var(--black); border-color:#fff; }
   .hero-paths .btn.primary:hover{ background:var(--header); }
@@ -721,7 +721,10 @@
     .hero-text .eyebrow{ font-size:11px; margin-bottom:10px; }
     .hero-text h1{ font-size:30px; margin-bottom:20px; }
     .hero-paths{ display:flex; }
-    .hero-paths .btn{ width:100%; padding:12px 10px; font-size:14px; justify-content:center; }
+    /* Full-width read oversized once it was the only button left (that
+       width:100% was sized for a 2-up grid the button no longer shares) -
+       back to a normal-sized pill, sized to its own text. */
+    .hero-paths .btn{ padding:12px 20px; font-size:13px; }
     .hero-dots{ right:18px; bottom:22px; }
     .hero-dot{ width:28px; }
     .hero-dot::before{ content:""; position:absolute; left:0; right:0; top:-16px; bottom:-16px; }
