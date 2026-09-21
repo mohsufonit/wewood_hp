@@ -410,6 +410,10 @@
   .elink{ display:inline-flex; align-items:center; gap:7px; font-size:14px; font-weight:500; color:var(--text); padding:6px 0; margin:-6px 0; transition:opacity .16s ease-out; }
   .elink:hover{ opacity:.6; }
   .elink svg{ flex:none; }
+  /* Add to cart per row is mobile-only (2026-09-21, client request) - desktop
+     already has the full Edit Showcase switcher with its own Add to cart. */
+  .erow-cta{ display:flex; align-items:center; gap:16px; }
+  .erow-atc{ display:none; }
   .edit-more{ text-align:center; margin-top:48px; }
 
   /* ===== Edit showcase: desktop-only interactive switcher, replacing the
@@ -816,6 +820,11 @@
     .ecopy h3{ font-size:17px; line-height:1.2; margin-bottom:6px; max-width:none; }
     .ecopy .eline{ font-size:13px; margin-bottom:8px; }
     .elink{ font-size:13px; }
+    /* View collapses to icon-only (full label stays for screen readers via
+       aria-label); Add to cart takes the freed-up space. */
+    .elink-text{ display:none; }
+    .erow-cta{ gap:10px; }
+    .erow-atc{ display:inline-flex; padding:9px 16px; font-size:12.5px; }
     .edit-more{ margin-top:22px; }
     .edit-more .btn{ width:100%; }
 
@@ -1327,7 +1336,10 @@
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">Round Coffee Table, Blue Resin</a></h3>
         <span class="eline">A 35mm solid teak top</span>
-        <a class="elink" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        <div class="erow-cta">
+          <a class="elink" href="https://wewood.co.in/products/round-coffee-table-teak-wood-with-special-blue-resin-finish" aria-label="View this table"><span class="elink-text">View this table</span> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <button type="button" class="btn btn-dark btn-sm js-atc erow-atc">Add to cart</button>
+        </div>
       </div>
     </div>
 
@@ -1338,7 +1350,10 @@
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">Nesting Table Set of 3, Teak</a></h3>
         <span class="eline">Three tables, one footprint</span>
-        <a class="elink" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish">See the set <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        <div class="erow-cta">
+          <a class="elink" href="https://wewood.co.in/products/nesting-table-set-of-3-teak-wood-with-transparent-resin-finish" aria-label="See the set"><span class="elink-text">See the set</span> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <button type="button" class="btn btn-dark btn-sm js-atc erow-atc">Add to cart</button>
+        </div>
       </div>
     </div>
 
@@ -1349,7 +1364,10 @@
       <div class="ecopy">
         <h3><a href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">Live-Edge Wood and Blue Epoxy Table</a></h3>
         <span class="eline">No two tops alike</span>
-        <a class="elink" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table">View this table <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        <div class="erow-cta">
+          <a class="elink" href="https://wewood.co.in/products/modern-live-edge-wood-blue-epoxy-resin-table" aria-label="View this table"><span class="elink-text">View this table</span> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <button type="button" class="btn btn-dark btn-sm js-atc erow-atc">Add to cart</button>
+        </div>
       </div>
     </div>
 
