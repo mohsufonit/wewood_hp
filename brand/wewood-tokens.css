@@ -1,0 +1,60 @@
+/* ==========================================================================
+   WeWood - Brand Tokens
+   Fonts and colors actually used on the homepage prototype, pulled directly
+   from Design/build/homepage.template.html's own :root block. Nothing here
+   is invented - if a color or font isn't in this file, it isn't on the page.
+   ========================================================================== */
+
+/* ---- Fonts (load this stylesheet on the page) ---- */
+/* <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&family=Inter:wght@500;600&display=swap" rel="stylesheet"> */
+
+:root{
+
+  /* ---- Typography ----
+     Body: Manrope       - paragraphs, nav, labels, form fields
+     Headings: Urbanist  - h1-h4, section headings, tab titles (always weight 400, never bold)
+     Buttons/UI: Inter   - buttons, badges, prices, small UI labels, uppercase micro-copy */
+  --font-body: 'Manrope', sans-serif;
+  --font-heading: 'Urbanist', sans-serif;
+  --font-button: 'Inter', sans-serif;
+
+  /* Weights actually loaded from Google Fonts - don't reference a weight
+     outside these without adding it to the font import too. */
+  /* Manrope:  400, 500, 600, 700 */
+  /* Urbanist: 400, 500, 600, 700 (headings on the page only ever use 400) */
+  /* Inter:    500, 600 */
+
+  /* ---- Color: surfaces ---- */
+  --bg: #f0f0f0;            /* page background */
+  --bg-secondary: #f9f9f9;  /* alternate section background, search field fill */
+  --header: #e1e1e1;        /* header/nav bar fill */
+  --silver: #c4c4c4;        /* footer background */
+  --white: #ffffff;
+  --black: #000000;
+
+  /* ---- Color: text ---- */
+  --text: #333333;    /* primary body text, headings */
+  --text-2: #525252;  /* secondary text, supporting copy, button borders */
+  --text-3: #9d9d9d;  /* tertiary text, eyebrows, muted captions */
+  --gray: #757575;    /* misc muted text */
+  --border: #cdcdcd;  /* hairline dividers, card borders */
+
+  /* ---- Color: brand / accent ---- */
+  --dark: #161e13;    /* dark panels - EMI bar, footer CTA states, active tab underline */
+  --yellow: #f9d35c;  /* accent - hover states on dark buttons */
+  --green: #198754;   /* WhatsApp / success actions */
+  --sale: #cc0000;    /* sale price, discount badges */
+
+  /* ---- Shape ---- */
+  --radius: 16px;  /* cards, images, product tiles */
+  --pill: 32px;    /* buttons, search field, badges */
+
+  /* ---- Spacing ---- */
+  --gutter: 18px;       /* mobile page gutter / small inset */
+  --page-gutter: 60px;  /* desktop page gutter (drops to 18px under 640px) */
+  --gap: 20px;          /* default grid/flex gap */
+  --inner: 54px;        /* large inner padding (editorial sections) */
+
+}
